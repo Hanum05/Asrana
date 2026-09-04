@@ -49,7 +49,6 @@
                         'slide-up': 'slideUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards',
                         'breathe': 'breathe 8s infinite ease-in-out',
                         'float': 'float 6s infinite ease-in-out',
-                        'float-delayed': 'float 7s infinite ease-in-out 2s',
                         'grow': 'grow 1.2s cubic-bezier(0.34, 1.56, 0.64, 1) forwards',
                         'pulse-slow': 'pulseSlow 4s infinite ease-in-out',
                         'butterfly': 'butterfly 12s infinite linear',
@@ -83,10 +82,15 @@
     </script>
 
     <style>
+        /* Base & Resets */
         body { -webkit-tap-highlight-color: transparent; overflow-x: hidden; font-feature-settings: "cv02", "cv03", "cv04", "cv11"; transition: background-color 0.5s ease, color 0.5s ease; }
+        
+        /* Backgrounds */
         .ambient-bg { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: radial-gradient(circle at 50% 0%, rgba(247, 202, 201, 0.3) 0%, transparent 60%), radial-gradient(circle at 80% 80%, rgba(179, 157, 219, 0.2) 0%, transparent 50%); z-index: -1; pointer-events: none; transition: background 0.5s ease; }
         .dark .ambient-bg { background: radial-gradient(circle at 50% 0%, rgba(74, 35, 90, 0.4) 0%, transparent 60%), radial-gradient(circle at 80% 80%, rgba(209, 122, 148, 0.15) 0%, transparent 50%); }
         .noise-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; pointer-events: none; z-index: 50; opacity: 0.03; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E"); }
+        
+        /* Glass Components */
         .glass-panel { background: rgba(255, 255, 255, 0.65); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border: 1px solid rgba(255, 255, 255, 0.8); box-shadow: theme('boxShadow.glass-light'); border-radius: 28px; transition: all 0.4s ease; }
         .dark .glass-panel { background: rgba(45, 30, 51, 0.6); border: 1px solid rgba(255, 255, 255, 0.06); box-shadow: theme('boxShadow.glass-dark'); }
         .glass-button { background: linear-gradient(180deg, rgba(74,35,90,0.02) 0%, rgba(74,35,90,0.06) 100%); backdrop-filter: blur(8px); border: 1px solid rgba(74,35,90,0.1); color: theme('colors.brand.primary'); box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.8); transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1); }
@@ -95,6 +99,8 @@
         .dark .glass-button:hover, .dark .glass-button:active { border-color: rgba(209, 122, 148, 0.4); box-shadow: 0 10px 20px -10px rgba(0,0,0,0.5), inset 0 1px 0 0 rgba(255, 255, 255, 0.05); }
         .primary-button { background: linear-gradient(135deg, theme('colors.brand.primary'), #6E3D7D); color: theme('colors.brand.textLight'); border: none; box-shadow: 0 8px 20px -5px rgba(74, 35, 90, 0.4); transition: all 0.3s ease; }
         .primary-button:hover { box-shadow: 0 12px 25px -5px rgba(74, 35, 90, 0.5); transform: translateY(-2px); }
+        
+        /* Scrollbar */
         ::-webkit-scrollbar { width: 4px; }
         ::-webkit-scrollbar-track { background: transparent; }
         ::-webkit-scrollbar-thumb { background: rgba(139, 125, 145, 0.2); border-radius: 10px; }
@@ -102,15 +108,27 @@
         ::-webkit-scrollbar-thumb:hover { background: theme('colors.brand.accent'); }
         .hide-scrollbar::-webkit-scrollbar { display: none; }
         .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
-        .view-section { display: none; opacity: 0; transform: translateY(10px); transition: opacity 0.5s ease, transform 0.5s ease; }
+        
+        /* Nav Views & Modal Structure (CRITICAL FIXES HERE) */
+        .view-section { display: none; opacity: 0; transform: translateY(10px); transition: opacity 0.25s ease, transform 0.25s ease; }
         .view-section.active { display: flex; flex-direction: column; opacity: 1; transform: translateY(0); }
         .pb-safe { padding-bottom: max(100px, env(safe-area-inset-bottom)); }
-        .modal-backdrop { background: rgba(253, 251, 247, 0.8); backdrop-filter: blur(12px); }
+        
+        .modal-backdrop { display: none; opacity: 0; transition: opacity 0.3s ease; background: rgba(253, 251, 247, 0.8); backdrop-filter: blur(12px); position: fixed; top: 0; left: 0; right: 0; bottom: 0; z-index: 60; align-items: flex-end; justify-content: center; }
         .dark .modal-backdrop { background: rgba(30, 20, 35, 0.85); }
+        @media (min-width: 640px) { .modal-backdrop { align-items: center; padding: 1rem; } }
+        .modal-backdrop.show { display: flex; opacity: 1; }
+        .modal-content-area { transform: translateY(100%); transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.4s ease; width: 100%; max-height: 90vh; }
+        @media (min-width: 640px) { .modal-content-area { transform: scale(0.95); opacity: 0; max-width: 28rem; } }
+        .modal-backdrop.show .modal-content-area { transform: translateY(0); opacity: 1; }
+        @media (min-width: 640px) { .modal-backdrop.show .modal-content-area { transform: scale(1); opacity: 1; } }
+
+        /* Progress Bar */
         progress::-webkit-progress-bar { background-color: rgba(74, 35, 90, 0.08); border-radius: 99px; }
         .dark progress::-webkit-progress-bar { background-color: rgba(255,255,255,0.05); }
         progress::-webkit-progress-value { background: linear-gradient(90deg, theme('colors.brand.secondary'), theme('colors.brand.accent')); border-radius: 99px; transition: width 1s cubic-bezier(0.16, 1, 0.3, 1); }
         progress::-moz-progress-bar { background: linear-gradient(90deg, theme('colors.brand.secondary'), theme('colors.brand.accent')); border-radius: 99px; transition: width 1s cubic-bezier(0.16, 1, 0.3, 1); }
+        
         .floating-nav { box-shadow: 0 -10px 40px rgba(74,35,90,0.1), inset 0 1px 0 rgba(255,255,255,0.8); }
         .dark .floating-nav { box-shadow: 0 -10px 40px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.1); }
     </style>
@@ -118,29 +136,27 @@
 <body class="antialiased min-h-screen flex flex-col font-sans bg-brand-bgLight text-brand-textDark dark:bg-brand-bgDark dark:text-brand-textLight selection:bg-brand-soft/50 selection:text-brand-primary">
     <div class="ambient-bg"></div>
     <div class="noise-overlay"></div>
-    <div id="toast-container" class="fixed top-6 left-1/2 -translate-x-1/2 z-50 flex flex-col gap-3 w-full max-w-sm px-4 pointer-events-none"></div>
+    
+    <!-- Z-index fix for Toast -->
+    <div id="toast-container" class="fixed top-6 left-1/2 -translate-x-1/2 z-[100] flex flex-col gap-3 w-full max-w-sm px-4 pointer-events-none"></div>
 
     <!-- Welcome Screen -->
-    <div id="welcome-screen" class="fixed inset-0 z-40 bg-brand-bgLight dark:bg-brand-bgDark flex flex-col items-center justify-center p-6 text-center transition-all duration-1000">
+    <div id="welcome-screen" class="fixed inset-0 z-[100] bg-brand-bgLight dark:bg-brand-bgDark flex flex-col items-center justify-center p-6 text-center transition-all duration-1000">
         <div class="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-brand-soft/20 via-brand-bgLight to-brand-bgLight dark:from-brand-primary/20 dark:via-brand-bgDark dark:to-brand-bgDark"></div>
         
-        <!-- Phase 1: Intro -->
         <div id="welcome-phase-1" class="z-10 max-w-md w-full space-y-16 transition-all duration-700">
             <div class="space-y-4 animate-slide-up" style="animation-delay: 0.2s;">
                 <h1 class="text-3xl md:text-5xl font-serif tracking-[0.2em] text-brand-primary dark:text-brand-soft">ASRANA</h1>
                 <p class="text-xs tracking-[0.3em] uppercase text-brand-secondary font-medium">Menata waktu, menumbuhkan makna.</p>
             </div>
-
             <div class="space-y-8 animate-slide-up" style="animation-delay: 0.8s;">
                 <div class="text-5xl md:text-6xl font-arabic text-brand-textDark dark:text-brand-textLight font-light drop-shadow-lg">بِسْمِ اللَّهِ</div>
             </div>
-
             <div class="space-y-10 animate-slide-up" style="animation-delay: 1.4s;">
                 <p class="text-lg font-light leading-relaxed text-brand-textDark/90 dark:text-brand-textLight/90">
                     Your time is an amanah.<br>
                     <span class="text-brand-mutedLight dark:text-brand-mutedDark text-sm mt-4 block leading-loose">Temukan kembali makna waktu melalui mindful moments, meaningful actions, dan perjalanan spiritual yang sederhana.</span>
                 </p>
-
                 <div class="pt-4">
                     <button onclick="app.startJourney()" class="primary-button w-full py-4 rounded-2xl font-medium tracking-widest uppercase text-sm group relative overflow-hidden">
                         <span class="relative z-10">Begin Your Journey</span>
@@ -150,16 +166,13 @@
             </div>
         </div>
 
-        <!-- Phase 2: Name Input -->
         <div id="welcome-phase-2" class="z-10 max-w-md w-full space-y-16 transition-all duration-700 hidden opacity-0 translate-y-10">
             <div class="space-y-4 text-center">
                 <h2 class="text-3xl md:text-4xl font-serif text-brand-primary dark:text-brand-textLight">Before we begin,</h2>
                 <p class="text-brand-mutedLight dark:text-brand-mutedDark tracking-wide font-light text-lg">what should we call you?</p>
             </div>
-            
             <div class="space-y-10">
                 <input type="text" id="onboard-name-input" maxlength="30" placeholder="Enter your name..." class="w-full text-center text-3xl font-serif bg-transparent border-b border-brand-primary/20 dark:border-white/20 focus:border-brand-accent dark:focus:border-brand-soft outline-none py-4 text-brand-textDark dark:text-white transition-colors placeholder-brand-mutedLight/30 dark:placeholder-brand-mutedDark/30">
-                
                 <button onclick="app.completeOnboarding()" class="primary-button w-full py-4 rounded-2xl font-medium tracking-widest uppercase text-sm group">
                     Continue <span class="ml-2 group-hover:translate-x-1 transition-transform inline-block">→</span>
                 </button>
@@ -167,19 +180,13 @@
         </div>
     </div>
 
-    <!-- Main Application Layout -->
     <div id="app-layout" class="hidden flex-1 h-screen overflow-hidden flex flex-col md:flex-row">
         
-        <!-- Desktop Sidebar -->
+        <!-- Desktop Nav -->
         <nav class="hidden md:flex flex-col w-72 h-full border-r border-brand-primary/10 dark:border-white/5 bg-brand-surfaceLight/50 dark:bg-brand-surfaceDark/30 backdrop-blur-2xl z-20 relative">
             <div class="absolute top-0 right-0 w-px h-full bg-gradient-to-b from-transparent via-brand-accent/20 to-transparent"></div>
-            
-            <div class="p-10 pb-6">
-                <h2 class="text-2xl font-serif text-brand-primary dark:text-brand-soft tracking-[0.2em]">ASRANA</h2>
-            </div>
-            
+            <div class="p-10 pb-6"><h2 class="text-2xl font-serif text-brand-primary dark:text-brand-soft tracking-[0.2em]">ASRANA</h2></div>
             <div class="flex-1 px-6 py-4 space-y-2 overflow-y-auto" id="desktop-nav"></div>
-            
             <div class="p-6 border-t border-brand-primary/10 dark:border-white/5">
                 <button onclick="app.openModal('settings-modal')" class="flex items-center gap-4 text-brand-mutedLight dark:text-brand-mutedDark hover:text-brand-primary dark:hover:text-brand-accent transition-colors w-full p-3 rounded-xl hover:bg-brand-primary/5 dark:hover:bg-white/5 group">
                     <svg class="w-5 h-5 group-hover:rotate-90 transition-transform duration-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
@@ -188,8 +195,9 @@
             </div>
         </nav>
 
-        <main class="flex-1 h-full overflow-y-auto pb-safe md:pb-0 relative scroll-smooth" id="main-scroll-area">
-            <div class="max-w-5xl mx-auto p-4 sm:p-6 md:p-10 lg:p-12 min-h-full flex flex-col">
+        <!-- Main Scroll Area -->
+        <main class="flex-1 h-full overflow-y-auto pb-safe md:pb-0 relative" id="main-scroll-area">
+            <div class="max-w-5xl mx-auto w-full p-4 sm:p-6 md:p-10 lg:p-12 min-h-full flex flex-col">
                 
                 <section id="view-home" class="view-section active flex-1 space-y-8">
                     <div class="flex flex-col sm:flex-row justify-between items-start sm:items-end gap-4 animate-fade-in">
@@ -347,21 +355,18 @@
                     </div>
                 </section>
 
-                <section id="view-curhat" class="view-section space-y-8 flex-1 flex flex-col">
+                <section id="view-curhat" class="view-section flex-1 flex flex-col space-y-8">
                     <div class="text-center space-y-3 mb-4 animate-slide-up">
                         <h2 class="text-4xl md:text-5xl font-serif text-brand-primary dark:text-brand-soft tracking-wide">Let it out.</h2>
                         <p class="text-brand-mutedLight dark:text-brand-mutedDark font-light tracking-wide">You don't have to keep every thought in your head.</p>
                     </div>
 
                     <div class="grid grid-cols-1 lg:grid-cols-5 gap-8 flex-1">
-                        <!-- Left: Editor -->
                         <div class="lg:col-span-3 space-y-6 flex flex-col h-full">
                             <div class="glass-panel p-6 sm:p-8 flex-1 flex flex-col animate-fade-in" id="curhat-editor-area">
                                 <div class="mb-6">
                                     <label class="block text-sm font-medium tracking-wide text-brand-secondary dark:text-brand-secondary mb-4">How are you feeling right now? (Optional)</label>
-                                    <div class="flex flex-wrap gap-3" id="mood-selector">
-                                        <!-- Dynamically generated moods -->
-                                    </div>
+                                    <div class="flex flex-wrap gap-3" id="mood-selector"></div>
                                 </div>
                                 
                                 <div class="space-y-4 flex-1 flex flex-col">
@@ -378,12 +383,10 @@
                                 </div>
                             </div>
 
-                            <!-- Success State -->
                             <div class="glass-panel p-10 text-center flex-1 flex flex-col justify-center animate-fade-in hidden" id="curhat-success-area">
                                 <div class="w-16 h-16 bg-brand-soft/20 text-brand-accent rounded-full flex items-center justify-center mx-auto mb-6 text-2xl">🤍</div>
                                 <h3 class="text-2xl font-serif text-brand-primary dark:text-white mb-2">It's okay to let some things out.</h3>
                                 <p class="text-brand-mutedLight dark:text-brand-mutedDark mb-10">Your thoughts have been safely stored on this device.</p>
-                                
                                 <div class="space-y-4 max-w-sm mx-auto w-full">
                                     <p class="text-xs uppercase tracking-widest text-brand-secondary mb-4">What would you like to do next?</p>
                                     <button onclick="app.navigate('garden')" class="glass-button w-full py-3 rounded-xl flex items-center justify-center gap-2 text-sm"><span class="text-lg">🌱</span> Return to Garden</button>
@@ -393,13 +396,10 @@
                             </div>
                         </div>
 
-                        <!-- Right: History -->
                         <div class="lg:col-span-2 flex flex-col h-full min-h-[400px]">
                             <div class="glass-panel p-6 sm:p-8 h-full flex flex-col">
                                 <h3 class="font-serif text-xl text-brand-primary dark:text-white mb-6">My Journal</h3>
-                                <div id="journal-list" class="flex-1 overflow-y-auto pr-2 space-y-3 pb-safe sm:pb-0 hide-scrollbar">
-                                    <!-- Journal entries injected here -->
-                                </div>
+                                <div id="journal-list" class="flex-1 overflow-y-auto pr-2 space-y-3 pb-safe sm:pb-0 hide-scrollbar"></div>
                             </div>
                         </div>
                     </div>
@@ -535,19 +535,19 @@
     </div>
 
     <!-- Modals -->
-    <div id="add-deed-modal" class="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-0 sm:p-4 modal-backdrop hidden opacity-0 transition-opacity duration-300">
-        <div class="glass-panel w-full sm:max-w-md p-6 sm:rounded-3xl rounded-t-3xl rounded-b-none h-[85vh] sm:h-auto max-h-[90vh] flex flex-col transform translate-y-full sm:scale-95 transition-transform duration-500 ease-out" id="add-deed-content">
+    <div id="add-deed-modal" class="modal-backdrop">
+        <div class="glass-panel p-6 sm:p-8 rounded-t-3xl sm:rounded-3xl h-[85vh] sm:h-auto max-h-[90vh] flex flex-col modal-content-area" id="add-deed-content">
             <div class="w-12 h-1.5 bg-brand-primary/20 dark:bg-white/10 rounded-full mx-auto mb-6 sm:hidden"></div>
             <div class="flex justify-between items-center mb-6">
                 <div><h3 class="text-2xl font-serif text-brand-textDark dark:text-white">Plant a Seed</h3><p class="text-xs text-brand-mutedLight dark:text-brand-mutedDark tracking-wide mt-1">What good did you do today?</p></div>
                 <button onclick="app.closeModal('add-deed-modal')" class="w-10 h-10 rounded-full bg-brand-primary/5 dark:bg-white/5 flex items-center justify-center text-brand-mutedLight dark:text-brand-mutedDark hover:text-brand-primary dark:hover:text-white transition-colors"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg></button>
             </div>
-            <div class="flex-1 overflow-y-auto pr-2 space-y-3 pb-safe sm:pb-0" id="deed-options"></div>
+            <div class="flex-1 overflow-y-auto pr-2 space-y-3 hide-scrollbar pb-10" id="deed-options"></div>
         </div>
     </div>
 
-    <div id="settings-modal" class="fixed inset-0 z-50 flex items-center justify-center p-4 modal-backdrop hidden opacity-0 transition-opacity duration-300">
-        <div class="glass-panel w-full max-w-sm p-8 scale-95 transition-transform duration-500 ease-out" id="settings-content">
+    <div id="settings-modal" class="modal-backdrop">
+        <div class="glass-panel p-8 sm:rounded-3xl rounded-t-3xl modal-content-area" id="settings-content">
             <div class="flex justify-between items-center mb-8">
                 <h3 class="text-2xl font-serif text-brand-textDark dark:text-brand-textLight">Settings</h3>
                 <button onclick="app.closeModal('settings-modal')" class="text-brand-mutedLight dark:text-brand-mutedDark hover:text-brand-primary dark:hover:text-white transition-colors"><svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg></button>
@@ -577,8 +577,8 @@
     </div>
 
     <!-- Journal Detail Modal -->
-    <div id="journal-detail-modal" class="fixed inset-0 z-50 flex items-center justify-center p-4 modal-backdrop hidden opacity-0 transition-opacity duration-300">
-        <div class="glass-panel w-full max-w-md p-8 scale-95 transition-transform duration-500 ease-out flex flex-col max-h-[85vh]">
+    <div id="journal-detail-modal" class="modal-backdrop">
+        <div class="glass-panel p-8 sm:rounded-3xl rounded-t-3xl flex flex-col max-h-[85vh] modal-content-area">
             <div class="flex justify-between items-start mb-6">
                 <div>
                     <p class="text-xs text-brand-mutedLight dark:text-brand-mutedDark tracking-widest uppercase mb-1" id="jd-date">Date</p>
@@ -601,8 +601,8 @@
     </div>
 
     <!-- Reset Confirm Modal -->
-    <div id="reset-confirm-modal" class="fixed inset-0 z-[60] flex items-center justify-center p-4 modal-backdrop hidden opacity-0 transition-opacity duration-300">
-        <div class="glass-panel w-full max-w-sm p-8 text-center scale-95 transition-transform duration-500 ease-out">
+    <div id="reset-confirm-modal" class="modal-backdrop">
+        <div class="glass-panel p-8 text-center sm:rounded-3xl rounded-t-3xl modal-content-area">
             <div class="w-16 h-16 rounded-full bg-red-500/10 text-red-500 flex items-center justify-center mx-auto mb-4">
                 <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
             </div>
@@ -620,13 +620,13 @@
             // --- STATE & DATA ---
             state: {
                 onboardingDone: false,
-                name: '', // Empty initially
+                name: '', 
                 deeds: [], 
                 reclaimedTime: 0, 
                 mindfulSessions: 0,
                 reflections: [],
                 gratitude: [],
-                journal: [], // New Feature state
+                journal: [], 
                 dailyGoal: 5,
                 streak: 0,
                 lastActiveDate: null,
@@ -679,6 +679,7 @@
             pauseState: { duration: 60, timeLeft: 0, isActive: false, phase: 0 },
             curhatDraft: { mood: null },
             currentView: 'home',
+            navTimeout: null, // Track nav transitions
 
             // --- INITIALIZATION ---
             init: function() {
@@ -732,70 +733,72 @@
             buildUI: function() {
                 const desktopNav = document.getElementById('desktop-nav');
                 const mobileNav = document.getElementById('mobile-nav');
-                desktopNav.innerHTML = ''; mobileNav.innerHTML = '';
+                if(desktopNav) desktopNav.innerHTML = ''; 
+                if(mobileNav) mobileNav.innerHTML = '';
                 
                 this.config.navItems.forEach(item => {
-                    // Desktop Item
                     const dBtn = document.createElement('button');
                     dBtn.className = `w-full flex items-center gap-4 px-4 py-3.5 rounded-xl text-left transition-all duration-300 nav-btn-${item.id} relative group overflow-hidden`;
                     const activeBg = `<div class="absolute inset-0 bg-brand-primary/10 dark:bg-brand-accent/10 opacity-0 transition-opacity duration-300 nav-bg-${item.id}"></div><div class="absolute left-0 top-1/4 bottom-1/4 w-1 bg-brand-primary dark:bg-brand-accent rounded-r-full transform -translate-x-full transition-transform duration-300 nav-indicator-${item.id}"></div>`;
                     dBtn.innerHTML = `${activeBg}<svg class="w-6 h-6 relative z-10 transition-colors duration-300 nav-icon-${item.id}" fill="none" stroke="currentColor" viewBox="0 0 24 24">${item.icon}</svg><span class="text-sm font-medium tracking-wide relative z-10 transition-colors duration-300 nav-text-${item.id}">${item.label}</span>`;
                     dBtn.onclick = () => this.navigate(item.id);
-                    desktopNav.appendChild(dBtn);
+                    if(desktopNav) desktopNav.appendChild(dBtn);
 
-                    // Mobile Item (Only if mobile: true)
                     if (item.mobile) {
                         const mBtn = document.createElement('button');
                         mBtn.className = `flex flex-col items-center justify-center w-16 h-14 shrink-0 rounded-2xl transition-all duration-300 nav-btn-${item.id} relative snap-center`;
                         mBtn.innerHTML = `<div class="absolute inset-0 bg-brand-primary/10 dark:bg-brand-accent/10 scale-50 opacity-0 rounded-xl transition-all duration-300 nav-mob-bg-${item.id}"></div><svg class="w-6 h-6 mb-1 relative z-10 transition-colors duration-300 nav-icon-${item.id}" fill="none" stroke="currentColor" viewBox="0 0 24 24">${item.icon}</svg><span class="text-[9px] uppercase tracking-wider font-medium relative z-10 transition-colors duration-300 nav-text-${item.id}">${item.label}</span>`;
                         mBtn.onclick = () => this.navigate(item.id);
-                        mobileNav.appendChild(mBtn);
+                        if(mobileNav) mobileNav.appendChild(mBtn);
                     }
                 });
 
-                // Deed Options
                 const deedContainer = document.getElementById('deed-options');
-                deedContainer.innerHTML = '';
-                this.config.deedCategories.forEach(cat => {
-                    const btn = document.createElement('button');
-                    btn.className = 'w-full text-left p-4 rounded-2xl glass-button flex items-center gap-4 group hover:border-brand-accent/30';
-                    btn.innerHTML = `<div class="w-12 h-12 rounded-xl flex items-center justify-center text-2xl bg-brand-primary/5 dark:bg-white/5 border border-brand-primary/10 dark:border-white/10 shadow-inner group-hover:bg-brand-accent/10 transition-colors">${cat.icon}</div><div class="flex-1"><span class="font-serif text-xl block mb-0.5 transition-colors text-brand-textDark dark:text-brand-textLight group-hover:text-brand-accent">${cat.title}</span><span class="text-xs text-brand-mutedLight dark:text-brand-mutedDark font-light">${cat.desc}</span></div>`;
-                    btn.onclick = () => this.addDeed(cat.id);
-                    deedContainer.appendChild(btn);
-                });
+                if(deedContainer) {
+                    deedContainer.innerHTML = '';
+                    this.config.deedCategories.forEach(cat => {
+                        const btn = document.createElement('button');
+                        btn.className = 'w-full text-left p-4 rounded-2xl glass-button flex items-center gap-4 group hover:border-brand-accent/30';
+                        btn.innerHTML = `<div class="w-12 h-12 rounded-xl flex items-center justify-center text-2xl bg-brand-primary/5 dark:bg-white/5 border border-brand-primary/10 dark:border-white/10 shadow-inner group-hover:bg-brand-accent/10 transition-colors">${cat.icon}</div><div class="flex-1"><span class="font-serif text-xl block mb-0.5 transition-colors text-brand-textDark dark:text-brand-textLight group-hover:text-brand-accent">${cat.title}</span><span class="text-xs text-brand-mutedLight dark:text-brand-mutedDark font-light">${cat.desc}</span></div>`;
+                        btn.onclick = () => this.addDeed(cat.id);
+                        deedContainer.appendChild(btn);
+                    });
+                }
 
-                // Reclaim Categories
                 const reclaimContainer = document.getElementById('reclaim-categories');
-                reclaimContainer.innerHTML = '';
-                this.config.reclaimCategories.forEach(cat => {
-                    const btn = document.createElement('button');
-                    btn.className = 'bg-brand-surfaceLight/50 dark:bg-brand-surfaceDark/50 border border-brand-primary/5 dark:border-white/5 rounded-2xl p-4 flex flex-col items-center justify-center gap-3 hover:bg-brand-primary/5 dark:hover:bg-white/5 hover:border-brand-accent/40 transition-all duration-300 group';
-                    btn.innerHTML = `<span class="text-3xl group-hover:scale-110 transition-transform">${cat.icon}</span><span class="text-xs tracking-wide text-brand-mutedLight dark:text-brand-mutedDark group-hover:text-brand-primary dark:group-hover:text-white transition-colors">${cat.name}</span>`;
-                    btn.onclick = (e) => {
-                        document.querySelectorAll('#reclaim-categories button').forEach(b => { b.classList.remove('border-brand-accent', 'bg-brand-accent/10'); b.classList.add('border-brand-primary/5', 'dark:border-white/5', 'bg-brand-surfaceLight/50', 'dark:bg-brand-surfaceDark/50'); });
-                        btn.classList.remove('border-brand-primary/5', 'dark:border-white/5', 'bg-brand-surfaceLight/50', 'dark:bg-brand-surfaceDark/50');
-                        btn.classList.add('border-brand-accent', 'bg-brand-accent/10');
-                        const actionDiv = document.getElementById('reclaim-action');
-                        actionDiv.classList.remove('hidden'); actionDiv.style.animation = 'none'; actionDiv.offsetHeight; actionDiv.style.animation = null; 
-                    };
-                    reclaimContainer.appendChild(btn);
-                });
+                if(reclaimContainer) {
+                    reclaimContainer.innerHTML = '';
+                    this.config.reclaimCategories.forEach(cat => {
+                        const btn = document.createElement('button');
+                        btn.className = 'bg-brand-surfaceLight/50 dark:bg-brand-surfaceDark/50 border border-brand-primary/5 dark:border-white/5 rounded-2xl p-4 flex flex-col items-center justify-center gap-3 hover:bg-brand-primary/5 dark:hover:bg-white/5 hover:border-brand-accent/40 transition-all duration-300 group';
+                        btn.innerHTML = `<span class="text-3xl group-hover:scale-110 transition-transform">${cat.icon}</span><span class="text-xs tracking-wide text-brand-mutedLight dark:text-brand-mutedDark group-hover:text-brand-primary dark:group-hover:text-white transition-colors">${cat.name}</span>`;
+                        btn.onclick = (e) => {
+                            document.querySelectorAll('#reclaim-categories button').forEach(b => { b.classList.remove('border-brand-accent', 'bg-brand-accent/10'); b.classList.add('border-brand-primary/5', 'dark:border-white/5', 'bg-brand-surfaceLight/50', 'dark:bg-brand-surfaceDark/50'); });
+                            btn.classList.remove('border-brand-primary/5', 'dark:border-white/5', 'bg-brand-surfaceLight/50', 'dark:bg-brand-surfaceDark/50');
+                            btn.classList.add('border-brand-accent', 'bg-brand-accent/10');
+                            const actionDiv = document.getElementById('reclaim-action');
+                            actionDiv.classList.remove('hidden'); actionDiv.style.animation = 'none'; actionDiv.offsetHeight; actionDiv.style.animation = null; 
+                        };
+                        reclaimContainer.appendChild(btn);
+                    });
+                }
 
-                // Mood Selector Builder
                 const moodContainer = document.getElementById('mood-selector');
-                moodContainer.innerHTML = '';
-                this.config.moods.forEach(mood => {
-                    const btn = document.createElement('button');
-                    btn.className = 'mood-btn w-12 h-12 rounded-xl flex items-center justify-center text-2xl border border-transparent hover:bg-brand-primary/5 dark:hover:bg-white/5 transition-all duration-300 opacity-50 grayscale hover:opacity-80';
-                    btn.dataset.mood = mood.id;
-                    btn.innerHTML = mood.icon;
-                    btn.title = mood.label;
-                    btn.onclick = () => this.setMood(mood.id);
-                    moodContainer.appendChild(btn);
-                });
+                if(moodContainer) {
+                    moodContainer.innerHTML = '';
+                    this.config.moods.forEach(mood => {
+                        const btn = document.createElement('button');
+                        btn.className = 'mood-btn w-12 h-12 rounded-xl flex items-center justify-center text-2xl border border-transparent hover:bg-brand-primary/5 dark:hover:bg-white/5 transition-all duration-300 opacity-50 grayscale hover:opacity-80';
+                        btn.dataset.mood = mood.id;
+                        btn.innerHTML = mood.icon;
+                        btn.title = mood.label;
+                        btn.onclick = () => this.setMood(mood.id);
+                        moodContainer.appendChild(btn);
+                    });
+                }
 
-                document.getElementById('setting-name').value = this.state.name || '';
-                document.getElementById('setting-goal').value = this.state.dailyGoal;
+                if(document.getElementById('setting-name')) document.getElementById('setting-name').value = this.state.name || '';
+                if(document.getElementById('setting-goal')) document.getElementById('setting-goal').value = this.state.dailyGoal;
             },
 
             updateUI: function() {
@@ -807,9 +810,8 @@
                 else if(hour >= 15 && hour < 18) greet = "Good Evening";
                 else if(hour >= 18) greet = "Good Night";
                 
-                document.getElementById('greeting').textContent = `${greet}, ${nameStr} 👋`;
+                if(document.getElementById('greeting')) document.getElementById('greeting').textContent = `${greet}, ${nameStr} 👋`;
                 
-                // Update personalized elements
                 const gardenTitles = [document.getElementById('home-garden-title'), document.getElementById('main-garden-title')];
                 gardenTitles.forEach(t => { if(t) t.textContent = `${nameStr}'s Amal Garden`; });
                 
@@ -819,76 +821,83 @@
                 const muhasabahPrompt = document.getElementById('muhasabah-name-prompt');
                 if (muhasabahPrompt) muhasabahPrompt.textContent = nameStr;
                 
-                if (document.getElementById('setting-name').value !== this.state.name) {
+                if (document.getElementById('setting-name') && document.getElementById('setting-name').value !== this.state.name) {
                      document.getElementById('setting-name').value = this.state.name;
                 }
 
-                // Stats and Progress
                 const todayDeeds = this.getTodayDeeds();
                 const goal = this.state.dailyGoal;
-                document.getElementById('progress-text').textContent = `${todayDeeds.length} / ${goal}`;
-                document.getElementById('daily-progress').value = todayDeeds.length;
-                document.getElementById('daily-progress').max = goal;
+                if(document.getElementById('progress-text')) document.getElementById('progress-text').textContent = `${todayDeeds.length} / ${goal}`;
+                if(document.getElementById('daily-progress')) {
+                    document.getElementById('daily-progress').value = todayDeeds.length;
+                    document.getElementById('daily-progress').max = goal;
+                }
 
                 const remContainer = document.getElementById('home-reminders');
-                remContainer.innerHTML = this.state.reminders.map(r => `
-                    <div class="flex items-center justify-between p-3 bg-white/40 dark:bg-brand-bgDark/40 rounded-xl border border-brand-primary/5 dark:border-white/5 cursor-pointer hover:bg-white/60 dark:hover:bg-white/5 transition-colors" onclick="app.toggleReminder('${r.id}')">
-                        <span class="text-sm text-brand-textDark dark:text-brand-textLight/90">${r.title}</span>
-                        <div class="w-10 h-5 rounded-full relative transition-colors duration-300 ${r.active ? 'bg-brand-primary dark:bg-brand-accent' : 'bg-brand-primary/20 dark:bg-white/10'}">
-                            <div class="absolute top-0.5 bottom-0.5 w-4 rounded-full bg-white shadow transition-transform duration-300 ${r.active ? 'left-[22px]' : 'left-0.5'}"></div>
+                if(remContainer) {
+                    remContainer.innerHTML = this.state.reminders.map(r => `
+                        <div class="flex items-center justify-between p-3 bg-white/40 dark:bg-brand-bgDark/40 rounded-xl border border-brand-primary/5 dark:border-white/5 cursor-pointer hover:bg-white/60 dark:hover:bg-white/5 transition-colors" onclick="app.toggleReminder('${r.id}')">
+                            <span class="text-sm text-brand-textDark dark:text-brand-textLight/90">${r.title}</span>
+                            <div class="w-10 h-5 rounded-full relative transition-colors duration-300 ${r.active ? 'bg-brand-primary dark:bg-brand-accent' : 'bg-brand-primary/20 dark:bg-white/10'}">
+                                <div class="absolute top-0.5 bottom-0.5 w-4 rounded-full bg-white shadow transition-transform duration-300 ${r.active ? 'left-[22px]' : 'left-0.5'}"></div>
+                            </div>
                         </div>
-                    </div>
-                `).join('');
+                    `).join('');
+                }
 
                 this.renderGarden('mini-garden-container', true);
                 this.renderGarden('main-garden-svg-container', false);
                 this.updateGardenCopy();
 
                 const level = this.calculateGardenLevel();
-                document.getElementById('stat-deeds').textContent = this.state.deeds.length;
-                document.getElementById('stat-level').textContent = level;
-                document.getElementById('stat-flowers').textContent = this.getUniqueFlowersCount();
+                if(document.getElementById('stat-deeds')) document.getElementById('stat-deeds').textContent = this.state.deeds.length;
+                if(document.getElementById('stat-level')) document.getElementById('stat-level').textContent = level;
+                if(document.getElementById('stat-flowers')) document.getElementById('stat-flowers').textContent = this.getUniqueFlowersCount();
 
-                // Gratitude list
                 const gList = document.getElementById('gratitude-list');
-                const recentGrats = this.state.gratitude.slice(-3).reverse();
-                if(recentGrats.length > 0) {
-                    gList.innerHTML = recentGrats.map(g => `<div class="p-4 bg-white/50 dark:bg-brand-bgDark/40 rounded-xl border border-brand-primary/10 dark:border-white/5 text-sm text-brand-textDark dark:text-brand-textLight/90 shadow-inner flex gap-3 items-start animate-fade-in"><span class="text-brand-accent">✨</span> <span>${g}</span></div>`).join('');
-                } else {
-                    gList.innerHTML = `<div class="p-4 text-center text-brand-mutedLight dark:text-brand-mutedDark text-sm italic">No entries yet.</div>`;
+                if(gList) {
+                    const recentGrats = this.state.gratitude.slice(-3).reverse();
+                    if(recentGrats.length > 0) {
+                        gList.innerHTML = recentGrats.map(g => `<div class="p-4 bg-white/50 dark:bg-brand-bgDark/40 rounded-xl border border-brand-primary/10 dark:border-white/5 text-sm text-brand-textDark dark:text-brand-textLight/90 shadow-inner flex gap-3 items-start animate-fade-in"><span class="text-brand-accent">✨</span> <span>${g}</span></div>`).join('');
+                    } else {
+                        gList.innerHTML = `<div class="p-4 text-center text-brand-mutedLight dark:text-brand-mutedDark text-sm italic">No entries yet.</div>`;
+                    }
                 }
 
-                // Stats Grid
                 const statsGrid = document.getElementById('stats-grid');
-                statsGrid.innerHTML = `
-                    <div class="glass-panel p-5 text-center"><div class="text-4xl font-serif text-brand-accent dark:text-brand-soft mb-2">${this.state.deeds.length}</div><div class="text-[10px] text-brand-mutedLight dark:text-brand-mutedDark uppercase tracking-widest">Good Deeds</div></div>
-                    <div class="glass-panel p-5 text-center"><div class="text-4xl font-serif text-brand-secondary mb-2">${this.state.mindfulSessions}</div><div class="text-[10px] text-brand-mutedLight dark:text-brand-mutedDark uppercase tracking-widest">Mindful Stops</div></div>
-                    <div class="glass-panel p-5 text-center"><div class="text-4xl font-serif text-brand-textDark dark:text-white mb-2">${this.state.streak}</div><div class="text-[10px] text-brand-mutedLight dark:text-brand-mutedDark uppercase tracking-widest">Day Streak</div></div>
-                    <div class="glass-panel p-5 text-center"><div class="text-4xl font-serif text-brand-accent dark:text-brand-soft mb-2">${this.state.reclaimedTime}<span class="text-xl">m</span></div><div class="text-[10px] text-brand-mutedLight dark:text-brand-mutedDark uppercase tracking-widest">Reclaimed</div></div>
-                `;
-
-                // Achievements
-                const achList = document.getElementById('achievements-list');
-                achList.innerHTML = this.config.achievements.map(ach => {
-                    let unlocked = false;
-                    if (ach.reqDeeds) unlocked = this.state.deeds.length >= ach.reqDeeds;
-                    if (ach.reqStreak) unlocked = this.state.streak >= ach.reqStreak;
-                    return `
-                        <div class="glass-panel p-5 flex items-center gap-5 transition-all duration-500 ${unlocked ? 'border-brand-accent/30 shadow-glow-primary bg-brand-accent/5' : 'opacity-60'}">
-                            <div class="w-14 h-14 shrink-0 rounded-full flex items-center justify-center text-2xl transition-all duration-500 ${unlocked ? 'bg-gradient-to-br from-brand-accent/40 to-brand-accent/10 text-brand-primary dark:text-brand-soft shadow-[inset_0_0_10px_rgba(209,122,148,0.5)]' : 'bg-brand-primary/5 dark:bg-white/5 text-brand-textDark/20 dark:text-white/20 border border-brand-primary/10 dark:border-white/5'}">
-                                ${unlocked ? '✨' : '🔒'}
-                            </div>
-                            <div>
-                                <h4 class="font-serif text-lg mb-1 ${unlocked ? 'text-brand-textDark dark:text-white' : 'text-brand-mutedLight dark:text-brand-mutedDark'}">${ach.title}</h4>
-                                <p class="text-[11px] uppercase tracking-wider ${unlocked ? 'text-brand-accent dark:text-brand-soft/80' : 'text-brand-mutedLight/70 dark:text-brand-mutedDark/50'}">${ach.desc}</p>
-                            </div>
-                        </div>
+                if(statsGrid) {
+                    statsGrid.innerHTML = `
+                        <div class="glass-panel p-5 text-center"><div class="text-4xl font-serif text-brand-accent dark:text-brand-soft mb-2">${this.state.deeds.length}</div><div class="text-[10px] text-brand-mutedLight dark:text-brand-mutedDark uppercase tracking-widest">Good Deeds</div></div>
+                        <div class="glass-panel p-5 text-center"><div class="text-4xl font-serif text-brand-secondary mb-2">${this.state.mindfulSessions}</div><div class="text-[10px] text-brand-mutedLight dark:text-brand-mutedDark uppercase tracking-widest">Mindful Stops</div></div>
+                        <div class="glass-panel p-5 text-center"><div class="text-4xl font-serif text-brand-textDark dark:text-white mb-2">${this.state.streak}</div><div class="text-[10px] text-brand-mutedLight dark:text-brand-mutedDark uppercase tracking-widest">Day Streak</div></div>
+                        <div class="glass-panel p-5 text-center"><div class="text-4xl font-serif text-brand-accent dark:text-brand-soft mb-2">${this.state.reclaimedTime}<span class="text-xl">m</span></div><div class="text-[10px] text-brand-mutedLight dark:text-brand-mutedDark uppercase tracking-widest">Reclaimed</div></div>
                     `;
-                }).join('');
+                }
+
+                const achList = document.getElementById('achievements-list');
+                if(achList) {
+                    achList.innerHTML = this.config.achievements.map(ach => {
+                        let unlocked = false;
+                        if (ach.reqDeeds) unlocked = this.state.deeds.length >= ach.reqDeeds;
+                        if (ach.reqStreak) unlocked = this.state.streak >= ach.reqStreak;
+                        return `
+                            <div class="glass-panel p-5 flex items-center gap-5 transition-all duration-500 ${unlocked ? 'border-brand-accent/30 shadow-glow-primary bg-brand-accent/5' : 'opacity-60'}">
+                                <div class="w-14 h-14 shrink-0 rounded-full flex items-center justify-center text-2xl transition-all duration-500 ${unlocked ? 'bg-gradient-to-br from-brand-accent/40 to-brand-accent/10 text-brand-primary dark:text-brand-soft shadow-[inset_0_0_10px_rgba(209,122,148,0.5)]' : 'bg-brand-primary/5 dark:bg-white/5 text-brand-textDark/20 dark:text-white/20 border border-brand-primary/10 dark:border-white/5'}">
+                                    ${unlocked ? '✨' : '🔒'}
+                                </div>
+                                <div>
+                                    <h4 class="font-serif text-lg mb-1 ${unlocked ? 'text-brand-textDark dark:text-white' : 'text-brand-mutedLight dark:text-brand-mutedDark'}">${ach.title}</h4>
+                                    <p class="text-[11px] uppercase tracking-wider ${unlocked ? 'text-brand-accent dark:text-brand-soft/80' : 'text-brand-mutedLight/70 dark:text-brand-mutedDark/50'}">${ach.desc}</p>
+                                </div>
+                            </div>
+                        `;
+                    }).join('');
+                }
 
                 this.renderJournalList();
             },
 
+            // --- CRITICAL LAYOUT & NAVIGATION FIX ---
             navigate: function(viewId, initialLoad = false) {
                 this.currentView = viewId;
                 
@@ -902,42 +911,70 @@
 
                     if(bg) bg.style.opacity = isTarget ? '1' : '0';
                     if(ind) ind.style.transform = isTarget ? 'translateX(0)' : 'translateX(-100%)';
-                    
                     icon.forEach(el => el.className = `w-6 h-6 relative z-10 transition-colors duration-300 nav-icon-${item.id} ${isTarget ? 'text-brand-primary dark:text-brand-accent' : 'text-brand-mutedLight dark:text-brand-mutedDark group-hover:text-brand-primary dark:group-hover:text-white'}`);
-                    
                     txt.forEach(el => {
                         const size = el.classList.contains('text-[9px]') ? 'text-[9px] uppercase tracking-wider' : 'text-sm font-medium tracking-wide';
                         el.className = `${size} relative z-10 transition-colors duration-300 nav-text-${item.id} ${isTarget ? 'text-brand-primary dark:text-white' : 'text-brand-mutedLight dark:text-brand-mutedDark group-hover:text-brand-primary dark:group-hover:text-white'}`;
                     });
-                    
-                    if(mBg) {
-                        mBg.style.opacity = isTarget ? '1' : '0';
-                        mBg.style.transform = isTarget ? 'scale(1)' : 'scale(0.5)';
-                    }
+                    if(mBg) { mBg.style.opacity = isTarget ? '1' : '0'; mBg.style.transform = isTarget ? 'scale(1)' : 'scale(0.5)'; }
                 });
 
+                if(this.navTimeout) clearTimeout(this.navTimeout);
                 const views = document.querySelectorAll('.view-section');
+                
                 if (initialLoad) {
-                    views.forEach(v => v.classList.remove('active'));
-                    document.getElementById(`view-${viewId}`).classList.add('active');
+                    views.forEach(v => {
+                        v.classList.remove('active');
+                        v.style.display = 'none';
+                        v.style.opacity = '0';
+                    });
+                    const target = document.getElementById(`view-${viewId}`);
+                    if (target) {
+                        target.style.display = 'flex';
+                        target.classList.add('active');
+                        const scrollArea = document.getElementById('main-scroll-area');
+                        if (scrollArea) scrollArea.scrollTop = 0;
+                        window.scrollTo({top: 0, behavior: 'instant'}); 
+                        target.style.opacity = '1';
+                        target.style.transform = 'translateY(0)';
+                    }
                 } else {
-                    const activeView = document.querySelector('.view-section.active');
-                    if(activeView && activeView.id !== `view-${viewId}`) {
-                        activeView.style.opacity = '0';
-                        activeView.style.transform = 'translateY(-10px)';
-                        setTimeout(() => {
-                            activeView.classList.remove('active');
-                            const target = document.getElementById(`view-${viewId}`);
+                    // Safe Crossfade without layout stacking
+                    let hasFadingView = false;
+                    views.forEach(v => {
+                        if (v.id !== `view-${viewId}` && v.classList.contains('active')) {
+                            v.style.opacity = '0';
+                            v.style.transform = 'translateY(-10px)';
+                            hasFadingView = true;
+                        }
+                    });
+
+                    this.navTimeout = setTimeout(() => {
+                        views.forEach(v => {
+                            if (v.id !== `view-${viewId}`) {
+                                v.classList.remove('active');
+                                v.style.display = 'none'; // Forces removal from document flow
+                            }
+                        });
+
+                        const target = document.getElementById(`view-${viewId}`);
+                        if (target) {
+                            target.style.display = 'flex'; // Insert safely into DOM
                             target.classList.add('active');
-                            target.offsetHeight; 
+                            
+                            // Instant scroll reset directly to top without ghost smooth-scrolling 
+                            const scrollArea = document.getElementById('main-scroll-area');
+                            if (scrollArea) scrollArea.scrollTop = 0;
+                            window.scrollTo({top: 0, behavior: 'instant'}); 
+                            
+                            void target.offsetHeight; // Triggers Reflow before fade in
                             target.style.opacity = '1';
                             target.style.transform = 'translateY(0)';
-                        }, 400); 
-                    }
+                        }
+                    }, hasFadingView ? 250 : 0);
                 }
                 
                 this.updateUI();
-                document.getElementById('main-scroll-area').scrollTo({top: 0, behavior: 'smooth'});
             },
 
             startJourney: function() {
@@ -953,7 +990,7 @@
                 setTimeout(() => {
                     phase1.classList.add('hidden');
                     phase2.classList.remove('hidden');
-                    void phase2.offsetWidth; // Reflow
+                    void phase2.offsetWidth; 
                     phase2.classList.remove('opacity-0', 'translate-y-10');
                     document.getElementById('onboard-name-input').focus();
                 }, 700);
@@ -1014,7 +1051,6 @@
                 this.state.journal.unshift(entry);
                 this.saveState();
                 
-                // Reset draft
                 this.curhatDraft.mood = null;
                 document.getElementById('curhat-text').value = '';
                 this.setMood(null);
@@ -1101,12 +1137,12 @@
             applyTheme: function() {
                 if(this.state.theme === 'dark') {
                     document.documentElement.classList.add('dark');
-                    document.getElementById('theme-icon').textContent = '☀️';
-                    document.getElementById('theme-text').textContent = 'Light Mode';
+                    if(document.getElementById('theme-icon')) document.getElementById('theme-icon').textContent = '☀️';
+                    if(document.getElementById('theme-text')) document.getElementById('theme-text').textContent = 'Light Mode';
                 } else {
                     document.documentElement.classList.remove('dark');
-                    document.getElementById('theme-icon').textContent = '🌙';
-                    document.getElementById('theme-text').textContent = 'Dark Mode';
+                    if(document.getElementById('theme-icon')) document.getElementById('theme-icon').textContent = '🌙';
+                    if(document.getElementById('theme-text')) document.getElementById('theme-text').textContent = 'Dark Mode';
                 }
             },
 
@@ -1118,11 +1154,11 @@
             startClock: function() {
                 const update = () => {
                     const now = new Date();
-                    document.getElementById('real-time-clock').textContent = now.toLocaleTimeString('en-GB', { hour12: false });
+                    if(document.getElementById('real-time-clock')) document.getElementById('real-time-clock').textContent = now.toLocaleTimeString('en-GB', { hour12: false });
                     const startOfDay = new Date(now.getFullYear(), now.getMonth(), now.getDate());
                     const elapsed = now - startOfDay;
                     const percentage = (elapsed / 86400000) * 100;
-                    document.getElementById('day-progress-bar').style.width = `${percentage}%`;
+                    if(document.getElementById('day-progress-bar')) document.getElementById('day-progress-bar').style.width = `${percentage}%`;
                 };
                 update();
                 this.timers.clock = setInterval(update, 1000);
@@ -1130,7 +1166,7 @@
 
             updateDateDisplay: function() {
                 const now = new Date();
-                document.getElementById('current-date').textContent = now.toLocaleDateString('en-GB', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+                if(document.getElementById('current-date')) document.getElementById('current-date').textContent = now.toLocaleDateString('en-GB', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
             },
 
             checkStreak: function() {
@@ -1161,14 +1197,9 @@
                 if(this.getTodayDeeds().length === 1 && this.state.streak === 0) this.state.streak = 1;
                 this.saveState();
                 
-                const modal = document.getElementById('add-deed-modal');
-                const content = document.getElementById('add-deed-content');
-                modal.classList.add('opacity-0');
-                if(window.innerWidth < 640) content.classList.add('translate-y-full');
-                else content.classList.add('scale-95');
+                this.closeModal('add-deed-modal');
 
                 setTimeout(() => {
-                    modal.classList.add('hidden');
                     const gardenWrapper = document.getElementById('garden-visual-wrapper');
                     if(gardenWrapper) {
                         gardenWrapper.classList.remove('animate-garden-glow');
@@ -1277,11 +1308,6 @@
                 const text = { 0: "Every garden begins with a single seed.", 1: "Something beautiful is taking root.", 2: "Your kindness is beginning to bloom.", 3: "Your kindness is beginning to bloom.", 4: "Look how far your little garden has grown." }[this.calculateGardenLevel()] || "Look how far your little garden has grown.";
                 if(document.getElementById('mini-garden-subtitle')) document.getElementById('mini-garden-subtitle').textContent = text;
                 if(document.getElementById('main-garden-subtitle')) document.getElementById('main-garden-subtitle').textContent = text;
-            },
-
-            toggleReminder: function(id) {
-                const rem = this.state.reminders.find(r => r.id === id);
-                if (rem) { rem.active = !rem.active; this.saveState(); }
             },
 
             setPauseDuration: function(secs) {
@@ -1393,26 +1419,29 @@
 
             formatTime: function(secs) { return `${Math.floor(secs / 60).toString().padStart(2, '0')}:${(secs % 60).toString().padStart(2, '0')}`; },
 
+            // --- CRITICAL FIX: MODAL SYSTEM ---
             openModal: function(id) {
-                const modal = document.getElementById(id); const content = modal.children[0];
-                modal.classList.remove('hidden');
-                requestAnimationFrame(() => {
-                    modal.classList.remove('opacity-0');
-                    if(window.innerWidth < 640 && id === 'add-deed-modal') content.classList.remove('translate-y-full');
-                    else content.classList.remove('scale-95');
-                });
+                const modal = document.getElementById(id);
+                if(modal) {
+                    modal.style.display = 'flex';
+                    void modal.offsetWidth; // Force Reflow cleanly without Tailwind class collisions
+                    modal.classList.add('show');
+                }
             },
 
             closeModal: function(id) {
-                const modal = document.getElementById(id); const content = modal.children[0];
-                modal.classList.add('opacity-0');
-                if(window.innerWidth < 640 && id === 'add-deed-modal') content.classList.add('translate-y-full');
-                else content.classList.add('scale-95');
-                setTimeout(() => modal.classList.add('hidden'), 500); 
+                const modal = document.getElementById(id);
+                if(modal) {
+                    modal.classList.remove('show');
+                    setTimeout(() => {
+                        modal.style.display = 'none';
+                    }, 400); 
+                }
             },
 
             saveSetting: function(key, value) {
                 this.state[key] = value; this.saveState();
+                if (key === 'name') this.updateUI();
                 if (key !== 'name' && key !== 'dailyGoal') this.showToast('Settings updated.', '⚙️');
             },
 
