@@ -19,20 +19,19 @@
                 extend: {
                     colors: {
                         brand: {
-                            // Palet Ungu Terang & Lembut (Bright Soft Purple)
-                            bgLight: '#F7F0FA',      // Ungu sangat terang / Soft Lavender White
+                            bgLight: '#FCF9F9',
                             surfaceLight: '#FFFFFF', 
-                            bgDark: '#2C1B38',       // Ungu gelap untuk readability
-                            surfaceDark: '#3E254F',  // Surface ungu medium
-                            primary: '#8A56AC',      // Ungu Terang Cerah (Vibrant Soft Purple)
-                            secondary: '#C4A1E3',    // Light Lavender
-                            accent: '#E58FB8',       // Bright Soft Pink
-                            soft: '#FBD5E5',         // Blush Pink
-                            mauve: '#D3A8C4',        // Dusty Pink/Purple
-                            textDark: '#351F42',     // Dark Purple Text
+                            bgDark: '#251A2E',       
+                            surfaceDark: '#382845',  
+                            primary: '#734B80',      
+                            secondary: '#BCA8DE',    
+                            accent: '#D9869F',       
+                            soft: '#FAD1D0',         
+                            mauve: '#CE9FBA',        
+                            textDark: '#3A2745',     
                             textLight: '#FDFBF7',
-                            mutedLight: '#A28CA8',   
-                            mutedDark: '#BBAAC2',    
+                            mutedLight: '#9A8C9E',   
+                            mutedDark: '#B4A6B8',    
                         }
                     },
                     fontFamily: {
@@ -41,9 +40,9 @@
                         arabic: ['Amiri', 'serif']
                     },
                     boxShadow: {
-                        'glass-light': '0 8px 32px 0 rgba(138, 86, 172, 0.08), inset 0 1px 0 0 rgba(255, 255, 255, 0.8)',
+                        'glass-light': '0 8px 32px 0 rgba(115, 75, 128, 0.08), inset 0 1px 0 0 rgba(255, 255, 255, 0.8)',
                         'glass-dark': '0 8px 32px 0 rgba(0, 0, 0, 0.4), inset 0 1px 0 0 rgba(255, 255, 255, 0.05)',
-                        'glow-primary': '0 0 24px rgba(229, 143, 184, 0.3)',
+                        'glow-primary': '0 0 24px rgba(217, 134, 159, 0.25)',
                     },
                     animation: {
                         'fade-in': 'fadeIn 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards',
@@ -61,7 +60,7 @@
                         slideUp: { '0%': { opacity: '0', transform: 'translateY(30px)' }, '100%': { opacity: '1', transform: 'translateY(0)' } },
                         breathe: { '0%, 100%': { transform: 'scale(0.95)', opacity: '0.3' }, '50%': { transform: 'scale(1.2)', opacity: '0.8' } },
                         float: { '0%, 100%': { transform: 'translateY(0)' }, '50%': { transform: 'translateY(-12px)' } },
-                        grow: { '0%': { transform: 'scale(0)', opacity: '0' }, '100%': { transform: 'scale(1)', opacity: '1' } },
+                        grow: { '0%': { transform: 'scale(0) translateY(15px)', opacity: '0' }, '100%': { transform: 'scale(1) translateY(0)', opacity: '1' } },
                         pulseSlow: { '0%, 100%': { opacity: '0.3' }, '50%': { opacity: '0.7' } },
                         butterfly: {
                             '0%': { transform: 'translate(0, 0) rotate(0deg) scale(0.8)', opacity: '0' },
@@ -73,9 +72,9 @@
                             '100%': { transform: 'translate(40px, -160px) rotate(20deg) scale(0.8)', opacity: '0' },
                         },
                         gardenGlow: {
-                            '0%': { boxShadow: '0 0 0px rgba(229, 143, 184, 0)' },
-                            '50%': { boxShadow: '0 0 60px rgba(229, 143, 184, 0.5)' },
-                            '100%': { boxShadow: '0 0 30px rgba(229, 143, 184, 0.15)' },
+                            '0%': { boxShadow: '0 0 0px rgba(217, 134, 159, 0)' },
+                            '50%': { boxShadow: '0 0 60px rgba(217, 134, 159, 0.4)' },
+                            '100%': { boxShadow: '0 0 30px rgba(217, 134, 159, 0.1)' },
                         }
                     }
                 }
@@ -87,55 +86,56 @@
         /* Base & Resets */
         body { -webkit-tap-highlight-color: transparent; overflow-x: hidden; font-feature-settings: "cv02", "cv03", "cv04", "cv11"; transition: background-color 0.5s ease, color 0.5s ease; }
         
-        /* Backgrounds Ungu Terang */
-        .ambient-bg { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: radial-gradient(circle at 50% 0%, rgba(229, 143, 184, 0.25) 0%, transparent 60%), radial-gradient(circle at 80% 80%, rgba(196, 161, 227, 0.3) 0%, transparent 50%); z-index: -1; pointer-events: none; transition: background 0.5s ease; }
-        .dark .ambient-bg { background: radial-gradient(circle at 50% 0%, rgba(138, 86, 172, 0.35) 0%, transparent 60%), radial-gradient(circle at 80% 80%, rgba(229, 143, 184, 0.15) 0%, transparent 50%); }
+        /* Backgrounds */
+        .ambient-bg { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: radial-gradient(circle at 50% 0%, rgba(247, 202, 201, 0.3) 0%, transparent 60%), radial-gradient(circle at 80% 80%, rgba(188, 168, 222, 0.2) 0%, transparent 50%); z-index: -1; pointer-events: none; transition: background 0.5s ease; }
+        .dark .ambient-bg { background: radial-gradient(circle at 50% 0%, rgba(115, 75, 128, 0.4) 0%, transparent 60%), radial-gradient(circle at 80% 80%, rgba(217, 134, 159, 0.15) 0%, transparent 50%); }
         .noise-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; pointer-events: none; z-index: 50; opacity: 0.03; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E"); }
         
         /* Glass Components */
         .glass-panel { background: rgba(255, 255, 255, 0.65); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border: 1px solid rgba(255, 255, 255, 0.8); box-shadow: theme('boxShadow.glass-light'); border-radius: 28px; transition: all 0.4s ease; }
-        .dark .glass-panel { background: rgba(62, 37, 79, 0.6); border: 1px solid rgba(255, 255, 255, 0.06); box-shadow: theme('boxShadow.glass-dark'); }
-        .glass-button { background: linear-gradient(180deg, rgba(138,86,172,0.02) 0%, rgba(138,86,172,0.06) 100%); backdrop-filter: blur(8px); border: 1px solid rgba(138,86,172,0.15); color: theme('colors.brand.primary'); box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.8); transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1); }
+        .dark .glass-panel { background: rgba(56, 40, 69, 0.6); border: 1px solid rgba(255, 255, 255, 0.06); box-shadow: theme('boxShadow.glass-dark'); }
+        .glass-button { background: linear-gradient(180deg, rgba(115,75,128,0.02) 0%, rgba(115,75,128,0.06) 100%); backdrop-filter: blur(8px); border: 1px solid rgba(115,75,128,0.1); color: theme('colors.brand.primary'); box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.8); transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1); }
         .dark .glass-button { background: linear-gradient(180deg, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0.03) 100%); border: 1px solid rgba(255, 255, 255, 0.08); color: theme('colors.brand.textLight'); box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.05); }
-        .glass-button:hover, .glass-button:active { transform: translateY(-2px); border-color: rgba(229, 143, 184, 0.5); box-shadow: 0 10px 20px -10px rgba(0,0,0,0.2), inset 0 1px 0 0 rgba(255, 255, 255, 0.8); }
-        .dark .glass-button:hover, .dark .glass-button:active { border-color: rgba(229, 143, 184, 0.5); box-shadow: 0 10px 20px -10px rgba(0,0,0,0.5), inset 0 1px 0 0 rgba(255, 255, 255, 0.05); }
-        .primary-button { background: linear-gradient(135deg, theme('colors.brand.primary'), #A673C9); color: theme('colors.brand.textLight'); border: none; box-shadow: 0 8px 20px -5px rgba(138, 86, 172, 0.4); transition: all 0.3s ease; }
-        .primary-button:hover { box-shadow: 0 12px 25px -5px rgba(138, 86, 172, 0.5); transform: translateY(-2px); }
+        .glass-button:hover, .glass-button:active { transform: translateY(-2px); border-color: rgba(217, 134, 159, 0.4); box-shadow: 0 10px 20px -10px rgba(0,0,0,0.2), inset 0 1px 0 0 rgba(255, 255, 255, 0.8); }
+        .dark .glass-button:hover, .dark .glass-button:active { border-color: rgba(217, 134, 159, 0.4); box-shadow: 0 10px 20px -10px rgba(0,0,0,0.5), inset 0 1px 0 0 rgba(255, 255, 255, 0.05); }
+        .primary-button { background: linear-gradient(135deg, theme('colors.brand.primary'), #91689E); color: theme('colors.brand.textLight'); border: none; box-shadow: 0 8px 20px -5px rgba(115, 75, 128, 0.4); transition: all 0.3s ease; }
+        .primary-button:hover { box-shadow: 0 12px 25px -5px rgba(115, 75, 128, 0.5); transform: translateY(-2px); }
         
         /* Scrollbar */
         ::-webkit-scrollbar { width: 4px; }
         ::-webkit-scrollbar-track { background: transparent; }
-        ::-webkit-scrollbar-thumb { background: rgba(162, 140, 168, 0.3); border-radius: 10px; }
-        .dark ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.15); }
+        ::-webkit-scrollbar-thumb { background: rgba(154, 140, 158, 0.2); border-radius: 10px; }
+        .dark ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); }
         ::-webkit-scrollbar-thumb:hover { background: theme('colors.brand.accent'); }
         .hide-scrollbar::-webkit-scrollbar { display: none; }
         .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
         
-        /* View Transitions */
-        .view-section { display: none; opacity: 0; transform: translateY(10px); transition: opacity 0.25s ease, transform 0.25s ease; width: 100%; }
+        /* Nav Views */
+        .view-section { display: none; opacity: 0; transform: translateY(10px); transition: opacity 0.3s ease, transform 0.3s ease; width: 100%; }
         .view-section.active { display: flex; flex-direction: column; opacity: 1; transform: translateY(0); }
         .pb-safe { padding-bottom: max(100px, env(safe-area-inset-bottom)); }
         
-        /* Modal Backdrop */
-        .modal-backdrop { position: fixed; inset: 0; z-index: 999; display: none; opacity: 0; background: rgba(253, 251, 247, 0.8); backdrop-filter: blur(12px); align-items: center; justify-content: center; transition: opacity 0.3s ease; }
-        .dark .modal-backdrop { background: rgba(44, 27, 56, 0.85); }
+        /* Modals */
+        .modal-backdrop { display: none; opacity: 0; transition: opacity 0.3s ease; background: rgba(253, 251, 247, 0.8); backdrop-filter: blur(12px); position: fixed; top: 0; left: 0; right: 0; bottom: 0; z-index: 99; align-items: flex-end; justify-content: center; }
+        .dark .modal-backdrop { background: rgba(37, 26, 46, 0.85); }
+        @media (min-width: 640px) { .modal-backdrop { align-items: center; padding: 1rem; } }
         .modal-backdrop.show { display: flex; opacity: 1; }
-        .modal-content-area { width: 100%; max-width: 28rem; transform: scale(0.95) translateY(20px); opacity: 0; transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1); max-height: 90vh; }
-        .modal-backdrop.show .modal-content-area { transform: scale(1) translateY(0); opacity: 1; }
-        @media (max-width: 639px) {
-            .modal-backdrop { align-items: flex-end; padding: 0; }
-            .modal-content-area { transform: translateY(100%); border-bottom-left-radius: 0; border-bottom-right-radius: 0; margin-bottom: 0; }
-            .modal-backdrop.show .modal-content-area { transform: translateY(0); }
-        }
+        .modal-content-area { transform: translateY(100%); transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.4s ease; width: 100%; max-height: 90vh; }
+        @media (min-width: 640px) { .modal-content-area { transform: scale(0.95); opacity: 0; max-width: 28rem; } }
+        .modal-backdrop.show .modal-content-area { transform: translateY(0); opacity: 1; }
+        @media (min-width: 640px) { .modal-backdrop.show .modal-content-area { transform: scale(1); opacity: 1; } }
 
         /* Progress Bar */
-        progress::-webkit-progress-bar { background-color: rgba(138, 86, 172, 0.1); border-radius: 99px; }
+        progress::-webkit-progress-bar { background-color: rgba(115, 75, 128, 0.08); border-radius: 99px; }
         .dark progress::-webkit-progress-bar { background-color: rgba(255,255,255,0.05); }
         progress::-webkit-progress-value { background: linear-gradient(90deg, theme('colors.brand.secondary'), theme('colors.brand.accent')); border-radius: 99px; transition: width 1s cubic-bezier(0.16, 1, 0.3, 1); }
         progress::-moz-progress-bar { background: linear-gradient(90deg, theme('colors.brand.secondary'), theme('colors.brand.accent')); border-radius: 99px; transition: width 1s cubic-bezier(0.16, 1, 0.3, 1); }
         
-        .floating-nav { box-shadow: 0 -10px 40px rgba(138,86,172,0.15), inset 0 1px 0 rgba(255,255,255,0.8); }
+        .floating-nav { box-shadow: 0 -10px 40px rgba(115,75,128,0.1), inset 0 1px 0 rgba(255,255,255,0.8); }
         .dark .floating-nav { box-shadow: 0 -10px 40px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.1); }
+
+        .mood-chip-container::-webkit-scrollbar { display: none; }
+        .mood-chip-container { -ms-overflow-style: none; scrollbar-width: none; }
     </style>
 </head>
 <body class="antialiased min-h-screen flex flex-col font-sans bg-brand-bgLight text-brand-textDark dark:bg-brand-bgDark dark:text-brand-textLight selection:bg-brand-soft/50 selection:text-brand-primary">
@@ -286,9 +286,8 @@
 
                     <div id="garden-visual-wrapper" class="glass-panel p-4 sm:p-8 relative flex-1 min-h-[500px] flex flex-col justify-end items-center overflow-hidden border-brand-accent/20 dark:border-brand-accent/10 transition-shadow duration-1000 animate-fade-in" style="animation-delay: 0.2s;">
                         <div class="absolute inset-0 bg-gradient-to-t from-brand-soft/20 via-transparent to-transparent dark:from-brand-primary/20"></div>
-                        <div class="absolute w-[120%] h-[120%] -top-[10%] -left-[10%] bg-[radial-gradient(circle_at_50%_40%,_rgba(247,202,201,0.15)_0%,_transparent_60%)] dark:bg-[radial-gradient(circle_at_50%_40%,_rgba(179,157,219,0.08)_0%,_transparent_60%)] animate-pulse-slow"></div>
+                        <div class="absolute w-[120%] h-[120%] -top-[10%] -left-[10%] bg-[radial-gradient(circle_at_50%_40%,_rgba(247,202,201,0.15)_0%,_transparent_60%)] dark:bg-[radial-gradient(circle_at_50%_40%,_rgba(188,168,222,0.08)_0%,_transparent_60%)] animate-pulse-slow"></div>
                         
-                        <!-- SVG Taman -->
                         <div id="main-garden-svg-container" class="relative w-full max-w-4xl h-[28rem] z-10 flex items-end justify-center drop-shadow-xl"></div>
                         
                         <div class="w-full max-w-4xl h-8 relative z-10 mb-8 flex justify-center">
@@ -300,7 +299,7 @@
                                         <stop offset="0%" stop-color="transparent"/><stop offset="50%" stop-color="#CE9FBA"/><stop offset="100%" stop-color="transparent"/>
                                     </linearGradient>
                                     <linearGradient id="groundGrad2" x1="0%" y1="0%" x2="100%" y2="0%">
-                                        <stop offset="0%" stop-color="transparent"/><stop offset="50%" stop-color="#8A56AC"/><stop offset="100%" stop-color="transparent"/>
+                                        <stop offset="0%" stop-color="transparent"/><stop offset="50%" stop-color="#734B80"/><stop offset="100%" stop-color="transparent"/>
                                     </linearGradient>
                                 </defs>
                             </svg>
@@ -341,7 +340,7 @@
                     </div>
 
                     <div class="relative w-72 h-72 flex items-center justify-center mb-16 animate-fade-in" style="animation-delay: 0.2s;">
-                        <div id="breathe-ring" class="absolute inset-0 rounded-full border border-brand-secondary/40 transition-all duration-1000 ease-in-out shadow-[inset_0_0_20px_rgba(179,157,219,0.2)]"></div>
+                        <div id="breathe-ring" class="absolute inset-0 rounded-full border border-brand-secondary/40 transition-all duration-1000 ease-in-out shadow-[inset_0_0_20px_rgba(188,168,222,0.2)]"></div>
                         <div id="breathe-ring-2" class="absolute inset-4 rounded-full border border-brand-accent/20 transition-all duration-1000 ease-in-out opacity-0"></div>
                         <div id="breathe-bg" class="absolute inset-8 rounded-full bg-gradient-to-tr from-brand-secondary/10 to-brand-soft/10 blur-2xl transition-all duration-1000"></div>
                         
@@ -373,7 +372,7 @@
 
                     <div class="grid grid-cols-1 lg:grid-cols-5 gap-8 flex-1">
                         <div class="lg:col-span-3 space-y-6 flex flex-col h-full">
-                            <div class="glass-panel p-6 sm:p-8 flex-1 flex flex-col animate-fade-in" id="curhat-editor-area">
+                            <div class="glass-panel p-6 sm:p-8 flex-1 flex flex-col animate-fade-in scroll-mt-24" id="curhat-editor-area">
                                 <div class="mb-6">
                                     <label class="block text-sm font-medium tracking-wide text-brand-secondary dark:text-brand-secondary mb-4">Apa yang sedang kamu rasakan? (Opsional)</label>
                                     <div class="flex flex-wrap gap-2 mood-chip-container" id="mood-selector"></div>
@@ -409,14 +408,25 @@
                                     <button onclick="app.navigate('garden')" class="glass-button w-full py-3 rounded-xl flex items-center justify-center gap-2 text-sm"><span class="text-lg">🌱</span> Kembali ke Taman</button>
                                     <button onclick="app.navigate('pause')" class="glass-button w-full py-3 rounded-xl flex items-center justify-center gap-2 text-sm"><span class="text-lg">🧘</span> Jeda Sejenak</button>
                                     <button onclick="app.navigate('reflect')" class="glass-button w-full py-3 rounded-xl flex items-center justify-center gap-2 text-sm"><span class="text-lg">🌙</span> Lanjut Refleksi</button>
-                                    <button onclick="app.resetCurhatEditor()" class="text-brand-mutedLight dark:text-brand-mutedDark hover:text-brand-primary dark:hover:text-white text-xs uppercase tracking-widest mt-6 pt-4 border-t border-brand-primary/10 dark:border-white/5 w-full transition-colors">Tulis catatan lain</button>
+                                    
+                                    <div class="pt-6 mt-6 border-t border-brand-primary/10 dark:border-white/5">
+                                        <button onclick="app.resetCurhatEditor()" class="w-full py-3 rounded-xl bg-brand-primary/10 dark:bg-white/10 text-brand-primary dark:text-white hover:bg-brand-primary/20 dark:hover:bg-white/20 transition-colors flex items-center justify-center gap-2 font-medium tracking-wide">
+                                            <span class="text-lg">✍️</span> Curhat Lagi
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
 
                         <div class="lg:col-span-2 flex flex-col h-full min-h-[400px]">
                             <div class="glass-panel p-6 sm:p-8 h-full flex flex-col">
-                                <h3 class="font-serif text-xl text-brand-primary dark:text-white mb-6">Jurnalku</h3>
+                                <div class="flex justify-between items-center mb-6">
+                                    <h3 class="font-serif text-xl text-brand-primary dark:text-white">Jurnalku</h3>
+                                    <button onclick="app.resetCurhatEditor()" class="text-xs bg-brand-primary/10 hover:bg-brand-primary/20 dark:bg-white/10 dark:hover:bg-white/20 text-brand-primary dark:text-white px-3 py-1.5 rounded-full transition-colors flex items-center gap-1.5 font-medium tracking-wide group">
+                                        <svg class="w-3.5 h-3.5 group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
+                                        Curhat Baru
+                                    </button>
+                                </div>
                                 <div id="journal-list" class="flex-1 overflow-y-auto pr-2 space-y-3 pb-safe sm:pb-0 hide-scrollbar"></div>
                             </div>
                         </div>
@@ -443,7 +453,7 @@
                                 <div id="reclaim-active" class="hidden text-center py-10">
                                     <div class="relative w-40 h-40 mx-auto mb-6 flex items-center justify-center">
                                         <svg class="absolute inset-0 w-full h-full -rotate-90" viewBox="0 0 100 100">
-                                            <circle cx="50" cy="50" r="48" fill="none" stroke="rgba(196,161,227,0.2)" stroke-width="4"></circle>
+                                            <circle cx="50" cy="50" r="48" fill="none" stroke="rgba(188,168,222,0.2)" stroke-width="4"></circle>
                                             <circle id="reclaim-progress-circle" cx="50" cy="50" r="48" fill="none" stroke="currentColor" stroke-width="4" stroke-dasharray="301.59" stroke-dashoffset="0" class="text-brand-accent transition-all duration-1000 linear"></circle>
                                         </svg>
                                         <div id="reclaim-timer-display" class="text-4xl font-serif text-brand-primary dark:text-white relative z-10">15:00</div>
@@ -512,11 +522,11 @@
                         <div class="flex flex-col items-center gap-6 py-10 relative z-10">
                             <div class="absolute left-1/2 top-10 bottom-10 w-px bg-gradient-to-b from-transparent via-brand-secondary/40 to-transparent -translate-x-1/2"></div>
                             <div class="z-10 bg-white dark:bg-brand-surfaceDark px-6 py-2 text-xs tracking-[0.2em] uppercase text-brand-mutedLight dark:text-brand-mutedDark rounded-full border border-brand-primary/10 dark:border-white/5 shadow-glass-light dark:shadow-glass-dark">Waktu Berlalu</div>
-                            <div class="z-10 w-2 h-2 rounded-full bg-brand-mauve/40 shadow-[0_0_10px_rgba(211,168,196,0.5)]"></div>
+                            <div class="z-10 w-2 h-2 rounded-full bg-brand-mauve/40 shadow-[0_0_10px_rgba(206,159,186,0.5)]"></div>
                             <div class="z-10 bg-white dark:bg-brand-surfaceDark px-6 py-2 text-xs tracking-[0.2em] uppercase text-brand-secondary rounded-full border border-brand-primary/10 dark:border-white/5 shadow-glass-light dark:shadow-glass-dark">Kesadaran Bangkit</div>
-                            <div class="z-10 w-2 h-2 rounded-full bg-brand-secondary/50 shadow-[0_0_10px_rgba(196,161,227,0.5)]"></div>
+                            <div class="z-10 w-2 h-2 rounded-full bg-brand-secondary/50 shadow-[0_0_10px_rgba(188,168,222,0.5)]"></div>
                             <div class="z-10 bg-white dark:bg-brand-surfaceDark px-6 py-2 text-xs tracking-[0.2em] uppercase text-brand-accent rounded-full border border-brand-accent/30 shadow-glow-primary">Amal Ditanam</div>
-                            <div class="z-10 w-2 h-2 rounded-full bg-brand-soft/80 shadow-[0_0_10px_rgba(251,213,229,0.5)]"></div>
+                            <div class="z-10 w-2 h-2 rounded-full bg-brand-soft/80 shadow-[0_0_10px_rgba(250,209,208,0.5)]"></div>
                             <div class="z-10 bg-brand-primary/10 dark:bg-white/10 backdrop-blur-md px-6 py-2 text-xs tracking-[0.2em] uppercase text-brand-primary dark:text-white rounded-full border border-brand-primary/20 dark:border-white/20 shadow-glass-light dark:shadow-glass-dark font-medium">Makna Tumbuh</div>
                         </div>
                     </div>
@@ -620,7 +630,22 @@
             </div>
             
             <div class="pt-6 border-t border-brand-primary/10 dark:border-white/5 mt-auto">
-                <button id="jd-delete-btn" class="w-full py-3.5 rounded-xl text-red-500 border border-red-500/30 hover:bg-red-500/10 transition-colors text-sm font-medium tracking-wide">Hapus Catatan</button>
+                <button onclick="app.confirmDeleteJournal(document.getElementById('jd-delete-btn').dataset.id)" id="jd-delete-btn" class="w-full py-3.5 rounded-xl text-red-500 border border-red-500/30 hover:bg-red-500/10 transition-colors text-sm font-medium tracking-wide">Hapus Catatan</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Custom Delete Confirm Modal -->
+    <div id="delete-confirm-modal" class="modal-backdrop">
+        <div class="glass-panel p-8 text-center sm:rounded-3xl rounded-t-3xl modal-content-area">
+            <div class="w-16 h-16 rounded-full bg-red-500/10 text-red-500 flex items-center justify-center mx-auto mb-4">
+                <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
+            </div>
+            <h3 class="text-2xl font-serif text-brand-textDark dark:text-white mb-2">Hapus Catatan?</h3>
+            <p class="text-brand-mutedLight dark:text-brand-mutedDark text-sm mb-8 font-light leading-relaxed">Catatan ini akan dihapus permanen. Tindakan ini tidak dapat dibatalkan.</p>
+            <div class="flex flex-col gap-3">
+                <button id="confirm-delete-btn" class="w-full py-4 rounded-xl bg-red-500/20 text-red-600 dark:text-red-400 border border-red-500/30 font-medium">Ya, Hapus</button>
+                <button onclick="app.closeModal('delete-confirm-modal')" class="w-full py-4 rounded-xl text-brand-textDark dark:text-white hover:bg-brand-primary/5 dark:hover:bg-white/5 transition-colors font-medium">Batal</button>
             </div>
         </div>
     </div>
@@ -664,14 +689,14 @@
 
             config: {
                 deedCategories: [
-                    { id: 'prayer', title: 'Shalat', desc: 'Sempatkan waktu untuk terhubung kembali.', color: '#C4A1E3', icon: '🤲' }, 
-                    { id: 'quran', title: 'Al-Qur\'an', desc: 'Habiskan momen bermakna dengan Al-Qur\'an.', color: '#E58FB8', icon: '📖' },
-                    { id: 'charity', title: 'Sedekah', desc: 'Berikan sesuatu, sekecil apa pun.', color: '#FBD5E5', icon: '🤝' },
-                    { id: 'kindness', title: 'Kebaikan', desc: 'Lakukan kebaikan untuk orang lain.', color: '#D3A8C4', icon: '🤍' },
-                    { id: 'family', title: 'Keluarga', desc: 'Berikan waktu bermakna untuk keluarga.', color: '#E8D1F0', icon: '👨‍👩‍👧' },
-                    { id: 'pause', title: 'Jeda Digital', desc: 'Jauhkan diri dari layar sejenak.', color: '#E0CCFF', icon: '🧘' },
-                    { id: 'help', title: 'Membantu Sesama', desc: 'Buat hari seseorang sedikit lebih mudah.', color: '#F8D1D1', icon: '✨' },
-                    { id: 'gratitude', title: 'Syukur', desc: 'Berhenti sejenak dan hargai apa yang kamu miliki.', color: '#FAE8FF', icon: '📝' }
+                    { id: 'prayer', title: 'Shalat', desc: 'Sempatkan waktu untuk terhubung kembali.', color: '#BCA8DE', icon: '🤲' }, 
+                    { id: 'quran', title: 'Al-Qur\'an', desc: 'Habiskan momen bermakna dengan Al-Qur\'an.', color: '#D9869F', icon: '📖' },
+                    { id: 'charity', title: 'Sedekah', desc: 'Berikan sesuatu, sekecil apa pun.', color: '#FAD1D0', icon: '🤝' },
+                    { id: 'kindness', title: 'Kebaikan', desc: 'Lakukan kebaikan untuk orang lain.', color: '#CE9FBA', icon: '🤍' },
+                    { id: 'family', title: 'Keluarga', desc: 'Berikan waktu bermakna untuk keluarga.', color: '#E0BBE4', icon: '👨‍👩‍👧' },
+                    { id: 'pause', title: 'Jeda Digital', desc: 'Jauhkan diri dari layar sejenak.', color: '#DCD0FF', icon: '🧘' },
+                    { id: 'help', title: 'Membantu Sesama', desc: 'Buat hari seseorang sedikit lebih mudah.', color: '#F4C2C2', icon: '✨' },
+                    { id: 'gratitude', title: 'Syukur', desc: 'Berhenti sejenak dan hargai apa yang kamu miliki.', color: '#F8E0FF', icon: '📝' }
                 ],
                 reclaimCategories: [
                     { id: 'social', icon: '📱', name: 'Media Sosial' }, { id: 'game', icon: '🎮', name: 'Bermain Game' },
@@ -863,7 +888,8 @@
 
                 const remContainer = document.getElementById('home-reminders');
                 if(remContainer) {
-                    remContainer.innerHTML = this.state.reminders.map(r => `
+                    const savedReminders = this.state.reminders || [];
+                    remContainer.innerHTML = savedReminders.map(r => `
                         <div class="flex items-center justify-between p-3 bg-white/40 dark:bg-brand-bgDark/40 rounded-xl border border-brand-primary/5 dark:border-white/5 cursor-pointer hover:bg-white/60 dark:hover:bg-white/5 transition-colors" onclick="app.toggleReminder('${r.id}')">
                             <span class="text-sm text-brand-textDark dark:text-brand-textLight/90">${r.title}</span>
                             <div class="w-10 h-5 rounded-full relative transition-colors duration-300 ${r.active ? 'bg-brand-primary dark:bg-brand-accent' : 'bg-brand-primary/20 dark:bg-white/10'}">
@@ -910,7 +936,7 @@
                         if (ach.reqStreak) unlocked = this.state.streak >= ach.reqStreak;
                         return `
                             <div class="glass-panel p-5 flex items-center gap-5 transition-all duration-500 ${unlocked ? 'border-brand-accent/30 shadow-glow-primary bg-brand-accent/5' : 'opacity-60'}">
-                                <div class="w-14 h-14 shrink-0 rounded-full flex items-center justify-center text-2xl transition-all duration-500 ${unlocked ? 'bg-gradient-to-br from-brand-accent/40 to-brand-accent/10 text-brand-primary dark:text-brand-soft shadow-[inset_0_0_10px_rgba(229,143,184,0.5)]' : 'bg-brand-primary/5 dark:bg-white/5 text-brand-textDark/20 dark:text-white/20 border border-brand-primary/10 dark:border-white/5'}">
+                                <div class="w-14 h-14 shrink-0 rounded-full flex items-center justify-center text-2xl transition-all duration-500 ${unlocked ? 'bg-gradient-to-br from-brand-accent/40 to-brand-accent/10 text-brand-primary dark:text-brand-soft shadow-[inset_0_0_10px_rgba(217,134,159,0.5)]' : 'bg-brand-primary/5 dark:bg-white/5 text-brand-textDark/20 dark:text-white/20 border border-brand-primary/10 dark:border-white/5'}">
                                     ${unlocked ? '✨' : '🔒'}
                                 </div>
                                 <div>
@@ -923,6 +949,15 @@
                 }
 
                 this.renderJournalList();
+            },
+
+            toggleReminder: function(id) {
+                if(!this.state.reminders) return;
+                const reminder = this.state.reminders.find(r => r.id === id);
+                if (reminder) {
+                    reminder.active = !reminder.active;
+                    this.saveState();
+                }
             },
 
             navigate: function(viewId, initialLoad = false) {
@@ -961,7 +996,7 @@
                         target.classList.add('active');
                         const scrollArea = document.getElementById('main-scroll-area');
                         if (scrollArea) scrollArea.scrollTop = 0;
-                        window.scrollTo({top: 0, behavior: 'instant'}); 
+                        window.scrollTo(0, 0); 
                         target.style.opacity = '1';
                         target.style.transform = 'translateY(0)';
                     }
@@ -990,7 +1025,7 @@
                             
                             const scrollArea = document.getElementById('main-scroll-area');
                             if (scrollArea) scrollArea.scrollTop = 0;
-                            window.scrollTo({top: 0, behavior: 'instant'}); 
+                            window.scrollTo(0, 0); 
                             
                             void target.offsetHeight; 
                             target.style.opacity = '1';
@@ -1100,10 +1135,6 @@
                 this.state.journal.unshift(entry);
                 this.saveState();
                 
-                this.curhatDraft.mood = null;
-                document.getElementById('curhat-text').value = '';
-                this.setMood(null);
-                
                 document.getElementById('curhat-editor-area').classList.add('hidden');
                 document.getElementById('curhat-success-area').classList.remove('hidden');
             },
@@ -1111,6 +1142,20 @@
             resetCurhatEditor: function() {
                 document.getElementById('curhat-editor-area').classList.remove('hidden');
                 document.getElementById('curhat-success-area').classList.add('hidden');
+                this.curhatDraft.mood = null;
+                document.getElementById('curhat-text').value = '';
+                this.setMood(null);
+
+                // Auto-scroll ke area editor jika di perangkat mobile
+                if(window.innerWidth < 1024) {
+                    const scrollArea = document.getElementById('main-scroll-area');
+                    const editorArea = document.getElementById('curhat-editor-area');
+                    
+                    // Gulir halus sedikit ke atas area input
+                    setTimeout(() => {
+                        editorArea.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }, 50);
+                }
             },
 
             renderJournalList: function() {
@@ -1175,18 +1220,17 @@
                     remBox.classList.add('hidden');
                 }
 
-                document.getElementById('jd-delete-btn').onclick = () => {
-                    this.deleteJournal(id);
-                    this.closeModal('journal-detail-modal');
-                };
-
+                document.getElementById('jd-delete-btn').dataset.id = id;
                 this.openModal('journal-detail-modal');
             },
 
             confirmDeleteJournal: function(id) {
-                if(confirm('Apakah kamu yakin ingin menghapus memori ini?')) {
+                document.getElementById('confirm-delete-btn').onclick = () => {
                     this.deleteJournal(id);
-                }
+                    this.closeModal('delete-confirm-modal');
+                    this.closeModal('journal-detail-modal');
+                };
+                this.openModal('delete-confirm-modal');
             },
 
             deleteJournal: function(id) {
@@ -1306,7 +1350,7 @@
                         </filter>
                         <linearGradient id="stemGrad" x1="0" y1="1" x2="0" y2="0">
                             <stop offset="0%" stop-color="#9A8C9E"/>
-                            <stop offset="100%" stop-color="#C093A3"/>
+                            <stop offset="100%" stop-color="#BCA8DE"/>
                         </linearGradient>
                     </defs>`;
                 
@@ -1314,114 +1358,106 @@
                 const cy = height - (isMini ? 10 : 20);
 
                 if (level === 0) {
-                    svg += `<ellipse cx="${cx}" cy="${cy}" rx="${isMini?6:12}" ry="${isMini?4:8}" fill="#D17A94" opacity="0.8" filter="url(#glow-${containerId})" class="animate-pulse-slow"/>`;
+                    svg += `<ellipse cx="${cx}" cy="${cy}" rx="${isMini?6:12}" ry="${isMini?4:8}" fill="#D9869F" opacity="0.8" filter="url(#glow-${containerId})" class="animate-pulse-slow"/>`;
+                    svg += `<ellipse cx="${cx}" cy="${cy}" rx="${isMini?3:5}" ry="${isMini?2:3}" fill="#FDFBF7" opacity="0.9"/>`;
+                    for(let i=0; i<3; i++) {
+                        svg += `<circle cx="${cx + (Math.random()*40 - 20)}" cy="${cy - (Math.random()*30)}" r="1.5" fill="#BCA8DE" class="animate-float" style="animation-delay: ${i}s;"/>`;
+                    }
                 } else {
                     const maxDisplay = isMini ? 15 : 40;
                     let displayDeeds = deeds.slice(-maxDisplay);
                     
-                    // Group deeds into "Plants". Each plant has 1 main stem and multiple branches
-                    const deedsPerPlant = isMini ? 4 : 6;
+                    const deedsPerPlant = isMini ? 5 : 8; 
                     const numPlants = Math.ceil(displayDeeds.length / deedsPerPlant);
-                    
-                    // Pre-calculate plant root positions spreading smoothly across the garden
-                    const plants = [];
-                    for(let p = 0; p < numPlants; p++) {
-                        const startX = width * 0.15;
-                        const spacing = numPlants > 1 ? (width * 0.7) / (numPlants - 1) : 0;
-                        const wiggle = (p % 2 === 0 ? 1 : -1) * (isMini ? 10 : 25); // natural organic variation
-                        const groundX = numPlants === 1 ? cx : startX + (p * spacing) + wiggle;
-                        const groundY = cy;
-                        const plantHeight = isMini ? 60 + (p * 15 % 30) : 150 + (p * 30 % 80);
-                        const mainFx = groundX + ((p % 3 - 1) * 20); // slightly tilt main stem
-                        const mainFy = groundY - plantHeight;
-                        
-                        plants.push({ groundX, groundY, mainFx, mainFy, plantHeight });
-                    }
+                    const plantSpacing = isMini ? 60 : 120;
+                    const startX = cx - ((numPlants - 1) * plantSpacing) / 2;
 
                     displayDeeds.forEach((deed, i) => {
                         const cat = this.config.deedCategories.find(c => c.id === deed.category);
                         if (!cat) return;
 
-                        const plantIdx = Math.floor(i / deedsPerPlant);
-                        const branchIdx = i % deedsPerPlant;
-                        const plant = plants[plantIdx];
-                        if(!plant) return;
+                        const plantIndex = Math.floor(i / deedsPerPlant);
+                        const j = i % deedsPerPlant;
+                        const seed = parseInt(deed.id.substring(deed.id.length - 4)) || i;
                         
-                        let fx, fy, attachX, attachY;
+                        const offsetX = ((seed % 10) - 5) * (isMini ? 2 : 4);
+                        const bx = startX + (plantIndex * plantSpacing) + offsetX;
+                        const by = cy; 
+
+                        const H = isMini ? 80 + (seed%30) : 180 + (seed%60);
+                        const W = isMini ? 35 : 70;
+
+                        let fx, fy, branchStartY;
+                        let isMainStem = (j === 0);
+                        let isLeft = false;
+
+                        if (isMainStem) {
+                            fx = bx + ((seed%20) - 10);
+                            fy = by - H;
+                            branchStartY = by;
+                        } else {
+                            isLeft = j % 2 !== 0;
+                            const heightLevel = Math.ceil(j / 2); 
+                            branchStartY = by - (H * 0.25 * heightLevel);
+                            const spreadX = W * (1 - heightLevel * 0.15); 
+                            fx = isLeft ? bx - spreadX + (seed%15) : bx + spreadX - (seed%15);
+                            fy = branchStartY - (H * 0.25) + (seed%20 - 10);
+                        }
+
                         const delay = 0.2 + (i * 0.05);
 
-                        // Draw Leave helper using explicit transform-origin to prevent jumping
-                        const drawLeaf = (lx, ly, angle, dly) => {
-                            const rad = angle * Math.PI / 180;
-                            const lSize = isMini ? 10 : 20;
-                            const wSize = isMini ? 6 : 12;
+                        if (isMainStem) {
+                            svg += `<path d="M ${bx} ${by} Q ${bx + (seed%20 - 10)} ${by - H/2} ${fx} ${fy}" 
+                                          fill="none" stroke="url(#stemGrad)" stroke-width="${isMini?2.5:4}" 
+                                          stroke-linecap="round" opacity="0" class="animate-grow origin-bottom" style="animation-delay: ${delay}s"/>`;
+                        } else {
+                            const trunkXAtBranch = bx + ((fx - bx) * 0.1); 
+                            const cp1x = isLeft ? trunkXAtBranch - (isMini?10:20) : trunkXAtBranch + (isMini?10:20);
+                            const cp1y = branchStartY - (isMini?10:20);
+                            
+                            svg += `<path d="M ${trunkXAtBranch} ${branchStartY} C ${cp1x} ${cp1y}, ${fx} ${fy + (isMini?15:30)}, ${fx} ${fy}" 
+                                          fill="none" stroke="url(#stemGrad)" stroke-width="${isMini?1.5:2.5}" 
+                                          stroke-linecap="round" opacity="0" class="animate-fade-in" style="animation-delay: ${delay+0.1}s"/>`;
+                        }
+
+                        const drawLeaf = (lx, ly, rot, dly) => {
+                            const lSize = isMini ? 8 : 16;
+                            const wSize = isMini ? 5 : 10;
+                            const rad = rot * Math.PI / 180;
                             const tipX = lx + Math.cos(rad) * lSize;
                             const tipY = ly + Math.sin(rad) * lSize;
                             const path = `M ${lx} ${ly} Q ${lx + wSize*Math.cos(rad-Math.PI/4)} ${ly + wSize*Math.sin(rad-Math.PI/4)} ${tipX} ${tipY} Q ${lx + wSize*Math.cos(rad+Math.PI/4)} ${ly + wSize*Math.sin(rad+Math.PI/4)} ${lx} ${ly}`;
-                            return `<path d="${path}" fill="#C093A3" opacity="0.75" filter="url(#soft-glow-${containerId})" class="animate-grow" style="animation-delay: ${dly}s; transform-origin: ${lx}px ${ly}px;"/>`;
+                            return `<path d="${path}" fill="#A597AA" opacity="0.75" filter="url(#soft-glow-${containerId})" class="animate-grow origin-bottom" style="animation-delay: ${delay+0.1+dly}s; transform-box: fill-box; transform-origin: left center;"/>`;
                         };
 
-                        if (branchIdx === 0) {
-                            // Main Stem
-                            fx = plant.mainFx;
-                            fy = plant.mainFy;
-                            
-                            const cp1x = plant.groundX;
-                            const cp1y = plant.groundY - plant.plantHeight * 0.4;
-                            const cp2x = plant.mainFx;
-                            const cp2y = plant.mainFy + plant.plantHeight * 0.4;
-                            
-                            svg += `<path d="M ${plant.groundX} ${plant.groundY} C ${cp1x} ${cp1y}, ${cp2x} ${cp2y}, ${fx} ${fy}" 
-                                          fill="none" stroke="url(#stemGrad)" stroke-width="${isMini?2.5:4}" 
-                                          opacity="0" class="animate-fade-in" style="animation-delay: ${delay}s"/>`;
-                                          
-                            // Add decorative leaf on main stem
-                            const midT = 0.5;
-                            const midX = Math.pow(1-midT, 3)*plant.groundX + 3*Math.pow(1-midT, 2)*midT*cp1x + 3*(1-midT)*Math.pow(midT, 2)*cp2x + Math.pow(midT, 3)*plant.mainFx;
-                            const midY = Math.pow(1-midT, 3)*plant.groundY + 3*Math.pow(1-midT, 2)*midT*cp1y + 3*(1-midT)*Math.pow(midT, 2)*cp2y + Math.pow(midT, 3)*plant.mainFy;
-                            svg += drawLeaf(midX, midY, plantIdx % 2 === 0 ? 210 : -30, delay+0.1);
+                        if (isMainStem) {
+                            const numLeaves = isMini ? 2 : 4;
+                            for(let l=1; l<=numLeaves; l++) {
+                                const t = l / (numLeaves + 1);
+                                const lx = bx + (fx - bx) * t;
+                                const ly = by + (fy - by) * t;
+                                const angle = (l % 2 === 0) ? -20 : 200; 
+                                svg += drawLeaf(lx, ly, angle, l*0.1);
+                            }
                         } else {
-                            // Branch off main stem
-                            const isLeft = branchIdx % 2 !== 0;
-                            // Branch attachment point goes higher as branchIdx increases (0.3 -> 0.8)
-                            const hFactor = 0.3 + (Math.floor((branchIdx-1)/2) * 0.25); 
-                            const t = Math.min(0.9, hFactor); // Bezier parameter
-                            
-                            const cp1x = plant.groundX;
-                            const cp1y = plant.groundY - plant.plantHeight * 0.4;
-                            const cp2x = plant.mainFx;
-                            const cp2y = plant.mainFy + plant.plantHeight * 0.4;
-                            
-                            attachX = Math.pow(1-t, 3)*plant.groundX + 3*Math.pow(1-t, 2)*t*cp1x + 3*(1-t)*Math.pow(t, 2)*cp2x + Math.pow(t, 3)*plant.mainFx;
-                            attachY = Math.pow(1-t, 3)*plant.groundY + 3*Math.pow(1-t, 2)*t*cp1y + 3*(1-t)*Math.pow(t, 2)*cp2y + Math.pow(t, 3)*plant.mainFy;
-                            
-                            const spread = isMini ? 25 : 50;
-                            fx = attachX + (isLeft ? -spread : spread) + ((i%5)*5);
-                            fy = attachY - (isMini ? 15 : 30) + ((i%3)*10);
-                            
-                            svg += `<path d="M ${attachX} ${attachY} Q ${(attachX+fx)/2} ${attachY-15} ${fx} ${fy}" 
-                                          fill="none" stroke="url(#stemGrad)" stroke-width="${isMini?1.5:2.5}" 
-                                          opacity="0" class="animate-fade-in" style="animation-delay: ${delay}s"/>`;
-                                          
-                            svg += drawLeaf((attachX+fx)/2, (attachY+fy)/2, isLeft ? 190 : -10, delay+0.1);
+                            const angle = isLeft ? 210 : -30;
+                            const lx = fx - (fx - bx)*0.3;
+                            const ly = fy - (fy - branchStartY)*0.3;
+                            svg += drawLeaf(lx, ly, angle, 0.2);
                         }
 
-                        // Draw Flower Safely Wrapped in Transform to prevent jumping
                         if (level >= 2) {
                             const drawPetal = (c, r) => `<path d="M0,0 C${isMini?4:8},${isMini?-8:-16} ${isMini?8:16},${isMini?-8:-16} 0,${isMini?-16:-32} C${isMini?-8:-16},${isMini?-8:-16} ${isMini?-4:-8},${isMini?-8:-16} 0,0" fill="${c}" transform="rotate(${r})"/>`;
                             const fScale = isMini ? 0.5 : 0.8;
                             
-                            svg += `<g transform="translate(${fx}, ${fy}) scale(${fScale})">
-                                <g class="animate-grow" style="animation-delay: ${delay+0.2}s; transform-origin: 0px 0px;">
-                                    <circle cx="0" cy="0" r="${isMini?12:20}" fill="${cat.color}" opacity="0.3" filter="url(#glow-${containerId})"/>
-                                    ${drawPetal(cat.color, 0)}${drawPetal(cat.color, 72)}${drawPetal(cat.color, 144)}${drawPetal(cat.color, 216)}${drawPetal(cat.color, 288)}
-                                    <circle cx="0" cy="0" r="${isMini?3:5}" fill="#FDFBF7" opacity="0.9"/>
-                                </g>
+                            svg += `<g transform="translate(${fx}, ${fy}) scale(${fScale})" class="animate-grow" style="animation-delay: ${delay+0.2}s; transform-origin: center;">
+                                <circle cx="0" cy="0" r="${isMini?12:20}" fill="${cat.color}" opacity="0.3" filter="url(#glow-${containerId})"/>
+                                ${drawPetal(cat.color, 0)}${drawPetal(cat.color, 72)}${drawPetal(cat.color, 144)}${drawPetal(cat.color, 216)}${drawPetal(cat.color, 288)}
+                                <circle cx="0" cy="0" r="${isMini?3:5}" fill="#FDFBF7" opacity="0.9"/>
                             </g>`;
                         }
                     });
 
-                    // Ambient details for Flourishing
                     if (level >= 4 && !isMini) {
                         for(let i=0; i<20; i++) {
                             const px = cx + (Math.random() - 0.5) * width;
@@ -1431,18 +1467,8 @@
                             const dur = Math.random() * 4 + 4;
                             svg += `<circle cx="${px}" cy="${py}" r="${size}" fill="#FDFBF7" opacity="0.7" filter="url(#soft-glow-${containerId})" class="animate-float" style="animation-delay: ${dly}s; animation-duration: ${dur}s;"/>`;
                         }
-                        svg += `
-                        <g transform="translate(${cx+100}, ${cy-250}) scale(0.8)">
-                            <g class="animate-butterfly" style="transform-origin: 0px 0px;">
-                                <path d="M 0,0 C -5,-10 -15,-5 -2,-2 C -15,5 -5,10 0,0 C 5,10 15,5 2,-2 C 15,-5 5,-10 0,0" fill="#BCA8DE" opacity="0.8" filter="url(#soft-glow-${containerId})"/>
-                            </g>
-                        </g>`;
-                        svg += `
-                        <g transform="translate(${cx-100}, ${cy-150}) scale(0.6)">
-                            <g class="animate-butterfly" style="animation-delay: 4s; animation-duration: 15s; transform-origin: 0px 0px;">
-                                <path d="M 0,0 C -5,-10 -15,-5 -2,-2 C -15,5 -5,10 0,0 C 5,10 15,5 2,-2 C 15,-5 5,-10 0,0" fill="#FAD1D0" opacity="0.8" filter="url(#soft-glow-${containerId})"/>
-                            </g>
-                        </g>`;
+                        svg += `<g class="animate-butterfly" style="transform-origin: center;"><path d="M 0,0 C -5,-10 -15,-5 -2,-2 C -15,5 -5,10 0,0 C 5,10 15,5 2,-2 C 15,-5 5,-10 0,0" fill="#BCA8DE" opacity="0.8" filter="url(#soft-glow-${containerId})" transform="scale(0.8) translate(${cx+100}, ${cy-250})"/></g>`;
+                        svg += `<g class="animate-butterfly" style="transform-origin: center; animation-delay: 4s; animation-duration: 15s;"><path d="M 0,0 C -5,-10 -15,-5 -2,-2 C -15,5 -5,10 0,0 C 5,10 15,5 2,-2 C 15,-5 5,-10 0,0" fill="#FAD1D0" opacity="0.8" filter="url(#soft-glow-${containerId})" transform="scale(0.6) translate(${cx-100}, ${cy-150})"/></g>`;
                     }
                 }
                 svg += `</svg>`;
@@ -1566,32 +1592,21 @@
 
             openModal: function(id) {
                 const modal = document.getElementById(id);
-                const content = modal.querySelector('.modal-content-area'); 
-                
-                modal.classList.remove('hidden');
-                void modal.offsetWidth; 
-                modal.classList.remove('opacity-0');
-                
-                content.classList.remove('translate-y-full', 'scale-95', 'sm:scale-95', 'opacity-0');
-                content.classList.add('translate-y-0', 'scale-100', 'opacity-100');
+                if(modal) {
+                    modal.style.display = 'flex';
+                    void modal.offsetWidth; 
+                    modal.classList.add('show');
+                }
             },
 
             closeModal: function(id) {
                 const modal = document.getElementById(id);
-                const content = modal.querySelector('.modal-content-area');
-                
-                modal.classList.add('opacity-0');
-                content.classList.remove('translate-y-0', 'scale-100', 'opacity-100');
-                
-                if(window.innerWidth < 640) {
-                    content.classList.add('translate-y-full'); 
-                } else {
-                    content.classList.add('scale-95', 'opacity-0'); 
+                if(modal) {
+                    modal.classList.remove('show');
+                    setTimeout(() => {
+                        modal.style.display = 'none';
+                    }, 400); 
                 }
-                
-                setTimeout(() => {
-                    modal.classList.add('hidden');
-                }, 400); 
             },
 
             saveSetting: function(key, value) {
