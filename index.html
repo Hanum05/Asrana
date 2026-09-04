@@ -19,19 +19,19 @@
                 extend: {
                     colors: {
                         brand: {
-                            bgLight: '#FCF9F9',
+                            bgLight: '#FDFBFF',      
                             surfaceLight: '#FFFFFF', 
-                            bgDark: '#251A2E',       
-                            surfaceDark: '#382845',  
-                            primary: '#734B80',      
-                            secondary: '#BCA8DE',    
-                            accent: '#D9869F',       
-                            soft: '#FAD1D0',         
-                            mauve: '#CE9FBA',        
-                            textDark: '#3A2745',     
-                            textLight: '#FDFBF7',
-                            mutedLight: '#9A8C9E',   
-                            mutedDark: '#B4A6B8',    
+                            bgDark: '#1F1A24',       
+                            surfaceDark: '#2D2535',  
+                            primary: '#BFA2DB',      
+                            secondary: '#D6C8E3',    
+                            accent: '#E0BBE4',       
+                            soft: '#F3E8FD',         
+                            mauve: '#C8B6E6',        
+                            textDark: '#4A3B52',     
+                            textLight: '#FDFBFF',
+                            mutedLight: '#A093A8',   
+                            mutedDark: '#B8AEC0',    
                         }
                     },
                     fontFamily: {
@@ -40,9 +40,9 @@
                         arabic: ['Amiri', 'serif']
                     },
                     boxShadow: {
-                        'glass-light': '0 8px 32px 0 rgba(115, 75, 128, 0.08), inset 0 1px 0 0 rgba(255, 255, 255, 0.8)',
+                        'glass-light': '0 8px 32px 0 rgba(191, 162, 219, 0.15), inset 0 1px 0 0 rgba(255, 255, 255, 0.8)',
                         'glass-dark': '0 8px 32px 0 rgba(0, 0, 0, 0.4), inset 0 1px 0 0 rgba(255, 255, 255, 0.05)',
-                        'glow-primary': '0 0 24px rgba(217, 134, 159, 0.25)',
+                        'glow-primary': '0 0 24px rgba(191, 162, 219, 0.35)',
                     },
                     animation: {
                         'fade-in': 'fadeIn 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards',
@@ -72,9 +72,9 @@
                             '100%': { transform: 'translate(40px, -160px) rotate(20deg) scale(0.8)', opacity: '0' },
                         },
                         gardenGlow: {
-                            '0%': { boxShadow: '0 0 0px rgba(217, 134, 159, 0)' },
-                            '50%': { boxShadow: '0 0 60px rgba(217, 134, 159, 0.4)' },
-                            '100%': { boxShadow: '0 0 30px rgba(217, 134, 159, 0.1)' },
+                            '0%': { boxShadow: '0 0 0px rgba(191, 162, 219, 0)' },
+                            '50%': { boxShadow: '0 0 60px rgba(191, 162, 219, 0.4)' },
+                            '100%': { boxShadow: '0 0 30px rgba(191, 162, 219, 0.1)' },
                         }
                     }
                 }
@@ -87,24 +87,24 @@
         body { -webkit-tap-highlight-color: transparent; overflow-x: hidden; font-feature-settings: "cv02", "cv03", "cv04", "cv11"; transition: background-color 0.5s ease, color 0.5s ease; }
         
         /* Backgrounds */
-        .ambient-bg { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: radial-gradient(circle at 50% 0%, rgba(247, 202, 201, 0.3) 0%, transparent 60%), radial-gradient(circle at 80% 80%, rgba(188, 168, 222, 0.2) 0%, transparent 50%); z-index: -1; pointer-events: none; transition: background 0.5s ease; }
-        .dark .ambient-bg { background: radial-gradient(circle at 50% 0%, rgba(115, 75, 128, 0.4) 0%, transparent 60%), radial-gradient(circle at 80% 80%, rgba(217, 134, 159, 0.15) 0%, transparent 50%); }
+        .ambient-bg { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: radial-gradient(circle at 50% 0%, rgba(224, 187, 228, 0.25) 0%, transparent 60%), radial-gradient(circle at 80% 80%, rgba(191, 162, 219, 0.15) 0%, transparent 50%); z-index: -1; pointer-events: none; transition: background 0.5s ease; }
+        .dark .ambient-bg { background: radial-gradient(circle at 50% 0%, rgba(191, 162, 219, 0.25) 0%, transparent 60%), radial-gradient(circle at 80% 80%, rgba(224, 187, 228, 0.15) 0%, transparent 50%); }
         .noise-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; pointer-events: none; z-index: 50; opacity: 0.03; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E"); }
         
         /* Glass Components */
         .glass-panel { background: rgba(255, 255, 255, 0.65); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border: 1px solid rgba(255, 255, 255, 0.8); box-shadow: theme('boxShadow.glass-light'); border-radius: 28px; transition: all 0.4s ease; }
-        .dark .glass-panel { background: rgba(56, 40, 69, 0.6); border: 1px solid rgba(255, 255, 255, 0.06); box-shadow: theme('boxShadow.glass-dark'); }
-        .glass-button { background: linear-gradient(180deg, rgba(115,75,128,0.02) 0%, rgba(115,75,128,0.06) 100%); backdrop-filter: blur(8px); border: 1px solid rgba(115,75,128,0.1); color: theme('colors.brand.primary'); box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.8); transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1); }
+        .dark .glass-panel { background: rgba(45, 37, 53, 0.6); border: 1px solid rgba(255, 255, 255, 0.06); box-shadow: theme('boxShadow.glass-dark'); }
+        .glass-button { background: linear-gradient(180deg, rgba(191, 162, 219, 0.02) 0%, rgba(191, 162, 219, 0.06) 100%); backdrop-filter: blur(8px); border: 1px solid rgba(191, 162, 219, 0.1); color: theme('colors.brand.primary'); box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.8); transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1); }
         .dark .glass-button { background: linear-gradient(180deg, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0.03) 100%); border: 1px solid rgba(255, 255, 255, 0.08); color: theme('colors.brand.textLight'); box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.05); }
-        .glass-button:hover, .glass-button:active { transform: translateY(-2px); border-color: rgba(217, 134, 159, 0.4); box-shadow: 0 10px 20px -10px rgba(0,0,0,0.2), inset 0 1px 0 0 rgba(255, 255, 255, 0.8); }
-        .dark .glass-button:hover, .dark .glass-button:active { border-color: rgba(217, 134, 159, 0.4); box-shadow: 0 10px 20px -10px rgba(0,0,0,0.5), inset 0 1px 0 0 rgba(255, 255, 255, 0.05); }
-        .primary-button { background: linear-gradient(135deg, theme('colors.brand.primary'), #91689E); color: theme('colors.brand.textLight'); border: none; box-shadow: 0 8px 20px -5px rgba(115, 75, 128, 0.4); transition: all 0.3s ease; }
-        .primary-button:hover { box-shadow: 0 12px 25px -5px rgba(115, 75, 128, 0.5); transform: translateY(-2px); }
+        .glass-button:hover, .glass-button:active { transform: translateY(-2px); border-color: rgba(224, 187, 228, 0.4); box-shadow: 0 10px 20px -10px rgba(0,0,0,0.2), inset 0 1px 0 0 rgba(255, 255, 255, 0.8); }
+        .dark .glass-button:hover, .dark .glass-button:active { border-color: rgba(224, 187, 228, 0.4); box-shadow: 0 10px 20px -10px rgba(0,0,0,0.5), inset 0 1px 0 0 rgba(255, 255, 255, 0.05); }
+        .primary-button { background: linear-gradient(135deg, theme('colors.brand.primary'), #A379C9); color: theme('colors.brand.textLight'); border: none; box-shadow: 0 8px 20px -5px rgba(191, 162, 219, 0.4); transition: all 0.3s ease; }
+        .primary-button:hover { box-shadow: 0 12px 25px -5px rgba(191, 162, 219, 0.5); transform: translateY(-2px); }
         
         /* Scrollbar */
         ::-webkit-scrollbar { width: 4px; }
         ::-webkit-scrollbar-track { background: transparent; }
-        ::-webkit-scrollbar-thumb { background: rgba(154, 140, 158, 0.2); border-radius: 10px; }
+        ::-webkit-scrollbar-thumb { background: rgba(163, 146, 183, 0.2); border-radius: 10px; }
         .dark ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); }
         ::-webkit-scrollbar-thumb:hover { background: theme('colors.brand.accent'); }
         .hide-scrollbar::-webkit-scrollbar { display: none; }
@@ -126,12 +126,12 @@
         @media (min-width: 640px) { .modal-backdrop.show .modal-content-area { transform: scale(1); opacity: 1; } }
 
         /* Progress Bar */
-        progress::-webkit-progress-bar { background-color: rgba(115, 75, 128, 0.08); border-radius: 99px; }
+        progress::-webkit-progress-bar { background-color: rgba(191, 162, 219, 0.1); border-radius: 99px; }
         .dark progress::-webkit-progress-bar { background-color: rgba(255,255,255,0.05); }
         progress::-webkit-progress-value { background: linear-gradient(90deg, theme('colors.brand.secondary'), theme('colors.brand.accent')); border-radius: 99px; transition: width 1s cubic-bezier(0.16, 1, 0.3, 1); }
         progress::-moz-progress-bar { background: linear-gradient(90deg, theme('colors.brand.secondary'), theme('colors.brand.accent')); border-radius: 99px; transition: width 1s cubic-bezier(0.16, 1, 0.3, 1); }
         
-        .floating-nav { box-shadow: 0 -10px 40px rgba(115,75,128,0.1), inset 0 1px 0 rgba(255,255,255,0.8); }
+        .floating-nav { box-shadow: 0 -10px 40px rgba(191, 162, 219, 0.15), inset 0 1px 0 rgba(255,255,255,0.8); }
         .dark .floating-nav { box-shadow: 0 -10px 40px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.1); }
 
         .mood-chip-container::-webkit-scrollbar { display: none; }
@@ -202,7 +202,15 @@
 
         <!-- Content Area -->
         <main class="flex-1 h-full overflow-y-auto pb-safe md:pb-0 relative scroll-smooth" id="main-scroll-area">
-            <div class="max-w-5xl mx-auto w-full p-4 sm:p-6 md:p-10 lg:p-12 min-h-full flex flex-col">
+            
+            <!-- Mobile Settings Button (Added for easy access on mobile) -->
+            <div class="md:hidden fixed top-4 right-4 z-40">
+                <button onclick="app.openModal('settings-modal')" class="w-10 h-10 rounded-full bg-white/60 dark:bg-black/30 backdrop-blur-lg border border-brand-primary/20 dark:border-white/10 flex items-center justify-center text-brand-primary dark:text-brand-textLight shadow-sm hover:scale-105 transition-transform" aria-label="Pengaturan">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+                </button>
+            </div>
+
+            <div class="max-w-5xl mx-auto w-full p-4 sm:p-6 md:p-10 lg:p-12 min-h-full flex flex-col pt-16 sm:pt-6 md:pt-10">
                 
                 <!-- HOME VIEW -->
                 <section id="view-home" class="view-section active flex-1 space-y-8">
@@ -286,7 +294,7 @@
 
                     <div id="garden-visual-wrapper" class="glass-panel p-4 sm:p-8 relative flex-1 min-h-[500px] flex flex-col justify-end items-center overflow-hidden border-brand-accent/20 dark:border-brand-accent/10 transition-shadow duration-1000 animate-fade-in" style="animation-delay: 0.2s;">
                         <div class="absolute inset-0 bg-gradient-to-t from-brand-soft/20 via-transparent to-transparent dark:from-brand-primary/20"></div>
-                        <div class="absolute w-[120%] h-[120%] -top-[10%] -left-[10%] bg-[radial-gradient(circle_at_50%_40%,_rgba(247,202,201,0.15)_0%,_transparent_60%)] dark:bg-[radial-gradient(circle_at_50%_40%,_rgba(188,168,222,0.08)_0%,_transparent_60%)] animate-pulse-slow"></div>
+                        <div class="absolute w-[120%] h-[120%] -top-[10%] -left-[10%] bg-[radial-gradient(circle_at_50%_40%,_rgba(243,232,255,0.25)_0%,_transparent_60%)] dark:bg-[radial-gradient(circle_at_50%_40%,_rgba(196,181,253,0.12)_0%,_transparent_60%)] animate-pulse-slow"></div>
                         
                         <div id="main-garden-svg-container" class="relative w-full max-w-4xl h-[28rem] z-10 flex items-end justify-center drop-shadow-xl"></div>
                         
@@ -296,10 +304,10 @@
                                 <ellipse cx="200" cy="18" rx="140" ry="8" fill="url(#groundGrad2)" opacity="0.6"/>
                                 <defs>
                                     <linearGradient id="groundGrad1" x1="0%" y1="0%" x2="100%" y2="0%">
-                                        <stop offset="0%" stop-color="transparent"/><stop offset="50%" stop-color="#CE9FBA"/><stop offset="100%" stop-color="transparent"/>
+                                        <stop offset="0%" stop-color="transparent"/><stop offset="50%" stop-color="#D6C8E3"/><stop offset="100%" stop-color="transparent"/>
                                     </linearGradient>
                                     <linearGradient id="groundGrad2" x1="0%" y1="0%" x2="100%" y2="0%">
-                                        <stop offset="0%" stop-color="transparent"/><stop offset="50%" stop-color="#734B80"/><stop offset="100%" stop-color="transparent"/>
+                                        <stop offset="0%" stop-color="transparent"/><stop offset="50%" stop-color="#BFA2DB"/><stop offset="100%" stop-color="transparent"/>
                                     </linearGradient>
                                 </defs>
                             </svg>
@@ -522,11 +530,11 @@
                         <div class="flex flex-col items-center gap-6 py-10 relative z-10">
                             <div class="absolute left-1/2 top-10 bottom-10 w-px bg-gradient-to-b from-transparent via-brand-secondary/40 to-transparent -translate-x-1/2"></div>
                             <div class="z-10 bg-white dark:bg-brand-surfaceDark px-6 py-2 text-xs tracking-[0.2em] uppercase text-brand-mutedLight dark:text-brand-mutedDark rounded-full border border-brand-primary/10 dark:border-white/5 shadow-glass-light dark:shadow-glass-dark">Waktu Berlalu</div>
-                            <div class="z-10 w-2 h-2 rounded-full bg-brand-mauve/40 shadow-[0_0_10px_rgba(206,159,186,0.5)]"></div>
+                            <div class="z-10 w-2 h-2 rounded-full bg-brand-mauve/40 shadow-[0_0_10px_rgba(200,182,230,0.5)]"></div>
                             <div class="z-10 bg-white dark:bg-brand-surfaceDark px-6 py-2 text-xs tracking-[0.2em] uppercase text-brand-secondary rounded-full border border-brand-primary/10 dark:border-white/5 shadow-glass-light dark:shadow-glass-dark">Kesadaran Bangkit</div>
-                            <div class="z-10 w-2 h-2 rounded-full bg-brand-secondary/50 shadow-[0_0_10px_rgba(188,168,222,0.5)]"></div>
+                            <div class="z-10 w-2 h-2 rounded-full bg-brand-secondary/50 shadow-[0_0_10px_rgba(214,200,227,0.5)]"></div>
                             <div class="z-10 bg-white dark:bg-brand-surfaceDark px-6 py-2 text-xs tracking-[0.2em] uppercase text-brand-accent rounded-full border border-brand-accent/30 shadow-glow-primary">Amal Ditanam</div>
-                            <div class="z-10 w-2 h-2 rounded-full bg-brand-soft/80 shadow-[0_0_10px_rgba(250,209,208,0.5)]"></div>
+                            <div class="z-10 w-2 h-2 rounded-full bg-brand-soft/80 shadow-[0_0_10px_rgba(224,187,228,0.5)]"></div>
                             <div class="z-10 bg-brand-primary/10 dark:bg-white/10 backdrop-blur-md px-6 py-2 text-xs tracking-[0.2em] uppercase text-brand-primary dark:text-white rounded-full border border-brand-primary/20 dark:border-white/20 shadow-glass-light dark:shadow-glass-dark font-medium">Makna Tumbuh</div>
                         </div>
                     </div>
@@ -679,7 +687,7 @@
                 dailyGoal: 5,
                 streak: 0,
                 lastActiveDate: null,
-                theme: 'dark',
+                theme: 'dark', // Akan dioverride dengan pengaturan OS jika belum ada saved state
                 reminders: [
                     { id: 'morning', title: 'Refleksi Pagi', active: true },
                     { id: 'pause', title: 'Jeda Digital', active: false },
@@ -689,14 +697,14 @@
 
             config: {
                 deedCategories: [
-                    { id: 'prayer', title: 'Shalat', desc: 'Sempatkan waktu untuk terhubung kembali.', color: '#BCA8DE', icon: '🤲' }, 
-                    { id: 'quran', title: 'Al-Qur\'an', desc: 'Habiskan momen bermakna dengan Al-Qur\'an.', color: '#D9869F', icon: '📖' },
-                    { id: 'charity', title: 'Sedekah', desc: 'Berikan sesuatu, sekecil apa pun.', color: '#FAD1D0', icon: '🤝' },
-                    { id: 'kindness', title: 'Kebaikan', desc: 'Lakukan kebaikan untuk orang lain.', color: '#CE9FBA', icon: '🤍' },
+                    { id: 'prayer', title: 'Shalat', desc: 'Sempatkan waktu untuk terhubung kembali.', color: '#C8B6E6', icon: '🤲' }, 
+                    { id: 'quran', title: 'Al-Qur\'an', desc: 'Habiskan momen bermakna dengan Al-Qur\'an.', color: '#BFA2DB', icon: '📖' },
+                    { id: 'charity', title: 'Sedekah', desc: 'Berikan sesuatu, sekecil apa pun.', color: '#F3E8FD', icon: '🤝' },
+                    { id: 'kindness', title: 'Kebaikan', desc: 'Lakukan kebaikan untuk orang lain.', color: '#D6C8E3', icon: '🤍' },
                     { id: 'family', title: 'Keluarga', desc: 'Berikan waktu bermakna untuk keluarga.', color: '#E0BBE4', icon: '👨‍👩‍👧' },
-                    { id: 'pause', title: 'Jeda Digital', desc: 'Jauhkan diri dari layar sejenak.', color: '#DCD0FF', icon: '🧘' },
-                    { id: 'help', title: 'Membantu Sesama', desc: 'Buat hari seseorang sedikit lebih mudah.', color: '#F4C2C2', icon: '✨' },
-                    { id: 'gratitude', title: 'Syukur', desc: 'Berhenti sejenak dan hargai apa yang kamu miliki.', color: '#F8E0FF', icon: '📝' }
+                    { id: 'pause', title: 'Jeda Digital', desc: 'Jauhkan diri dari layar sejenak.', color: '#EBDDF7', icon: '🧘' },
+                    { id: 'help', title: 'Membantu Sesama', desc: 'Buat hari seseorang sedikit lebih mudah.', color: '#F4E4F9', icon: '✨' },
+                    { id: 'gratitude', title: 'Syukur', desc: 'Berhenti sejenak dan hargai apa yang kamu miliki.', color: '#FAF1FD', icon: '📝' }
                 ],
                 reclaimCategories: [
                     { id: 'social', icon: '📱', name: 'Media Sosial' }, { id: 'game', icon: '🎮', name: 'Bermain Game' },
@@ -776,6 +784,13 @@
                         const parsed = JSON.parse(saved);
                         this.state = { ...this.state, ...parsed };
                     } catch (e) { console.error("Error loading state"); }
+                } else {
+                    // Cek pengaturan tema bawaan pada OS pengguna (Terang/Gelap)
+                    if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+                        this.state.theme = 'dark';
+                    } else {
+                        this.state.theme = 'light';
+                    }
                 }
             },
 
@@ -1349,8 +1364,8 @@
                             <feComposite in="SourceGraphic" in2="blur" operator="over" />
                         </filter>
                         <linearGradient id="stemGrad" x1="0" y1="1" x2="0" y2="0">
-                            <stop offset="0%" stop-color="#9A8C9E"/>
-                            <stop offset="100%" stop-color="#BCA8DE"/>
+                            <stop offset="0%" stop-color="#A093A8"/>
+                            <stop offset="100%" stop-color="#C8B6E6"/>
                         </linearGradient>
                     </defs>`;
                 
@@ -1358,10 +1373,10 @@
                 const cy = height - (isMini ? 10 : 20);
 
                 if (level === 0) {
-                    svg += `<ellipse cx="${cx}" cy="${cy}" rx="${isMini?6:12}" ry="${isMini?4:8}" fill="#D9869F" opacity="0.8" filter="url(#glow-${containerId})" class="animate-pulse-slow"/>`;
+                    svg += `<ellipse cx="${cx}" cy="${cy}" rx="${isMini?6:12}" ry="${isMini?4:8}" fill="#E0BBE4" opacity="0.8" filter="url(#glow-${containerId})" class="animate-pulse-slow"/>`;
                     svg += `<ellipse cx="${cx}" cy="${cy}" rx="${isMini?3:5}" ry="${isMini?2:3}" fill="#FDFBF7" opacity="0.9"/>`;
                     for(let i=0; i<3; i++) {
-                        svg += `<circle cx="${cx + (Math.random()*40 - 20)}" cy="${cy - (Math.random()*30)}" r="1.5" fill="#BCA8DE" class="animate-float" style="animation-delay: ${i}s;"/>`;
+                        svg += `<circle cx="${cx + (Math.random()*40 - 20)}" cy="${cy - (Math.random()*30)}" r="1.5" fill="#C8B6E6" class="animate-float" style="animation-delay: ${i}s;"/>`;
                     }
                 } else {
                     const maxDisplay = isMini ? 15 : 40;
@@ -1427,7 +1442,7 @@
                             const tipX = lx + Math.cos(rad) * lSize;
                             const tipY = ly + Math.sin(rad) * lSize;
                             const path = `M ${lx} ${ly} Q ${lx + wSize*Math.cos(rad-Math.PI/4)} ${ly + wSize*Math.sin(rad-Math.PI/4)} ${tipX} ${tipY} Q ${lx + wSize*Math.cos(rad+Math.PI/4)} ${ly + wSize*Math.sin(rad+Math.PI/4)} ${lx} ${ly}`;
-                            return `<path d="${path}" fill="#A597AA" opacity="0.75" filter="url(#soft-glow-${containerId})" class="animate-grow origin-bottom" style="animation-delay: ${delay+0.1+dly}s; transform-box: fill-box; transform-origin: left center;"/>`;
+                            return `<path d="${path}" fill="#B8AEC0" opacity="0.75" filter="url(#soft-glow-${containerId})" class="animate-grow origin-bottom" style="animation-delay: ${delay+0.1+dly}s; transform-box: fill-box; transform-origin: left center;"/>`;
                         };
 
                         if (isMainStem) {
@@ -1467,8 +1482,8 @@
                             const dur = Math.random() * 4 + 4;
                             svg += `<circle cx="${px}" cy="${py}" r="${size}" fill="#FDFBF7" opacity="0.7" filter="url(#soft-glow-${containerId})" class="animate-float" style="animation-delay: ${dly}s; animation-duration: ${dur}s;"/>`;
                         }
-                        svg += `<g class="animate-butterfly" style="transform-origin: center;"><path d="M 0,0 C -5,-10 -15,-5 -2,-2 C -15,5 -5,10 0,0 C 5,10 15,5 2,-2 C 15,-5 5,-10 0,0" fill="#BCA8DE" opacity="0.8" filter="url(#soft-glow-${containerId})" transform="scale(0.8) translate(${cx+100}, ${cy-250})"/></g>`;
-                        svg += `<g class="animate-butterfly" style="transform-origin: center; animation-delay: 4s; animation-duration: 15s;"><path d="M 0,0 C -5,-10 -15,-5 -2,-2 C -15,5 -5,10 0,0 C 5,10 15,5 2,-2 C 15,-5 5,-10 0,0" fill="#FAD1D0" opacity="0.8" filter="url(#soft-glow-${containerId})" transform="scale(0.6) translate(${cx-100}, ${cy-150})"/></g>`;
+                        svg += `<g class="animate-butterfly" style="transform-origin: center;"><path d="M 0,0 C -5,-10 -15,-5 -2,-2 C -15,5 -5,10 0,0 C 5,10 15,5 2,-2 C 15,-5 5,-10 0,0" fill="#C8B6E6" opacity="0.8" filter="url(#soft-glow-${containerId})" transform="scale(0.8) translate(${cx+100}, ${cy-250})"/></g>`;
+                        svg += `<g class="animate-butterfly" style="transform-origin: center; animation-delay: 4s; animation-duration: 15s;"><path d="M 0,0 C -5,-10 -15,-5 -2,-2 C -15,5 -5,10 0,0 C 5,10 15,5 2,-2 C 15,-5 5,-10 0,0" fill="#F3E8FD" opacity="0.8" filter="url(#soft-glow-${containerId})" transform="scale(0.6) translate(${cx-100}, ${cy-150})"/></g>`;
                     }
                 }
                 svg += `</svg>`;
