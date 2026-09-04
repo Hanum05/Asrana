@@ -8,7 +8,7 @@
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
     
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -19,15 +19,15 @@
                 extend: {
                     colors: {
                         brand: {
-                            bg: '#121619',       // Deep charcoal
-                            surface: '#1E2428',  // Slightly lighter for cards
-                            surfaceHover: '#2A3136',
-                            sage: '#7A8B80',     // Muted sage green
-                            forest: '#2C4035',   // Deep forest green
-                            gold: '#C5A86D',     // Soft gold
-                            cream: '#F4F1EA',    // Warm cream (for light mode)
-                            text: '#E2E8F0',     // Off-white for text
-                            muted: '#94A3B8'
+                            bg: '#0a0c0e',       // Deeper, richer black
+                            surface: '#15191c',  // Elegant dark surface
+                            surfaceHover: '#1f2529',
+                            sage: '#8AA090',     // Softer sage
+                            forest: '#2C4035',   
+                            gold: '#D4AF37',     // Classic gold
+                            cream: '#F4F1EA',    
+                            text: '#E2E8F0',     
+                            muted: '#8b96a5'     // Slightly warmer gray
                         }
                     },
                     fontFamily: {
@@ -36,15 +36,17 @@
                         arabic: ['Amiri', 'serif']
                     },
                     boxShadow: {
-                        'glass': '0 8px 32px 0 rgba(0, 0, 0, 0.3)',
-                        'glow': '0 0 20px rgba(197, 168, 109, 0.2)'
+                        'glass': '0 8px 32px 0 rgba(0, 0, 0, 0.4)',
+                        'glow': '0 0 24px rgba(212, 175, 55, 0.15)',
+                        'inner-light': 'inset 0 1px 0 0 rgba(255, 255, 255, 0.05)'
                     },
                     animation: {
-                        'fade-in': 'fadeIn 0.5s ease-out forwards',
-                        'slide-up': 'slideUp 0.5s ease-out forwards',
+                        'fade-in': 'fadeIn 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards',
+                        'slide-up': 'slideUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards',
                         'breathe': 'breathe 8s infinite ease-in-out',
                         'float': 'float 6s infinite ease-in-out',
-                        'grow': 'grow 1s ease-out forwards',
+                        'grow': 'grow 1.2s cubic-bezier(0.34, 1.56, 0.64, 1) forwards',
+                        'pulse-slow': 'pulseSlow 4s infinite ease-in-out',
                     },
                     keyframes: {
                         fadeIn: {
@@ -52,20 +54,24 @@
                             '100%': { opacity: '1' },
                         },
                         slideUp: {
-                            '0%': { opacity: '0', transform: 'translateY(20px)' },
+                            '0%': { opacity: '0', transform: 'translateY(30px)' },
                             '100%': { opacity: '1', transform: 'translateY(0)' },
                         },
                         breathe: {
-                            '0%, 100%': { transform: 'scale(1)', opacity: '0.4' },
-                            '50%': { transform: 'scale(1.5)', opacity: '1' },
+                            '0%, 100%': { transform: 'scale(0.95)', opacity: '0.3' },
+                            '50%': { transform: 'scale(1.3)', opacity: '0.8' },
                         },
                         float: {
                             '0%, 100%': { transform: 'translateY(0)' },
-                            '50%': { transform: 'translateY(-10px)' },
+                            '50%': { transform: 'translateY(-15px)' },
                         },
                         grow: {
-                            '0%': { transform: 'scale(0) translateY(10px)', opacity: '0' },
+                            '0%': { transform: 'scale(0) translateY(20px)', opacity: '0' },
                             '100%': { transform: 'scale(1) translateY(0)', opacity: '1' },
+                        },
+                        pulseSlow: {
+                            '0%, 100%': { opacity: '0.4' },
+                            '50%': { opacity: '0.8' },
                         }
                     }
                 }
@@ -80,6 +86,17 @@
             color: theme('colors.brand.text');
             -webkit-tap-highlight-color: transparent;
             overflow-x: hidden;
+            font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+        }
+
+        /* Subtle animated ambient background */
+        .ambient-bg {
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            background: radial-gradient(circle at 50% 0%, rgba(44, 64, 53, 0.1) 0%, transparent 50%),
+                        radial-gradient(circle at 80% 80%, rgba(212, 175, 55, 0.05) 0%, transparent 40%);
+            z-index: -1;
+            pointer-events: none;
         }
 
         /* Subtley grain/noise overlay */
@@ -88,410 +105,589 @@
             top: 0; left: 0; width: 100vw; height: 100vh;
             pointer-events: none;
             z-index: 50;
-            opacity: 0.03;
-            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+            opacity: 0.04;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
         }
 
         /* Glassmorphism utilities */
         .glass-panel {
-            background: rgba(30, 36, 40, 0.6);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            border-radius: 24px;
+            background: rgba(21, 25, 28, 0.7);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.03);
+            box-shadow: theme('boxShadow.glass'), theme('boxShadow.inner-light');
+            border-radius: 28px;
+            transition: transform 0.3s ease, border-color 0.3s ease;
         }
 
         .glass-button {
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(4px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            transition: all 0.3s ease;
+            background: linear-gradient(180deg, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0.03) 100%);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: theme('boxShadow.inner-light');
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
         }
         .glass-button:hover, .glass-button:active {
-            background: rgba(255, 255, 255, 0.1);
+            background: linear-gradient(180deg, rgba(255,255,255,0.12) 0%, rgba(255,255,255,0.05) 100%);
             transform: translateY(-2px);
+            border-color: rgba(212, 175, 55, 0.3);
+            box-shadow: 0 10px 20px -10px rgba(0,0,0,0.5), theme('boxShadow.inner-light');
         }
 
         /* Custom Scrollbar */
-        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar { width: 4px; }
         ::-webkit-scrollbar-track { background: transparent; }
-        ::-webkit-scrollbar-thumb { background: theme('colors.brand.surfaceHover'); border-radius: 10px; }
+        ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 10px; }
         ::-webkit-scrollbar-thumb:hover { background: theme('colors.brand.sage'); }
 
-        /* Hide specific views initially */
-        .view-section { display: none; animation: fadeIn 0.4s ease-out; }
-        .view-section.active { display: block; }
+        /* View Transitions */
+        .view-section { 
+            display: none; 
+            opacity: 0;
+            transform: translateY(10px);
+            transition: opacity 0.5s ease, transform 0.5s ease;
+        }
+        .view-section.active { 
+            display: block; 
+            opacity: 1;
+            transform: translateY(0);
+        }
 
         /* Safe area for mobile bottom nav */
-        .pb-safe { padding-bottom: max(80px, env(safe-area-inset-bottom)); }
+        .pb-safe { padding-bottom: max(100px, env(safe-area-inset-bottom)); }
         
         /* Modal Backdrop */
         .modal-backdrop {
-            background: rgba(18, 22, 25, 0.8);
-            backdrop-filter: blur(8px);
+            background: rgba(10, 12, 14, 0.85);
+            backdrop-filter: blur(12px);
         }
 
-        /* Garden SVG specific styles */
-        .garden-element { transform-origin: bottom center; animation: grow 0.8s ease-out forwards; }
-        
         /* Progress Bar */
-        progress::-webkit-progress-bar { background-color: theme('colors.brand.surfaceHover'); border-radius: 99px; }
-        progress::-webkit-progress-value { background-color: theme('colors.brand.gold'); border-radius: 99px; transition: width 0.5s ease; }
-        progress::-moz-progress-bar { background-color: theme('colors.brand.gold'); border-radius: 99px; transition: width 0.5s ease; }
+        progress::-webkit-progress-bar { background-color: rgba(255,255,255,0.05); border-radius: 99px; }
+        progress::-webkit-progress-value { background: linear-gradient(90deg, theme('colors.brand.sage'), theme('colors.brand.gold')); border-radius: 99px; transition: width 1s cubic-bezier(0.16, 1, 0.3, 1); }
+        progress::-moz-progress-bar { background: linear-gradient(90deg, theme('colors.brand.sage'), theme('colors.brand.gold')); border-radius: 99px; transition: width 1s cubic-bezier(0.16, 1, 0.3, 1); }
+        
+        /* Floating Mobile Nav */
+        .floating-nav {
+            box-shadow: 0 -10px 40px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.1);
+        }
     </style>
 </head>
-<body class="antialiased min-h-screen flex flex-col font-sans selection:bg-brand-sage selection:text-white">
+<body class="antialiased min-h-screen flex flex-col font-sans selection:bg-brand-sage/30 selection:text-brand-gold">
+    <div class="ambient-bg"></div>
     <div class="noise-overlay"></div>
 
-    <div id="toast-container" class="fixed top-6 left-1/2 -translate-x-1/2 z-50 flex flex-col gap-2 w-full max-w-sm px-4 pointer-events-none"></div>
+    <!-- Global Toast Container -->
+    <div id="toast-container" class="fixed top-6 left-1/2 -translate-x-1/2 z-50 flex flex-col gap-3 w-full max-w-sm px-4 pointer-events-none"></div>
 
-    <div id="welcome-screen" class="fixed inset-0 z-40 bg-brand-bg flex flex-col items-center justify-center p-6 text-center transition-opacity duration-1000">
-        <div class="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-brand-forest/20 via-brand-bg to-brand-bg"></div>
+    <!-- Welcome Screen -->
+    <div id="welcome-screen" class="fixed inset-0 z-40 bg-brand-bg flex flex-col items-center justify-center p-6 text-center transition-all duration-1000">
+        <div class="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-brand-forest/10 via-brand-bg to-brand-bg"></div>
         
-        <div class="z-10 max-w-md w-full space-y-12">
+        <div class="z-10 max-w-md w-full space-y-16">
             <div class="space-y-4 animate-slide-up" style="animation-delay: 0.2s;">
-                <h1 class="text-3xl md:text-4xl font-serif tracking-wider text-brand-gold">ASRANA</h1>
-                <p class="text-sm tracking-widest uppercase text-brand-muted">Menata waktu, menumbuhkan makna.</p>
+                <h1 class="text-3xl md:text-5xl font-serif tracking-[0.2em] text-brand-gold">ASRANA</h1>
+                <p class="text-xs tracking-[0.3em] uppercase text-brand-sage font-medium">Menata waktu, menumbuhkan makna.</p>
             </div>
 
-            <div class="space-y-6 animate-slide-up" style="animation-delay: 0.6s;">
-                <div class="text-4xl md:text-5xl font-arabic text-white/90">وَالْعَصْرِ</div>
-                <div class="font-serif italic text-xl md:text-2xl text-brand-text/80">"Demi masa."</div>
+            <div class="space-y-8 animate-slide-up" style="animation-delay: 0.8s;">
+                <div class="text-5xl md:text-6xl font-arabic text-white/90 font-light drop-shadow-2xl">وَالْعَصْرِ</div>
+                <div class="font-serif italic text-2xl md:text-3xl text-brand-gold/80">"Demi masa."</div>
             </div>
 
-            <div class="space-y-8 animate-slide-up" style="animation-delay: 1s;">
-                <p class="text-lg md:text-xl font-light leading-relaxed">
+            <div class="space-y-10 animate-slide-up" style="animation-delay: 1.4s;">
+                <p class="text-lg font-light leading-relaxed text-brand-text/90">
                     Your time is an amanah.<br>
-                    <span class="text-brand-muted text-base mt-2 block">Temukan kembali makna waktu melalui mindful moments, meaningful actions, dan perjalanan spiritual yang sederhana.</span>
+                    <span class="text-brand-muted text-sm mt-4 block leading-loose">Temukan kembali makna waktu melalui mindful moments, meaningful actions, dan perjalanan spiritual yang sederhana.</span>
                 </p>
 
-                <div class="flex flex-col gap-4 pt-4">
-                    <button onclick="app.startJourney()" class="glass-button w-full py-4 rounded-2xl text-brand-gold font-medium tracking-wide">
-                        Begin Your Journey
+                <div class="pt-4">
+                    <button onclick="app.startJourney()" class="glass-button w-full py-4 rounded-2xl text-brand-gold font-medium tracking-widest uppercase text-sm group relative overflow-hidden">
+                        <span class="relative z-10">Begin Your Journey</span>
+                        <div class="absolute inset-0 bg-gradient-to-r from-transparent via-brand-gold/10 to-transparent -translate-x-full group-hover:animate-[shimmer_1.5s_infinite]"></div>
                     </button>
                 </div>
             </div>
         </div>
     </div>
 
+    <!-- Main Application Layout -->
     <div id="app-layout" class="hidden flex-1 h-screen overflow-hidden flex flex-col md:flex-row">
         
         <!-- Desktop Sidebar -->
-        <nav class="hidden md:flex flex-col w-64 h-full border-r border-white/5 bg-brand-bg/50 backdrop-blur-xl z-20">
-            <div class="p-8">
-                <h2 class="text-2xl font-serif text-brand-gold tracking-widest">ASRANA</h2>
+        <nav class="hidden md:flex flex-col w-72 h-full border-r border-white/5 bg-brand-surface/30 backdrop-blur-2xl z-20 relative">
+            <div class="absolute top-0 right-0 w-px h-full bg-gradient-to-b from-transparent via-brand-gold/20 to-transparent"></div>
+            
+            <div class="p-10 pb-6">
+                <h2 class="text-2xl font-serif text-brand-gold tracking-[0.2em]">ASRANA</h2>
             </div>
-            <div class="flex-1 px-4 space-y-2" id="desktop-nav">
+            
+            <div class="flex-1 px-6 py-4 space-y-2 overflow-y-auto" id="desktop-nav">
                 <!-- Nav items generated by JS -->
             </div>
+            
             <div class="p-6 border-t border-white/5">
-                <button onclick="app.openModal('settings-modal')" class="flex items-center gap-3 text-brand-muted hover:text-white transition-colors w-full p-2 rounded-xl hover:bg-white/5">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
-                    Settings
+                <button onclick="app.openModal('settings-modal')" class="flex items-center gap-4 text-brand-muted hover:text-brand-gold transition-colors w-full p-3 rounded-xl hover:bg-white/5 group">
+                    <svg class="w-5 h-5 group-hover:rotate-90 transition-transform duration-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+                    <span class="text-sm font-medium tracking-wide">Settings</span>
                 </button>
             </div>
         </nav>
 
         <!-- Main Content Area -->
-        <main class="flex-1 h-full overflow-y-auto pb-safe md:pb-0 relative scroll-smooth">
-            <div class="max-w-5xl mx-auto p-4 md:p-8 lg:p-12">
+        <main class="flex-1 h-full overflow-y-auto pb-safe md:pb-0 relative scroll-smooth" id="main-scroll-area">
+            <div class="max-w-5xl mx-auto p-4 sm:p-6 md:p-10 lg:p-12 min-h-full flex flex-col">
                 
-                <section id="view-home" class="view-section active space-y-8">
+                <section id="view-home" class="view-section active space-y-8 flex-1">
                     <!-- Header -->
-                    <div class="flex justify-between items-end">
+                    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-end gap-4 animate-fade-in">
                         <div>
-                            <h2 class="text-brand-muted text-sm tracking-wider uppercase mb-1" id="greeting">Assalamu'alaikum 👋</h2>
-                            <p class="text-2xl md:text-3xl font-serif text-brand-text">Let's make today meaningful.</p>
+                            <h2 class="text-brand-gold text-xs tracking-[0.2em] uppercase mb-2 font-medium" id="greeting">Assalamu'alaikum 👋</h2>
+                            <p class="text-3xl md:text-4xl font-serif text-brand-text leading-tight">Let's make today<br>meaningful.</p>
                         </div>
-                        <div class="text-right hidden sm:block">
-                            <p id="current-date" class="text-brand-sage font-medium"></p>
+                        <div class="sm:text-right bg-brand-surface/50 px-4 py-2 rounded-full border border-white/5 backdrop-blur-md">
+                            <p id="current-date" class="text-brand-sage text-sm font-medium tracking-wide"></p>
                         </div>
                     </div>
 
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="grid grid-cols-1 lg:grid-cols-5 gap-6">
+                        
                         <!-- Time Card -->
-                        <div class="glass-panel p-8 flex flex-col justify-center items-center text-center relative overflow-hidden group">
-                            <div class="absolute inset-0 bg-brand-surface opacity-0 group-hover:opacity-50 transition-opacity"></div>
-                            <p class="text-brand-muted text-sm tracking-widest uppercase mb-4 z-10">Your Time</p>
-                            <div id="real-time-clock" class="text-5xl md:text-6xl font-serif tracking-tight text-white mb-4 z-10 font-variant-numeric: tabular-nums">00:00:00</div>
-                            <p class="text-brand-sage text-sm italic z-10">Time keeps moving. Make this moment count.</p>
-                            <div class="w-full bg-brand-surface/50 h-1.5 mt-6 rounded-full overflow-hidden z-10">
-                                <div id="day-progress-bar" class="bg-brand-sage h-full w-1/2"></div>
+                        <div class="glass-panel p-8 flex flex-col justify-center items-center text-center relative overflow-hidden group lg:col-span-2 min-h-[300px]">
+                            <!-- Animated gradient background -->
+                            <div class="absolute inset-0 bg-gradient-to-br from-brand-sage/5 to-transparent opacity-50"></div>
+                            
+                            <p class="text-brand-muted text-xs tracking-[0.2em] uppercase mb-6 z-10">Your Time</p>
+                            
+                            <div class="relative z-10 mb-6">
+                                <div class="absolute inset-0 bg-brand-gold/20 blur-2xl rounded-full"></div>
+                                <div id="real-time-clock" class="text-5xl md:text-6xl font-serif tracking-tight text-white font-variant-numeric: tabular-nums relative drop-shadow-md">00:00:00</div>
+                            </div>
+                            
+                            <p class="text-brand-sage text-sm italic z-10 mb-8">Time keeps moving. Make this moment count.</p>
+                            
+                            <div class="w-full relative z-10">
+                                <div class="flex justify-between text-[10px] uppercase tracking-widest text-brand-muted mb-2">
+                                    <span>Dawn</span>
+                                    <span>Noon</span>
+                                    <span>Dusk</span>
+                                </div>
+                                <div class="w-full bg-brand-bg/80 h-1.5 rounded-full overflow-hidden shadow-inner">
+                                    <div id="day-progress-bar" class="bg-gradient-to-r from-brand-sage to-brand-gold h-full w-0 relative">
+                                        <div class="absolute right-0 top-0 bottom-0 w-4 bg-white/30 blur-[2px]"></div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
 
-                        <!-- Today's Progress -->
-                        <div class="glass-panel p-8 flex flex-col justify-between">
-                            <div>
-                                <div class="flex justify-between items-center mb-6">
-                                    <h3 class="text-brand-gold font-serif text-xl">Today's Growth</h3>
-                                    <span class="text-2xl" id="progress-text">0 / 5</span>
+                        <!-- Right Column (Progress & Reminders) -->
+                        <div class="flex flex-col gap-6 lg:col-span-3">
+                            <!-- Progress Card -->
+                            <div class="glass-panel p-6 sm:p-8 flex-1 flex flex-col justify-between group hover:border-brand-gold/20">
+                                <div>
+                                    <div class="flex justify-between items-center mb-6">
+                                        <h3 class="text-brand-gold font-serif text-xl sm:text-2xl">Today's Growth</h3>
+                                        <div class="bg-brand-bg/50 px-3 py-1 rounded-full border border-white/5">
+                                            <span class="text-lg font-serif text-white" id="progress-text">0 / 5</span>
+                                        </div>
+                                    </div>
+                                    <progress id="daily-progress" value="0" max="5" class="w-full h-2.5 shadow-inner"></progress>
+                                    <p class="text-brand-muted text-sm mt-4 font-light">Setiap kebaikan kecil adalah benih yang ditanam untuk masa depan.</p>
                                 </div>
-                                <progress id="daily-progress" value="0" max="5" class="w-full h-2"></progress>
-                                <p class="text-brand-muted text-sm mt-4">Small actions become meaningful habits.</p>
+                                
+                                <button onclick="app.openModal('add-deed-modal')" class="glass-button w-full mt-6 py-4 rounded-xl flex items-center justify-center gap-3 text-white">
+                                    <svg class="w-5 h-5 text-brand-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
+                                    <span class="font-medium tracking-wide">Plant a Good Deed</span>
+                                </button>
                             </div>
-                            
-                            <button onclick="app.openModal('add-deed-modal')" class="glass-button w-full mt-8 py-3 rounded-xl flex items-center justify-center gap-2 text-white">
-                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
-                                Add Good Deed
-                            </button>
+
+                            <!-- Reminders Mini Card -->
+                            <div class="glass-panel p-6">
+                                <h3 class="text-sm font-medium tracking-wider text-brand-muted uppercase mb-4">Your Reminders</h3>
+                                <div class="space-y-3" id="home-reminders">
+                                    <!-- Populated by JS -->
+                                </div>
+                            </div>
                         </div>
                     </div>
 
                     <!-- Mini Garden Preview -->
-                    <div class="glass-panel p-6 cursor-pointer hover:border-brand-sage/50 transition-colors" onclick="app.navigate('garden')">
-                        <div class="flex justify-between items-center mb-4">
-                            <h3 class="font-serif text-lg">Amal Garden</h3>
-                            <span class="text-brand-sage text-sm flex items-center gap-1">View Full <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg></span>
+                    <div class="glass-panel p-6 sm:p-8 cursor-pointer hover:border-brand-sage/40 transition-all duration-500 group relative overflow-hidden" onclick="app.navigate('garden')">
+                        <div class="absolute right-0 bottom-0 w-64 h-64 bg-brand-forest/10 rounded-full blur-3xl group-hover:bg-brand-forest/20 transition-colors"></div>
+                        
+                        <div class="flex justify-between items-center mb-6 relative z-10">
+                            <div>
+                                <h3 class="font-serif text-2xl text-white">Amal Garden</h3>
+                                <p class="text-sm text-brand-muted mt-1">Watch your deeds grow into meaning.</p>
+                            </div>
+                            <span class="text-brand-gold text-sm flex items-center gap-2 bg-brand-gold/10 px-4 py-2 rounded-full opacity-0 group-hover:opacity-100 transition-opacity transform translate-x-4 group-hover:translate-x-0">
+                                Enter Garden <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+                            </span>
                         </div>
-                        <div id="mini-garden-container" class="h-32 rounded-xl bg-brand-bg/50 relative flex items-end justify-center overflow-hidden">
+                        
+                        <div id="mini-garden-container" class="h-40 rounded-2xl bg-gradient-to-t from-brand-bg/80 to-transparent border border-white/5 relative flex items-end justify-center overflow-visible z-10">
                             <!-- SVG generated here -->
                         </div>
                     </div>
                 </section>
 
-                <section id="view-garden" class="view-section space-y-8">
-                    <div class="text-center space-y-2 mb-10">
-                        <h2 class="text-3xl md:text-4xl font-serif text-brand-gold">My Amal Garden</h2>
-                        <p class="text-brand-muted">Every good deed helps something grow.</p>
+                <section id="view-garden" class="view-section space-y-8 flex-1 flex flex-col">
+                    <div class="text-center space-y-3 mb-4 animate-slide-up">
+                        <h2 class="text-4xl md:text-5xl font-serif text-brand-gold">My Amal Garden</h2>
+                        <p class="text-brand-muted font-light tracking-wide">"Perumpamaan orang yang menginfakkan hartanya di jalan Allah seperti sebutir biji yang menumbuhkan tujuh tangkai..."</p>
                     </div>
 
                     <!-- Main Garden Visualization -->
-                    <div class="glass-panel p-4 md:p-8 relative min-h-[400px] md:min-h-[500px] flex flex-col justify-end items-center overflow-hidden">
-                        <!-- Atmospheric background elements -->
-                        <div class="absolute inset-0 bg-gradient-to-t from-brand-forest/20 to-transparent"></div>
-                        <div class="absolute w-64 h-64 bg-brand-gold/5 rounded-full blur-3xl top-1/4"></div>
+                    <div class="glass-panel p-4 sm:p-8 relative flex-1 min-h-[500px] flex flex-col justify-end items-center overflow-hidden border-brand-gold/10 shadow-[0_0_50px_rgba(44,64,53,0.2)] animate-fade-in" style="animation-delay: 0.2s;">
                         
+                        <!-- Atmospheric background elements -->
+                        <div class="absolute inset-0 bg-gradient-to-t from-brand-forest/30 via-transparent to-transparent"></div>
+                        <div class="absolute w-[120%] h-[120%] -top-[10%] -left-[10%] bg-[radial-gradient(circle_at_50%_40%,_rgba(212,175,55,0.08)_0%,_transparent_60%)] animate-pulse-slow"></div>
+                        
+                        <!-- Empty State Overlay (Hidden by default) -->
+                        <div id="garden-empty-state" class="absolute inset-0 flex flex-col items-center justify-center z-20 transition-opacity duration-500 hidden">
+                            <div class="w-20 h-20 mb-6 rounded-full bg-brand-surface/80 border border-white/10 flex items-center justify-center shadow-glass">
+                                <span class="text-4xl">🌱</span>
+                            </div>
+                            <h3 class="text-2xl font-serif text-white mb-2">Your garden is waiting.</h3>
+                            <p class="text-brand-muted text-sm text-center max-w-xs">Every meaningful action starts with one small seed. Plant your first deed today.</p>
+                        </div>
+
                         <!-- The Garden SVG Container -->
-                        <div id="main-garden-svg-container" class="relative w-full max-w-2xl h-80 z-10 flex items-end justify-center">
+                        <div id="main-garden-svg-container" class="relative w-full max-w-3xl h-96 z-10 flex items-end justify-center drop-shadow-2xl">
                             <!-- SVGs injected via JS -->
                         </div>
                         
                         <!-- Ground line -->
-                        <div class="w-full h-px bg-gradient-to-r from-transparent via-brand-sage/30 to-transparent relative z-10 mb-4"></div>
+                        <div class="w-full max-w-4xl h-px bg-gradient-to-r from-transparent via-brand-gold/40 to-transparent relative z-10 mb-6">
+                            <div class="absolute top-0 left-1/2 -translate-x-1/2 w-1/3 h-1 bg-brand-gold/20 blur-sm rounded-full"></div>
+                        </div>
                         
                         <!-- Garden Stats Row -->
-                        <div class="w-full flex justify-between items-center z-10 px-4 pt-4 border-t border-white/5 mt-4">
-                            <div class="text-center">
-                                <div class="text-2xl font-serif" id="stat-deeds">0</div>
-                                <div class="text-xs text-brand-muted uppercase tracking-wider">Deeds</div>
+                        <div class="w-full max-w-2xl flex justify-between items-center z-10 px-4 sm:px-12 py-6 bg-brand-bg/40 backdrop-blur-md rounded-3xl border border-white/5">
+                            <div class="text-center space-y-1">
+                                <div class="text-3xl font-serif text-white" id="stat-deeds">0</div>
+                                <div class="text-[10px] text-brand-muted uppercase tracking-[0.2em]">Deeds</div>
                             </div>
-                            <div class="text-center">
-                                <div class="text-2xl font-serif text-brand-gold" id="stat-level">0</div>
-                                <div class="text-xs text-brand-muted uppercase tracking-wider">Level</div>
+                            <div class="w-px h-10 bg-white/10"></div>
+                            <div class="text-center space-y-1 relative">
+                                <div class="absolute -inset-4 bg-brand-gold/10 blur-xl rounded-full"></div>
+                                <div class="text-4xl font-serif text-brand-gold relative" id="stat-level">0</div>
+                                <div class="text-[10px] text-brand-gold uppercase tracking-[0.2em] relative">Level</div>
                             </div>
-                            <div class="text-center">
-                                <div class="text-2xl font-serif" id="stat-flowers">0</div>
-                                <div class="text-xs text-brand-muted uppercase tracking-wider">Flowers</div>
+                            <div class="w-px h-10 bg-white/10"></div>
+                            <div class="text-center space-y-1">
+                                <div class="text-3xl font-serif text-white" id="stat-flowers">0</div>
+                                <div class="text-[10px] text-brand-muted uppercase tracking-[0.2em]">Flowers</div>
                             </div>
                         </div>
                     </div>
 
-                    <div class="flex justify-center">
-                        <button onclick="app.openModal('add-deed-modal')" class="glass-button px-8 py-4 rounded-full text-brand-gold font-medium flex items-center gap-2">
-                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path></svg>
-                            Plant a Good Deed
+                    <div class="flex justify-center animate-slide-up" style="animation-delay: 0.4s;">
+                        <button onclick="app.openModal('add-deed-modal')" class="glass-button px-10 py-5 rounded-full text-brand-gold font-medium flex items-center gap-3 shadow-[0_0_30px_rgba(212,175,55,0.15)] hover:shadow-[0_0_40px_rgba(212,175,55,0.3)]">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path></svg>
+                            <span class="tracking-wide">Plant a Good Deed</span>
                         </button>
                     </div>
                 </section>
 
-                <section id="view-pause" class="view-section space-y-8 flex flex-col items-center justify-center min-h-[70vh]">
-                    <div class="text-center space-y-4 mb-8">
-                        <h2 class="text-3xl md:text-4xl font-serif">Mindful Pause</h2>
-                        <p class="text-brand-muted">Pause the scroll. Return to the moment.</p>
+                <section id="view-pause" class="view-section flex-1 flex flex-col items-center justify-center min-h-[80vh]">
+                    <div class="text-center space-y-4 mb-16 animate-slide-up">
+                        <h2 class="text-4xl md:text-5xl font-serif text-brand-text">Mindful Pause</h2>
+                        <p class="text-brand-muted font-light tracking-wide max-w-sm mx-auto">Pause the endless scroll.<br>Return your attention to the present moment.</p>
                     </div>
 
                     <!-- Breathing Circle -->
-                    <div class="relative w-64 h-64 flex items-center justify-center my-12">
+                    <div class="relative w-72 h-72 flex items-center justify-center mb-16 animate-fade-in" style="animation-delay: 0.2s;">
                         <!-- Animated rings -->
-                        <div id="breathe-ring" class="absolute inset-0 rounded-full border-2 border-brand-sage/30"></div>
-                        <div id="breathe-bg" class="absolute inset-4 rounded-full bg-brand-sage/10 blur-xl"></div>
+                        <div id="breathe-ring" class="absolute inset-0 rounded-full border border-brand-sage/40 transition-all duration-1000 ease-in-out shadow-[inset_0_0_20px_rgba(138,160,144,0.2)]"></div>
+                        <div id="breathe-ring-2" class="absolute inset-4 rounded-full border border-brand-gold/20 transition-all duration-1000 ease-in-out opacity-0"></div>
+                        <div id="breathe-bg" class="absolute inset-8 rounded-full bg-gradient-to-tr from-brand-sage/10 to-brand-gold/10 blur-2xl transition-all duration-1000"></div>
                         
                         <!-- Text -->
-                        <div class="z-10 text-center">
-                            <div id="breathe-time" class="text-4xl font-serif text-brand-gold font-variant-numeric: tabular-nums mb-2">01:00</div>
-                            <div id="breathe-instruction" class="text-lg tracking-widest text-brand-muted uppercase">Ready</div>
+                        <div class="z-10 text-center flex flex-col items-center justify-center">
+                            <div id="breathe-time" class="text-5xl font-serif text-brand-gold font-variant-numeric: tabular-nums mb-3 drop-shadow-lg">01:00</div>
+                            <div id="breathe-instruction" class="text-sm tracking-[0.3em] text-brand-muted uppercase font-medium">Ready</div>
                         </div>
                     </div>
 
                     <!-- Controls -->
-                    <div class="flex flex-col items-center gap-6 w-full max-w-xs">
-                        <div class="flex gap-4 w-full" id="pause-duration-selector">
-                            <button onclick="app.setPauseDuration(60)" class="flex-1 py-2 rounded-lg border border-white/10 hover:bg-white/5 transition-colors duration-btn active">1m</button>
-                            <button onclick="app.setPauseDuration(300)" class="flex-1 py-2 rounded-lg border border-white/10 hover:bg-white/5 transition-colors duration-btn">5m</button>
-                            <button onclick="app.setPauseDuration(900)" class="flex-1 py-2 rounded-lg border border-white/10 hover:bg-white/5 transition-colors duration-btn">15m</button>
+                    <div class="flex flex-col items-center gap-8 w-full max-w-sm animate-slide-up" style="animation-delay: 0.4s;">
+                        <div class="flex gap-3 w-full bg-brand-surface/40 p-1.5 rounded-2xl border border-white/5" id="pause-duration-selector">
+                            <button onclick="app.setPauseDuration(60)" class="flex-1 py-3 rounded-xl hover:bg-white/5 transition-all duration-btn active font-medium text-sm text-brand-muted">1 Min</button>
+                            <button onclick="app.setPauseDuration(300)" class="flex-1 py-3 rounded-xl hover:bg-white/5 transition-all duration-btn font-medium text-sm text-brand-muted">5 Min</button>
+                            <button onclick="app.setPauseDuration(900)" class="flex-1 py-3 rounded-xl hover:bg-white/5 transition-all duration-btn font-medium text-sm text-brand-muted">15 Min</button>
                         </div>
 
-                        <div class="flex gap-4 w-full">
-                            <button id="btn-pause-toggle" onclick="app.togglePauseTimer()" class="glass-button flex-1 py-3 rounded-xl font-medium">Start</button>
-                            <button id="btn-pause-end" onclick="app.endPauseTimer()" class="glass-button px-4 py-3 rounded-xl hidden text-red-400">End</button>
+                        <div class="w-full relative">
+                            <button id="btn-pause-toggle" onclick="app.togglePauseTimer()" class="glass-button w-full py-4 rounded-2xl font-medium tracking-widest uppercase text-sm text-brand-gold shadow-glow">
+                                Start Session
+                            </button>
+                            <button id="btn-pause-end" onclick="app.endPauseTimer()" class="w-full py-4 rounded-2xl hidden text-brand-muted hover:text-white border border-transparent hover:border-white/10 transition-colors tracking-widest uppercase text-sm">
+                                End Early
+                            </button>
                         </div>
                     </div>
                 </section>
 
-                <section id="view-reflect" class="view-section space-y-12">
-                    <!-- Reclaim Time Section -->
-                    <div class="glass-panel p-6 md:p-8">
-                        <h3 class="text-2xl font-serif text-brand-gold mb-2">Reclaim Your Time</h3>
-                        <p class="text-brand-muted text-sm mb-6">Your attention is valuable. Where do you want to give it back?</p>
-                        
-                        <div class="grid grid-cols-2 md:grid-cols-4 gap-3 mb-6" id="reclaim-categories">
-                            <!-- Generated by JS -->
-                        </div>
-                        
-                        <div id="reclaim-action" class="hidden animate-fade-in border-t border-white/5 pt-6 mt-4">
-                            <p class="text-center mb-4 text-lg">What if you reclaimed just 15 minutes?</p>
-                            <button onclick="app.startReclaimTimer()" class="glass-button w-full py-3 rounded-xl text-brand-gold font-medium">Reclaim 15 Minutes</button>
-                        </div>
-                        
-                        <!-- Reclaim Active Timer State -->
-                        <div id="reclaim-active" class="hidden text-center py-8">
-                            <div id="reclaim-timer-display" class="text-5xl font-serif text-white mb-4">15:00</div>
-                            <p class="text-brand-sage mb-6">Time is yours again. Put down the device.</p>
-                            <button onclick="app.cancelReclaimTimer()" class="text-sm text-brand-muted hover:text-white underline">Cancel</button>
-                        </div>
+                <section id="view-reflect" class="view-section space-y-8">
+                    <div class="text-center space-y-3 mb-10 animate-slide-up">
+                        <h2 class="text-4xl font-serif text-brand-text">Time & Reflection</h2>
+                        <p class="text-brand-muted font-light tracking-wide">Examine your days to build a better tomorrow.</p>
                     </div>
 
-                    <!-- Night Muhasabah -->
-                    <div class="glass-panel p-6 md:p-8">
-                        <h3 class="text-2xl font-serif mb-2">Before You Rest</h3>
-                        <p class="text-brand-muted text-sm mb-8">End your day with reflection.</p>
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                        
+                        <!-- Left Column: Time Management -->
+                        <div class="space-y-8">
+                            <!-- Reclaim Time Section -->
+                            <div class="glass-panel p-6 sm:p-8 animate-fade-in" style="animation-delay: 0.1s;">
+                                <h3 class="text-2xl font-serif text-brand-gold mb-3">Reclaim Your Attention</h3>
+                                <p class="text-brand-muted text-sm mb-8 font-light leading-relaxed">Your attention is valuable. If you could take back 15 minutes right now from digital noise, where would you put it?</p>
+                                
+                                <div class="grid grid-cols-2 gap-4 mb-6" id="reclaim-categories">
+                                    <!-- Generated by JS -->
+                                </div>
+                                
+                                <div id="reclaim-action" class="hidden animate-fade-in border-t border-white/5 pt-6 mt-2">
+                                    <button onclick="app.startReclaimTimer()" class="glass-button w-full py-4 rounded-xl text-brand-gold font-medium tracking-wide">
+                                        Reclaim 15 Minutes Now
+                                    </button>
+                                </div>
+                                
+                                <!-- Reclaim Active Timer State -->
+                                <div id="reclaim-active" class="hidden text-center py-10">
+                                    <div class="relative w-40 h-40 mx-auto mb-6 flex items-center justify-center">
+                                        <svg class="absolute inset-0 w-full h-full -rotate-90" viewBox="0 0 100 100">
+                                            <circle cx="50" cy="50" r="48" fill="none" stroke="rgba(255,255,255,0.05)" stroke-width="4"></circle>
+                                            <circle id="reclaim-progress-circle" cx="50" cy="50" r="48" fill="none" stroke="currentColor" stroke-width="4" stroke-dasharray="301.59" stroke-dashoffset="0" class="text-brand-gold transition-all duration-1000 linear"></circle>
+                                        </svg>
+                                        <div id="reclaim-timer-display" class="text-4xl font-serif text-white relative z-10">15:00</div>
+                                    </div>
+                                    <p class="text-brand-sage mb-8 font-medium">Time is yours again. Put down the device.</p>
+                                    <button onclick="app.cancelReclaimTimer()" class="text-sm text-brand-muted hover:text-white transition-colors uppercase tracking-widest border-b border-transparent hover:border-white pb-1">Cancel</button>
+                                </div>
+                            </div>
 
-                        <form id="muhasabah-form" class="space-y-6" onsubmit="app.saveReflection(event)">
-                            <div class="space-y-2">
-                                <label class="text-sm text-brand-sage">1. What mattered most today?</label>
-                                <textarea required class="w-full bg-brand-surface border border-white/10 rounded-xl p-3 text-white focus:outline-none focus:border-brand-gold/50 transition-colors resize-none h-24" placeholder="Write your thoughts..."></textarea>
+                            <!-- Time Distribution Chart -->
+                            <div class="glass-panel p-6 sm:p-8 animate-fade-in" style="animation-delay: 0.2s;">
+                                <div class="flex justify-between items-end mb-8">
+                                    <div>
+                                        <h3 class="text-xl font-serif mb-1">Where did your time go?</h3>
+                                        <p class="text-xs text-brand-muted">A mindful reflection of a typical day.</p>
+                                    </div>
+                                </div>
+                                
+                                <!-- Mock Stacked Bar Chart -->
+                                <div class="space-y-5">
+                                    <!-- Bar 1 -->
+                                    <div class="space-y-2">
+                                        <div class="flex justify-between text-sm">
+                                            <span class="text-white flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-[#E2E8F0]"></span>Digital / Screens</span>
+                                            <span class="text-brand-muted">5h 30m</span>
+                                        </div>
+                                        <div class="w-full bg-white/5 h-2 rounded-full overflow-hidden">
+                                            <div class="bg-[#E2E8F0] h-full w-[65%] rounded-full"></div>
+                                        </div>
+                                    </div>
+                                    <!-- Bar 2 -->
+                                    <div class="space-y-2">
+                                        <div class="flex justify-between text-sm">
+                                            <span class="text-white flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-brand-gold"></span>Spiritual & Growth</span>
+                                            <span class="text-brand-muted">45m</span>
+                                        </div>
+                                        <div class="w-full bg-white/5 h-2 rounded-full overflow-hidden">
+                                            <div class="bg-brand-gold h-full w-[15%] rounded-full"></div>
+                                        </div>
+                                    </div>
+                                    <!-- Bar 3 -->
+                                    <div class="space-y-2">
+                                        <div class="flex justify-between text-sm">
+                                            <span class="text-white flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-brand-sage"></span>Rest & Restore</span>
+                                            <span class="text-brand-muted">7h 30m</span>
+                                        </div>
+                                        <div class="w-full bg-white/5 h-2 rounded-full overflow-hidden">
+                                            <div class="bg-brand-sage h-full w-[80%] rounded-full"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="mt-8 p-4 bg-brand-gold/10 rounded-xl border border-brand-gold/20 flex gap-4 items-start">
+                                    <span class="text-xl">💡</span>
+                                    <p class="text-sm text-brand-gold/90 font-light leading-relaxed">Your digital time takes up a significant portion. Try using the Reclaim feature above to shift just 15 minutes today.</p>
+                                </div>
                             </div>
-                            <div class="space-y-2">
-                                <label class="text-sm text-brand-sage">2. What distracted you today?</label>
-                                <textarea required class="w-full bg-brand-surface border border-white/10 rounded-xl p-3 text-white focus:outline-none focus:border-brand-gold/50 transition-colors resize-none h-24" placeholder="Be honest with yourself..."></textarea>
-                            </div>
-                            <div class="space-y-2">
-                                <label class="text-sm text-brand-sage">3. What do you want to do better tomorrow?</label>
-                                <textarea required class="w-full bg-brand-surface border border-white/10 rounded-xl p-3 text-white focus:outline-none focus:border-brand-gold/50 transition-colors resize-none h-24" placeholder="Set an intention..."></textarea>
-                            </div>
-                            <button type="submit" class="glass-button w-full py-3 rounded-xl text-brand-gold">Save Reflection</button>
-                        </form>
-                    </div>
-
-                    <!-- Gratitude -->
-                    <div class="glass-panel p-6 md:p-8">
-                        <h3 class="text-xl font-serif mb-4">One thing I'm grateful for</h3>
-                        <form id="gratitude-form" class="flex gap-2" onsubmit="app.saveGratitude(event)">
-                            <input type="text" required class="flex-1 bg-brand-surface border border-white/10 rounded-xl p-3 text-white focus:outline-none focus:border-brand-gold/50 transition-colors" placeholder="Today, I'm grateful for...">
-                            <button type="submit" class="glass-button px-6 rounded-xl text-brand-gold">Save</button>
-                        </form>
-                        <div id="gratitude-list" class="mt-4 space-y-2 text-sm text-brand-muted">
-                            <!-- List injected here -->
                         </div>
+
+                        <!-- Right Column: Muhasabah & Gratitude -->
+                        <div class="space-y-8">
+                            <!-- Night Muhasabah -->
+                            <div class="glass-panel p-6 sm:p-8 animate-fade-in" style="animation-delay: 0.3s;">
+                                <h3 class="text-2xl font-serif mb-2 flex items-center gap-3">
+                                    Before You Rest <span class="text-brand-sage">🌙</span>
+                                </h3>
+                                <p class="text-brand-muted text-sm mb-8 font-light">End your day by planting thoughts for tomorrow.</p>
+
+                                <form id="muhasabah-form" class="space-y-6" onsubmit="app.saveReflection(event)">
+                                    <div class="space-y-3">
+                                        <label class="text-sm font-medium tracking-wide text-brand-sage block">What mattered most today?</label>
+                                        <textarea required class="w-full bg-brand-bg/50 border border-white/10 rounded-xl p-4 text-white placeholder-white/20 focus:outline-none focus:border-brand-gold/50 focus:ring-1 focus:ring-brand-gold/50 transition-all resize-none h-24 shadow-inner" placeholder="Write your thoughts..."></textarea>
+                                    </div>
+                                    <div class="space-y-3">
+                                        <label class="text-sm font-medium tracking-wide text-brand-sage block">What distracted you?</label>
+                                        <textarea required class="w-full bg-brand-bg/50 border border-white/10 rounded-xl p-4 text-white placeholder-white/20 focus:outline-none focus:border-brand-gold/50 focus:ring-1 focus:ring-brand-gold/50 transition-all resize-none h-24 shadow-inner" placeholder="Be honest with yourself..."></textarea>
+                                    </div>
+                                    <button type="submit" class="glass-button w-full py-4 rounded-xl text-brand-gold font-medium tracking-wide">Plant Reflection</button>
+                                </form>
+                            </div>
+
+                            <!-- Gratitude -->
+                            <div class="glass-panel p-6 sm:p-8 animate-fade-in" style="animation-delay: 0.4s;">
+                                <h3 class="text-xl font-serif mb-6">One thing I'm grateful for...</h3>
+                                <form id="gratitude-form" class="flex flex-col sm:flex-row gap-3" onsubmit="app.saveGratitude(event)">
+                                    <input type="text" required class="flex-1 bg-brand-bg/50 border border-white/10 rounded-xl p-4 text-white placeholder-white/20 focus:outline-none focus:border-brand-gold/50 focus:ring-1 focus:ring-brand-gold/50 transition-all shadow-inner" placeholder="Alhamdulillah for...">
+                                    <button type="submit" class="glass-button px-8 py-4 rounded-xl text-brand-gold font-medium">Save</button>
+                                </form>
+                                <div id="gratitude-list" class="mt-6 space-y-3">
+                                    <!-- List injected here -->
+                                </div>
+                            </div>
+                        </div>
+                        
                     </div>
                 </section>
 
                 <section id="view-alasr" class="view-section space-y-12">
                     
                     <!-- Surah Concept -->
-                    <div class="glass-panel p-8 text-center space-y-6">
-                        <div class="text-5xl font-arabic text-brand-gold py-4">وَالْعَصْرِ</div>
-                        <p class="font-serif italic text-xl">"Demi masa."</p>
-                        <div class="max-w-2xl mx-auto text-brand-muted text-sm md:text-base leading-relaxed space-y-4">
-                            <p>Surah Al-'Asr reminds us that humanity is in a state of loss, except for those who believe, do good deeds, and advise each other to truth and patience.</p>
-                            <p>ASRANA is a digital companion built around this philosophy—helping you become aware of your time, cultivate good habits, and find meaning in the modern world.</p>
+                    <div class="glass-panel p-10 md:p-16 text-center space-y-8 animate-slide-up relative overflow-hidden">
+                        <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-brand-gold/10 via-transparent to-transparent opacity-50"></div>
+                        
+                        <div class="text-6xl md:text-7xl font-arabic text-brand-gold py-6 drop-shadow-lg relative z-10">وَالْعَصْرِ</div>
+                        <p class="font-serif italic text-2xl relative z-10">"Demi masa."</p>
+                        
+                        <div class="w-16 h-px bg-brand-gold/30 mx-auto"></div>
+                        
+                        <div class="max-w-2xl mx-auto text-brand-text/80 text-sm md:text-base font-light leading-loose space-y-6 relative z-10">
+                            <p>Surah Al-'Asr is a profound reminder that humanity is in a state of continuous loss as time passes, except for those who choose a different path.</p>
+                            <p>Those who believe, do good deeds, and advise each other to truth and patience. ASRANA is built around this philosophy—a digital space to help you reclaim awareness, cultivate good habits, and find meaning.</p>
                         </div>
                         
                         <!-- Timeline Concept -->
-                        <div class="flex flex-col items-center gap-4 py-8 relative">
-                            <div class="absolute left-1/2 top-10 bottom-10 w-px bg-white/10 -translate-x-1/2"></div>
+                        <div class="flex flex-col items-center gap-6 py-10 relative z-10">
+                            <div class="absolute left-1/2 top-10 bottom-10 w-px bg-gradient-to-b from-transparent via-brand-gold/30 to-transparent -translate-x-1/2"></div>
                             
-                            <div class="z-10 bg-brand-bg px-4 py-1 text-xs tracking-widest uppercase text-brand-muted rounded-full border border-white/5">Time</div>
-                            <div class="z-10 w-2 h-2 rounded-full bg-brand-sage/50"></div>
+                            <div class="z-10 bg-brand-surface px-6 py-2 text-xs tracking-[0.2em] uppercase text-brand-muted rounded-full border border-white/5 shadow-glass">Time Passes</div>
+                            <div class="z-10 w-2 h-2 rounded-full bg-brand-sage/40 shadow-[0_0_10px_rgba(138,160,144,0.5)]"></div>
                             
-                            <div class="z-10 bg-brand-bg px-4 py-1 text-xs tracking-widest uppercase text-brand-sage rounded-full border border-white/5">Awareness</div>
-                            <div class="z-10 w-2 h-2 rounded-full bg-brand-sage/50"></div>
+                            <div class="z-10 bg-brand-surface px-6 py-2 text-xs tracking-[0.2em] uppercase text-brand-sage rounded-full border border-white/5 shadow-glass">Awareness Wakes</div>
+                            <div class="z-10 w-2 h-2 rounded-full bg-brand-gold/40 shadow-[0_0_10px_rgba(212,175,55,0.5)]"></div>
                             
-                            <div class="z-10 bg-brand-bg px-4 py-1 text-xs tracking-widest uppercase text-brand-gold rounded-full border border-white/5">Good Deeds</div>
-                            <div class="z-10 w-2 h-2 rounded-full bg-brand-sage/50"></div>
+                            <div class="z-10 bg-brand-surface px-6 py-2 text-xs tracking-[0.2em] uppercase text-brand-gold rounded-full border border-brand-gold/20 shadow-glow">Deeds Are Planted</div>
+                            <div class="z-10 w-2 h-2 rounded-full bg-white/40 shadow-[0_0_10px_rgba(255,255,255,0.5)]"></div>
                             
-                            <div class="z-10 bg-brand-bg px-4 py-1 text-xs tracking-widest uppercase text-white rounded-full border border-white/5">Meaning</div>
+                            <div class="z-10 bg-white/10 backdrop-blur-md px-6 py-2 text-xs tracking-[0.2em] uppercase text-white rounded-full border border-white/20 shadow-glass">Meaning Grows</div>
                         </div>
                     </div>
 
                     <!-- Personal Journey Stats -->
-                    <div>
-                        <h3 class="text-2xl font-serif mb-6 px-2">Your Journey</h3>
+                    <div class="animate-fade-in" style="animation-delay: 0.2s;">
+                        <div class="flex items-center gap-4 mb-6 px-2">
+                            <h3 class="text-2xl font-serif">Your Journey</h3>
+                            <div class="flex-1 h-px bg-white/5"></div>
+                        </div>
                         <div class="grid grid-cols-2 md:grid-cols-4 gap-4" id="stats-grid">
                             <!-- Stats injected here -->
                         </div>
                     </div>
 
                     <!-- Achievements -->
-                    <div>
-                        <h3 class="text-xl font-serif mb-4 px-2">Milestones</h3>
-                        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4" id="achievements-list">
+                    <div class="animate-fade-in" style="animation-delay: 0.4s;">
+                        <div class="flex items-center gap-4 mb-6 px-2">
+                            <h3 class="text-2xl font-serif">Milestones</h3>
+                            <div class="flex-1 h-px bg-white/5"></div>
+                        </div>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5" id="achievements-list">
                             <!-- Achievements injected here -->
                         </div>
                     </div>
 
-                    <footer class="pt-12 pb-8 text-center border-t border-white/5">
-                        <h4 class="font-serif text-brand-gold mb-2">ASRANA</h4>
-                        <p class="text-xs text-brand-muted max-w-xs mx-auto">Built around mindful living, meaningful actions, and the reminder of Al-'Asr.</p>
+                    <footer class="pt-20 pb-12 text-center border-t border-white/5">
+                        <h4 class="font-serif text-brand-gold mb-3 tracking-[0.2em]">ASRANA</h4>
+                        <p class="text-xs text-brand-muted max-w-sm mx-auto font-light leading-relaxed">Built around mindful living, meaningful actions, and the profound reminder of Al-'Asr.</p>
+                        <div class="flex justify-center gap-6 mt-8 text-[10px] uppercase tracking-widest text-brand-muted/50">
+                            <button onclick="app.openModal('settings-modal')" class="hover:text-brand-muted transition-colors">Settings</button>
+                            <span>•</span>
+                            <button onclick="app.confirmReset()" class="hover:text-red-400 transition-colors">Reset Journey</button>
+                        </div>
                     </footer>
                 </section>
 
             </div>
         </main>
 
-        <nav class="md:hidden fixed bottom-0 left-0 w-full bg-brand-bg/90 backdrop-blur-xl border-t border-white/10 z-30 pb-safe px-2">
-            <div class="flex justify-around items-center h-16" id="mobile-nav">
-                <!-- Nav items generated by JS -->
+        <!-- Floating Mobile Nav -->
+        <nav class="md:hidden fixed bottom-6 left-4 right-4 z-30 transition-transform duration-300 transform translate-y-0" id="mobile-nav-container">
+            <div class="glass-panel rounded-3xl floating-nav overflow-hidden">
+                <div class="flex justify-around items-center h-16 px-2" id="mobile-nav">
+                    <!-- Nav items generated by JS -->
+                </div>
             </div>
         </nav>
     </div>
 
+    <!-- Modals -->
     
     <!-- Add Deed Modal -->
-    <div id="add-deed-modal" class="fixed inset-0 z-50 flex items-center justify-center p-4 modal-backdrop hidden opacity-0 transition-opacity">
-        <div class="glass-panel w-full max-w-md p-6 max-h-[90vh] flex flex-col scale-95 transition-transform duration-300" id="add-deed-content">
+    <div id="add-deed-modal" class="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-0 sm:p-4 modal-backdrop hidden opacity-0 transition-opacity duration-300">
+        <div class="glass-panel w-full sm:max-w-md p-6 sm:rounded-3xl rounded-t-3xl rounded-b-none h-[85vh] sm:h-auto max-h-[90vh] flex flex-col transform translate-y-full sm:scale-95 transition-transform duration-500 ease-out" id="add-deed-content">
+            
+            <div class="w-12 h-1.5 bg-white/10 rounded-full mx-auto mb-6 sm:hidden"></div>
+            
             <div class="flex justify-between items-center mb-6">
-                <h3 class="text-xl font-serif">What good did you do today?</h3>
-                <button onclick="app.closeModal('add-deed-modal')" class="text-brand-muted hover:text-white p-2">
+                <div>
+                    <h3 class="text-2xl font-serif text-white">Plant a Seed</h3>
+                    <p class="text-xs text-brand-muted tracking-wide mt-1">What good did you do today?</p>
+                </div>
+                <button onclick="app.closeModal('add-deed-modal')" class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center text-brand-muted hover:text-white hover:bg-white/10 transition-colors">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
                 </button>
             </div>
             
-            <div class="flex-1 overflow-y-auto pr-2 space-y-3" id="deed-options">
+            <div class="flex-1 overflow-y-auto pr-2 space-y-3 pb-safe sm:pb-0" id="deed-options">
                 <!-- Options injected by JS -->
             </div>
         </div>
     </div>
 
     <!-- Settings Modal -->
-    <div id="settings-modal" class="fixed inset-0 z-50 flex items-center justify-center p-4 modal-backdrop hidden opacity-0 transition-opacity">
-        <div class="glass-panel w-full max-w-sm p-6 scale-95 transition-transform duration-300" id="settings-content">
-            <div class="flex justify-between items-center mb-6">
-                <h3 class="text-xl font-serif">Settings</h3>
-                <button onclick="app.closeModal('settings-modal')" class="text-brand-muted hover:text-white p-2">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+    <div id="settings-modal" class="fixed inset-0 z-50 flex items-center justify-center p-4 modal-backdrop hidden opacity-0 transition-opacity duration-300">
+        <div class="glass-panel w-full max-w-sm p-8 scale-95 transition-transform duration-500 ease-out" id="settings-content">
+            <div class="flex justify-between items-center mb-8">
+                <h3 class="text-2xl font-serif">Settings</h3>
+                <button onclick="app.closeModal('settings-modal')" class="text-brand-muted hover:text-white transition-colors">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
                 </button>
             </div>
             
             <div class="space-y-6">
-                <div>
-                    <label class="block text-sm text-brand-muted mb-2">Display Name</label>
-                    <input type="text" id="setting-name" class="w-full bg-brand-surface border border-white/10 rounded-xl p-3 text-white focus:outline-none focus:border-brand-gold/50" onchange="app.saveSetting('name', this.value)">
+                <div class="space-y-2">
+                    <label class="block text-xs uppercase tracking-[0.1em] text-brand-muted">Display Name</label>
+                    <input type="text" id="setting-name" class="w-full bg-brand-bg/50 border border-white/10 rounded-xl p-4 text-white focus:outline-none focus:border-brand-gold/50 shadow-inner transition-colors" onchange="app.saveSetting('name', this.value)">
                 </div>
                 
-                <div>
-                    <label class="block text-sm text-brand-muted mb-2">Daily Goal (Deeds)</label>
-                    <select id="setting-goal" class="w-full bg-brand-surface border border-white/10 rounded-xl p-3 text-white focus:outline-none" onchange="app.saveSetting('dailyGoal', parseInt(this.value))">
-                        <option value="3">3 actions</option>
-                        <option value="5">5 actions</option>
-                        <option value="7">7 actions</option>
-                        <option value="10">10 actions</option>
+                <div class="space-y-2">
+                    <label class="block text-xs uppercase tracking-[0.1em] text-brand-muted">Daily Goal (Deeds)</label>
+                    <select id="setting-goal" class="w-full bg-brand-bg/50 border border-white/10 rounded-xl p-4 text-white focus:outline-none shadow-inner transition-colors appearance-none" onchange="app.saveSetting('dailyGoal', parseInt(this.value))">
+                        <option value="3">3 actions / day</option>
+                        <option value="5">5 actions / day</option>
+                        <option value="7">7 actions / day</option>
+                        <option value="10">10 actions / day</option>
                     </select>
                 </div>
 
-                <div class="pt-6 border-t border-white/10">
-                    <button onclick="app.confirmReset()" class="w-full py-3 rounded-xl border border-red-500/30 text-red-400 hover:bg-red-500/10 transition-colors">
+                <div class="pt-8 mt-4 border-t border-white/5">
+                    <button onclick="app.confirmReset()" class="w-full py-4 rounded-xl border border-red-500/20 text-red-400 hover:bg-red-500/10 transition-colors font-medium text-sm tracking-wide">
                         Reset Journey
                     </button>
                 </div>
@@ -500,13 +696,16 @@
     </div>
 
     <!-- Reset Confirm Modal -->
-    <div id="reset-confirm-modal" class="fixed inset-0 z-[60] flex items-center justify-center p-4 modal-backdrop hidden opacity-0 transition-opacity">
-        <div class="glass-panel w-full max-w-sm p-6 text-center scale-95 transition-transform duration-300">
-            <h3 class="text-xl font-serif text-red-400 mb-2">Reset your journey?</h3>
-            <p class="text-brand-muted text-sm mb-6">Your garden, milestones, and reflections will be cleared forever.</p>
-            <div class="flex gap-3">
-                <button onclick="app.closeModal('reset-confirm-modal')" class="flex-1 py-3 rounded-xl border border-white/10 hover:bg-white/5">Cancel</button>
-                <button onclick="app.executeReset()" class="flex-1 py-3 rounded-xl bg-red-500/20 text-red-400 border border-red-500/30">Reset Everything</button>
+    <div id="reset-confirm-modal" class="fixed inset-0 z-[60] flex items-center justify-center p-4 modal-backdrop hidden opacity-0 transition-opacity duration-300">
+        <div class="glass-panel w-full max-w-sm p-8 text-center scale-95 transition-transform duration-500 ease-out">
+            <div class="w-16 h-16 rounded-full bg-red-500/10 text-red-400 flex items-center justify-center mx-auto mb-4">
+                <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
+            </div>
+            <h3 class="text-2xl font-serif text-white mb-2">Reset Journey?</h3>
+            <p class="text-brand-muted text-sm mb-8 font-light leading-relaxed">Your garden, milestones, and reflections will be returned to the earth. This cannot be undone.</p>
+            <div class="flex flex-col gap-3">
+                <button onclick="app.executeReset()" class="w-full py-4 rounded-xl bg-red-500/20 text-red-400 border border-red-500/30 font-medium">Reset Everything</button>
+                <button onclick="app.closeModal('reset-confirm-modal')" class="w-full py-4 rounded-xl text-white hover:bg-white/5 transition-colors font-medium">Cancel</button>
             </div>
         </div>
     </div>
@@ -524,19 +723,24 @@
                 gratitude: [],
                 dailyGoal: 5,
                 streak: 0,
-                lastActiveDate: null
+                lastActiveDate: null,
+                reminders: [
+                    { id: 'morning', title: 'Morning Reflection', active: true },
+                    { id: 'pause', title: 'Digital Pause', active: false },
+                    { id: 'night', title: 'Night Muhasabah', active: true }
+                ]
             },
 
             config: {
                 deedCategories: [
-                    { id: 'prayer', title: 'Prayer', desc: 'Take a moment to reconnect.', color: '#FFFFFF' },
-                    { id: 'quran', title: 'Quran', desc: 'Spend a mindful moment with the Qur\'an.', color: '#C5A86D' },
-                    { id: 'charity', title: 'Charity', desc: 'Give something, however small.', color: '#FCD34D' },
-                    { id: 'kindness', title: 'Kindness', desc: 'Do something kind for someone.', color: '#F472B6' },
-                    { id: 'family', title: 'Family', desc: 'Give meaningful time to family.', color: '#FB923C' },
-                    { id: 'pause', title: 'Digital Pause', desc: 'Step away from your screen.', color: '#7A8B80' },
-                    { id: 'help', title: 'Helping Others', desc: 'Make someone\'s day a little easier.', color: '#A78BFA' },
-                    { id: 'gratitude', title: 'Gratitude', desc: 'Pause and appreciate what you have.', color: '#FBCFE8' }
+                    { id: 'prayer', title: 'Prayer', desc: 'Take a moment to reconnect.', color: '#FFFFFF', icon: '🤲' },
+                    { id: 'quran', title: 'Quran', desc: 'Spend a mindful moment with the Qur\'an.', color: '#D4AF37', icon: '📖' },
+                    { id: 'charity', title: 'Charity', desc: 'Give something, however small.', color: '#FCD34D', icon: '🤝' },
+                    { id: 'kindness', title: 'Kindness', desc: 'Do something kind for someone.', color: '#F472B6', icon: '🤍' },
+                    { id: 'family', title: 'Family', desc: 'Give meaningful time to family.', color: '#FB923C', icon: '👨‍👩‍👧' },
+                    { id: 'pause', title: 'Digital Pause', desc: 'Step away from your screen.', color: '#8AA090', icon: '🧘' },
+                    { id: 'help', title: 'Helping Others', desc: 'Make someone\'s day a little easier.', color: '#A78BFA', icon: '✨' },
+                    { id: 'gratitude', title: 'Gratitude', desc: 'Pause and appreciate what you have.', color: '#FBCFE8', icon: '📝' }
                 ],
                 reclaimCategories: [
                     { id: 'social', icon: '📱', name: 'Social Media' },
@@ -548,29 +752,22 @@
                     { id: 'first_step', title: 'First Step', desc: 'Plant your first seed.', reqDeeds: 1 },
                     { id: 'growing', title: 'Growing', desc: 'Complete 5 good deeds.', reqDeeds: 5 },
                     { id: 'first_bloom', title: 'First Bloom', desc: 'Complete 10 good deeds.', reqDeeds: 10 },
+                    { id: 'mindful_week', title: 'Mindful Week', desc: 'Reach a 7-day streak.', reqDeeds: null, reqStreak: 7 },
                     { id: 'rooted', title: 'Rooted', desc: 'Reach 30 meaningful actions.', reqDeeds: 30 }
                 ],
                 navItems: [
-                    { id: 'home', icon: '⌂', label: 'Home' },
-                    { id: 'garden', icon: '🌱', label: 'Garden' },
-                    { id: 'pause', icon: '🧘', label: 'Pause' },
-                    { id: 'reflect', icon: '🌙', label: 'Reflect' },
-                    { id: 'alasr', icon: '📖', label: 'Al-\'Asr' }
+                    { id: 'home', icon: '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path>', label: 'Home' },
+                    { id: 'garden', icon: '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"></path>', label: 'Garden' },
+                    { id: 'pause', icon: '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>', label: 'Pause' },
+                    { id: 'reflect', icon: '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path>', label: 'Reflect' },
+                    { id: 'alasr', icon: '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path>', label: 'Al-\'Asr' }
                 ]
             },
 
-            timers: {
-                clock: null,
-                pause: null,
-                reclaim: null
-            },
+            timers: { clock: null, pause: null, reclaim: null },
             
-            pauseState: {
-                duration: 60,
-                timeLeft: 0,
-                isActive: false,
-                phase: 0 // 0: Inhale, 1: Hold, 2: Exhale
-            },
+            pauseState: { duration: 60, timeLeft: 0, isActive: false, phase: 0 },
+            currentView: 'home',
 
             // --- INITIALIZATION ---
             init: function() {
@@ -583,10 +780,7 @@
                 if (this.state.onboardingDone) {
                     document.getElementById('welcome-screen').style.display = 'none';
                     document.getElementById('app-layout').classList.remove('hidden');
-                    this.navigate('home');
-                } else {
-                    // Seed some demo data for better first look if needed, but requirements said empty state is fine.
-                    // Let's keep it truly empty as per "Empty State" requirement.
+                    this.navigate('home', true);
                 }
 
                 // Close modals on outside click
@@ -595,25 +789,42 @@
                         if (e.target === m) this.closeModal(m.id);
                     });
                 });
+
+                // Scroll hide mobile nav handler
+                let lastScrollY = window.scrollY;
+                const scrollArea = document.getElementById('main-scroll-area');
+                const mobNav = document.getElementById('mobile-nav-container');
+                
+                scrollArea.addEventListener('scroll', () => {
+                    if(window.innerWidth >= 768) return; // Only for mobile
+                    if (scrollArea.scrollTop > lastScrollY && scrollArea.scrollTop > 50) {
+                        mobNav.style.transform = 'translateY(150%)'; // Hide down
+                    } else {
+                        mobNav.style.transform = 'translateY(0)'; // Show
+                    }
+                    lastScrollY = scrollArea.scrollTop;
+                }, { passive: true });
             },
 
             loadState: function() {
                 const saved = localStorage.getItem('asrana_state');
                 if (saved) {
                     try {
-                        this.state = { ...this.state, ...JSON.parse(saved) };
+                        const parsed = JSON.parse(saved);
+                        this.state = { ...this.state, ...parsed };
+                        // Handle schema upgrades if necessary here
                     } catch (e) { console.error("Error loading state"); }
                 }
             },
 
             saveState: function() {
                 localStorage.setItem('asrana_state', JSON.stringify(this.state));
-                this.updateUI(); // Trigger UI updates on save
+                this.updateUI();
             },
 
             // --- UI BUILDERS & UPDATERS ---
             buildUI: function() {
-                // Navigation
+                // Navigation Building
                 const desktopNav = document.getElementById('desktop-nav');
                 const mobileNav = document.getElementById('mobile-nav');
                 desktopNav.innerHTML = ''; mobileNav.innerHTML = '';
@@ -621,26 +832,45 @@
                 this.config.navItems.forEach(item => {
                     // Desktop Item
                     const dBtn = document.createElement('button');
-                    dBtn.className = `w-full flex items-center gap-3 px-4 py-3 rounded-xl text-left transition-colors nav-btn-${item.id} ${this.currentView === item.id ? 'bg-white/10 text-brand-gold' : 'text-brand-muted hover:text-white hover:bg-white/5'}`;
-                    dBtn.innerHTML = `<span class="text-xl">${item.icon}</span> <span>${item.label}</span>`;
+                    dBtn.className = `w-full flex items-center gap-4 px-4 py-3.5 rounded-xl text-left transition-all duration-300 nav-btn-${item.id} relative group overflow-hidden`;
+                    
+                    const activeBg = `<div class="absolute inset-0 bg-brand-gold/10 opacity-0 transition-opacity duration-300 nav-bg-${item.id}"></div>
+                                      <div class="absolute left-0 top-1/4 bottom-1/4 w-1 bg-brand-gold rounded-r-full transform -translate-x-full transition-transform duration-300 nav-indicator-${item.id}"></div>`;
+                    
+                    dBtn.innerHTML = `${activeBg}
+                        <svg class="w-6 h-6 relative z-10 transition-colors duration-300 nav-icon-${item.id}" fill="none" stroke="currentColor" viewBox="0 0 24 24">${item.icon}</svg>
+                        <span class="text-sm font-medium tracking-wide relative z-10 transition-colors duration-300 nav-text-${item.id}">${item.label}</span>`;
+                    
                     dBtn.onclick = () => this.navigate(item.id);
                     desktopNav.appendChild(dBtn);
 
                     // Mobile Item
                     const mBtn = document.createElement('button');
-                    mBtn.className = `flex flex-col items-center justify-center w-full py-2 transition-colors nav-btn-${item.id} ${this.currentView === item.id ? 'text-brand-gold' : 'text-brand-muted'}`;
-                    mBtn.innerHTML = `<span class="text-2xl mb-1">${item.icon}</span> <span class="text-[10px] uppercase tracking-wider">${item.label}</span>`;
+                    mBtn.className = `flex flex-col items-center justify-center w-16 h-14 rounded-2xl transition-all duration-300 nav-btn-${item.id} relative`;
+                    mBtn.innerHTML = `
+                        <div class="absolute inset-0 bg-brand-gold/10 scale-50 opacity-0 rounded-xl transition-all duration-300 nav-mob-bg-${item.id}"></div>
+                        <svg class="w-6 h-6 mb-1 relative z-10 transition-colors duration-300 nav-icon-${item.id}" fill="none" stroke="currentColor" viewBox="0 0 24 24">${item.icon}</svg>
+                        <span class="text-[9px] uppercase tracking-wider font-medium relative z-10 transition-colors duration-300 nav-text-${item.id}">${item.label}</span>
+                    `;
                     mBtn.onclick = () => this.navigate(item.id);
                     mobileNav.appendChild(mBtn);
                 });
 
-                // Deed Options
+                // Deed Options Building
                 const deedContainer = document.getElementById('deed-options');
                 deedContainer.innerHTML = '';
                 this.config.deedCategories.forEach(cat => {
                     const btn = document.createElement('button');
-                    btn.className = 'w-full text-left p-4 rounded-xl glass-button flex flex-col gap-1';
-                    btn.innerHTML = `<span class="font-serif text-lg" style="color: ${cat.color}">${cat.title}</span><span class="text-xs text-brand-muted">${cat.desc}</span>`;
+                    btn.className = 'w-full text-left p-4 rounded-2xl glass-button flex items-center gap-4 group hover:border-brand-gold/30';
+                    btn.innerHTML = `
+                        <div class="w-12 h-12 rounded-xl flex items-center justify-center text-2xl bg-white/5 border border-white/10 shadow-inner group-hover:bg-brand-gold/10 group-hover:border-brand-gold/20 transition-colors">
+                            ${cat.icon}
+                        </div>
+                        <div class="flex-1">
+                            <span class="font-serif text-xl block mb-0.5 transition-colors group-hover:text-brand-gold" style="color: ${cat.color}">${cat.title}</span>
+                            <span class="text-xs text-brand-muted font-light">${cat.desc}</span>
+                        </div>
+                    `;
                     btn.onclick = () => this.addDeed(cat.id);
                     deedContainer.appendChild(btn);
                 });
@@ -650,12 +880,25 @@
                 reclaimContainer.innerHTML = '';
                 this.config.reclaimCategories.forEach(cat => {
                     const btn = document.createElement('button');
-                    btn.className = 'glass-panel p-4 flex flex-col items-center justify-center gap-2 hover:border-brand-gold/50 transition-colors';
-                    btn.innerHTML = `<span class="text-2xl">${cat.icon}</span><span class="text-xs text-brand-muted">${cat.name}</span>`;
+                    btn.className = 'bg-brand-surface/50 border border-white/5 rounded-2xl p-4 flex flex-col items-center justify-center gap-3 hover:bg-white/5 hover:border-brand-gold/30 transition-all duration-300 group';
+                    btn.innerHTML = `
+                        <span class="text-3xl group-hover:scale-110 transition-transform">${cat.icon}</span>
+                        <span class="text-xs tracking-wide text-brand-muted group-hover:text-white">${cat.name}</span>
+                    `;
                     btn.onclick = (e) => {
-                        document.querySelectorAll('#reclaim-categories button').forEach(b => b.classList.remove('border-brand-gold'));
-                        btn.classList.add('border-brand-gold');
-                        document.getElementById('reclaim-action').classList.remove('hidden');
+                        document.querySelectorAll('#reclaim-categories button').forEach(b => {
+                            b.classList.remove('border-brand-gold', 'bg-brand-gold/5');
+                            b.classList.add('border-white/5', 'bg-brand-surface/50');
+                        });
+                        btn.classList.remove('border-white/5', 'bg-brand-surface/50');
+                        btn.classList.add('border-brand-gold', 'bg-brand-gold/5');
+                        
+                        const actionDiv = document.getElementById('reclaim-action');
+                        actionDiv.classList.remove('hidden');
+                        // Reset animation
+                        actionDiv.style.animation = 'none';
+                        actionDiv.offsetHeight; /* trigger reflow */
+                        actionDiv.style.animation = null; 
                     };
                     reclaimContainer.appendChild(btn);
                 });
@@ -666,13 +909,7 @@
             },
 
             updateUI: function() {
-                // Home Dashboard
-                const todayDeeds = this.getTodayDeeds();
-                document.getElementById('progress-text').textContent = `${todayDeeds.length} / ${this.state.dailyGoal}`;
-                document.getElementById('daily-progress').value = todayDeeds.length;
-                document.getElementById('daily-progress').max = this.state.dailyGoal;
-                
-                // Greeting
+                // Determine Greeting
                 const hour = new Date().getHours();
                 let greet = "Assalamu'alaikum";
                 if(hour >= 4 && hour < 12) greet += ", Good Morning";
@@ -681,73 +918,146 @@
                 else greet += ", Good Night";
                 document.getElementById('greeting').textContent = `${greet} ${this.state.name} 👋`;
 
+                // Progress Update
+                const todayDeeds = this.getTodayDeeds();
+                const goal = this.state.dailyGoal;
+                document.getElementById('progress-text').textContent = `${todayDeeds.length} / ${goal}`;
+                document.getElementById('daily-progress').value = todayDeeds.length;
+                document.getElementById('daily-progress').max = goal;
+
+                // Reminders Update
+                const remContainer = document.getElementById('home-reminders');
+                remContainer.innerHTML = this.state.reminders.map(r => `
+                    <div class="flex items-center justify-between p-3 bg-brand-bg/40 rounded-xl border border-white/5 cursor-pointer hover:bg-white/5 transition-colors" onclick="app.toggleReminder('${r.id}')">
+                        <span class="text-sm text-brand-text/90">${r.title}</span>
+                        <div class="w-10 h-5 rounded-full relative transition-colors duration-300 ${r.active ? 'bg-brand-gold' : 'bg-white/10'}">
+                            <div class="absolute top-0.5 bottom-0.5 w-4 rounded-full bg-white shadow transition-transform duration-300 ${r.active ? 'left-[22px]' : 'left-0.5'}"></div>
+                        </div>
+                    </div>
+                `).join('');
+
                 // Render Gardens
                 this.renderGarden('mini-garden-container', true);
                 this.renderGarden('main-garden-svg-container', false);
 
-                // Garden Stats
+                // Garden Stats UI
                 const level = this.calculateGardenLevel();
                 document.getElementById('stat-deeds').textContent = this.state.deeds.length;
                 document.getElementById('stat-level').textContent = level;
                 document.getElementById('stat-flowers').textContent = this.getUniqueFlowersCount();
 
+                // Empty States check
+                const emptyStateOverlay = document.getElementById('garden-empty-state');
+                if (this.state.deeds.length === 0) {
+                    emptyStateOverlay.classList.remove('hidden');
+                    // setTimeout ensures the display block takes effect before opacity transition
+                    setTimeout(() => emptyStateOverlay.classList.remove('opacity-0'), 10);
+                } else {
+                    emptyStateOverlay.classList.add('opacity-0');
+                    setTimeout(() => emptyStateOverlay.classList.add('hidden'), 500);
+                }
+
                 // Gratitude List
                 const gList = document.getElementById('gratitude-list');
-                gList.innerHTML = this.state.gratitude.slice(-3).reverse().map(g => `<div class="p-3 bg-brand-surface rounded-lg border border-white/5 opacity-80 animate-fade-in">• ${g}</div>`).join('');
+                const recentGrats = this.state.gratitude.slice(-3).reverse();
+                if(recentGrats.length > 0) {
+                    gList.innerHTML = recentGrats.map(g => `
+                        <div class="p-4 bg-brand-bg/40 rounded-xl border border-white/5 text-sm text-brand-text/80 shadow-inner flex gap-3 items-start animate-fade-in">
+                            <span class="text-brand-gold">✨</span> <span>${g}</span>
+                        </div>
+                    `).join('');
+                } else {
+                    gList.innerHTML = `<div class="p-4 text-center text-brand-muted text-sm italic">No entries yet.</div>`;
+                }
 
-                // Journey Stats
+                // Journey Stats Grid
                 const statsGrid = document.getElementById('stats-grid');
                 statsGrid.innerHTML = `
-                    <div class="glass-panel p-4 text-center"><div class="text-3xl font-serif text-brand-gold mb-1">${this.state.deeds.length}</div><div class="text-xs text-brand-muted uppercase">Good Deeds</div></div>
-                    <div class="glass-panel p-4 text-center"><div class="text-3xl font-serif text-brand-sage mb-1">${this.state.mindfulSessions}</div><div class="text-xs text-brand-muted uppercase">Mindful Stops</div></div>
-                    <div class="glass-panel p-4 text-center"><div class="text-3xl font-serif text-white mb-1">${this.state.streak}</div><div class="text-xs text-brand-muted uppercase">Day Streak</div></div>
-                    <div class="glass-panel p-4 text-center"><div class="text-3xl font-serif text-brand-gold mb-1">${this.state.reclaimedTime}m</div><div class="text-xs text-brand-muted uppercase">Reclaimed</div></div>
+                    <div class="glass-panel p-5 text-center"><div class="text-4xl font-serif text-brand-gold mb-2">${this.state.deeds.length}</div><div class="text-[10px] text-brand-muted uppercase tracking-widest">Good Deeds</div></div>
+                    <div class="glass-panel p-5 text-center"><div class="text-4xl font-serif text-brand-sage mb-2">${this.state.mindfulSessions}</div><div class="text-[10px] text-brand-muted uppercase tracking-widest">Mindful Stops</div></div>
+                    <div class="glass-panel p-5 text-center"><div class="text-4xl font-serif text-white mb-2">${this.state.streak}</div><div class="text-[10px] text-brand-muted uppercase tracking-widest">Day Streak</div></div>
+                    <div class="glass-panel p-5 text-center"><div class="text-4xl font-serif text-brand-gold mb-2">${this.state.reclaimedTime}<span class="text-xl">m</span></div><div class="text-[10px] text-brand-muted uppercase tracking-widest">Reclaimed</div></div>
                 `;
 
-                // Achievements
+                // Achievements List
                 const achList = document.getElementById('achievements-list');
                 achList.innerHTML = this.config.achievements.map(ach => {
-                    const unlocked = this.state.deeds.length >= ach.reqDeeds;
+                    let unlocked = false;
+                    if (ach.reqDeeds) unlocked = this.state.deeds.length >= ach.reqDeeds;
+                    if (ach.reqStreak) unlocked = this.state.streak >= ach.reqStreak;
+
                     return `
-                        <div class="glass-panel p-4 flex items-center gap-4 ${unlocked ? 'border-brand-gold/30 shadow-glow' : 'opacity-50 grayscale'} transition-all">
-                            <div class="w-12 h-12 rounded-full flex items-center justify-center ${unlocked ? 'bg-brand-gold/20 text-brand-gold' : 'bg-white/5 text-white/20'} text-2xl">
+                        <div class="glass-panel p-5 flex items-center gap-5 transition-all duration-500 ${unlocked ? 'border-brand-gold/30 shadow-glow bg-brand-gold/5' : 'opacity-60'}">
+                            <div class="w-14 h-14 shrink-0 rounded-full flex items-center justify-center text-2xl transition-all duration-500 ${unlocked ? 'bg-gradient-to-br from-brand-gold/30 to-brand-gold/10 text-brand-gold shadow-[inset_0_0_10px_rgba(212,175,55,0.5)]' : 'bg-white/5 text-white/20 border border-white/5'}">
                                 ${unlocked ? '✨' : '🔒'}
                             </div>
                             <div>
-                                <h4 class="font-serif ${unlocked ? 'text-white' : 'text-brand-muted'}">${ach.title}</h4>
-                                <p class="text-xs text-brand-muted">${ach.desc}</p>
+                                <h4 class="font-serif text-lg mb-1 ${unlocked ? 'text-white' : 'text-brand-muted'}">${ach.title}</h4>
+                                <p class="text-[11px] uppercase tracking-wider ${unlocked ? 'text-brand-gold/80' : 'text-brand-muted/50'}">${ach.desc}</p>
                             </div>
                         </div>
                     `;
                 }).join('');
             },
 
-            // --- NAVIGATION ---
-            navigate: function(viewId) {
-                // Update nav classes
-                document.querySelectorAll('[class*="nav-btn-"]').forEach(el => {
-                    el.classList.remove('bg-white/10', 'text-brand-gold');
-                    if(el.parentElement.id === 'mobile-nav') el.classList.add('text-brand-muted');
-                    else el.classList.add('text-brand-muted', 'hover:text-white', 'hover:bg-white/5');
-                });
+            // --- STREAMING_CHUNK:Navigation & Views ---
+            navigate: function(viewId, initialLoad = false) {
+                this.currentView = viewId;
                 
-                document.querySelectorAll(`.nav-btn-${viewId}`).forEach(el => {
-                    if(el.parentElement.id === 'mobile-nav') {
-                        el.classList.remove('text-brand-muted');
-                        el.classList.add('text-brand-gold');
-                    } else {
-                        el.classList.remove('text-brand-muted', 'hover:text-white', 'hover:bg-white/5');
-                        el.classList.add('bg-white/10', 'text-brand-gold');
+                // Update Nav Visuals
+                this.config.navItems.forEach(item => {
+                    const isTarget = item.id === viewId;
+                    
+                    // Desktop styles
+                    const bg = document.querySelector(`.nav-bg-${item.id}`);
+                    const ind = document.querySelector(`.nav-indicator-${item.id}`);
+                    const icon = document.querySelectorAll(`.nav-icon-${item.id}`);
+                    const txt = document.querySelectorAll(`.nav-text-${item.id}`);
+                    const mBg = document.querySelector(`.nav-mob-bg-${item.id}`);
+
+                    if(bg) bg.style.opacity = isTarget ? '1' : '0';
+                    if(ind) ind.style.transform = isTarget ? 'translateX(0)' : 'translateX(-100%)';
+                    
+                    icon.forEach(el => el.className = `w-6 h-6 relative z-10 transition-colors duration-300 nav-icon-${item.id} ${isTarget ? 'text-brand-gold' : 'text-brand-muted group-hover:text-white'}`);
+                    txt.forEach(el => {
+                        // Desktop uses text-sm, mobile uses text-[9px]
+                        const size = el.classList.contains('text-[9px]') ? 'text-[9px] uppercase tracking-wider' : 'text-sm font-medium tracking-wide';
+                        el.className = `${size} relative z-10 transition-colors duration-300 nav-text-${item.id} ${isTarget ? 'text-white' : 'text-brand-muted group-hover:text-white'}`;
+                    });
+                    
+                    if(mBg) {
+                        mBg.style.opacity = isTarget ? '1' : '0';
+                        mBg.style.transform = isTarget ? 'scale(1)' : 'scale(0.5)';
                     }
                 });
 
-                // Switch view content
-                document.querySelectorAll('.view-section').forEach(v => v.classList.remove('active'));
-                const targetView = document.getElementById(`view-${viewId}`);
-                if (targetView) targetView.classList.add('active');
+                // Transition Views
+                const views = document.querySelectorAll('.view-section');
+                
+                if (initialLoad) {
+                    views.forEach(v => v.classList.remove('active'));
+                    document.getElementById(`view-${viewId}`).classList.add('active');
+                } else {
+                    // Smooth crossfade
+                    const activeView = document.querySelector('.view-section.active');
+                    if(activeView && activeView.id !== `view-${viewId}`) {
+                        activeView.style.opacity = '0';
+                        activeView.style.transform = 'translateY(-10px)';
+                        
+                        setTimeout(() => {
+                            activeView.classList.remove('active');
+                            const target = document.getElementById(`view-${viewId}`);
+                            target.classList.add('active');
+                            // Trigger reflow
+                            target.offsetHeight; 
+                            target.style.opacity = '1';
+                            target.style.transform = 'translateY(0)';
+                        }, 400); // Wait for fade out
+                    }
+                }
                 
                 this.updateUI();
-                window.scrollTo(0, 0);
+                document.getElementById('main-scroll-area').scrollTo({top: 0, behavior: 'smooth'});
             },
 
             startJourney: function() {
@@ -759,18 +1069,20 @@
                     this.state.onboardingDone = true;
                     this.state.lastActiveDate = new Date().toDateString();
                     this.saveState();
-                    this.navigate('home');
-                    this.showToast('Welcome to your digital sanctuary.', '✨');
+                    this.navigate('home', true);
+                    
+                    setTimeout(() => {
+                        this.showToast('Welcome to your digital sanctuary.', '✨');
+                    }, 500);
                 }, 1000);
             },
 
-            // --- CORE LOGIC ---
+            // --- STREAMING_CHUNK:Core Logic & Timers ---
             startClock: function() {
                 const update = () => {
                     const now = new Date();
                     document.getElementById('real-time-clock').textContent = now.toLocaleTimeString('en-GB', { hour12: false });
                     
-                    // Update day progress bar
                     const startOfDay = new Date(now.getFullYear(), now.getMonth(), now.getDate());
                     const elapsed = now - startOfDay;
                     const percentage = (elapsed / 86400000) * 100;
@@ -789,18 +1101,18 @@
             checkStreak: function() {
                 const today = new Date().toDateString();
                 if (this.state.lastActiveDate !== today) {
-                    const lastActive = new Date(this.state.lastActiveDate || 0);
-                    const diffTime = Math.abs(new Date() - lastActive);
-                    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)); 
-                    
-                    if (diffDays === 1) {
-                        // Kept streak
-                    } else if (diffDays > 1) {
-                        this.state.streak = 0; // Reset streak if missed a day
+                    if (this.state.lastActiveDate) {
+                        const lastActive = new Date(this.state.lastActiveDate);
+                        const diffTime = Math.abs(new Date() - lastActive);
+                        const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)); 
+                        
+                        if (diffDays > 1) {
+                            this.state.streak = 0;
+                        }
                     }
                     this.state.lastActiveDate = today;
-                    if(this.getTodayDeeds().length > 0) {
-                         this.state.streak++; // Increment if active today and had deeds
+                    if(this.getTodayDeeds().length > 0 && this.state.streak === 0) {
+                        this.state.streak = 1;
                     }
                     this.saveState();
                 }
@@ -812,7 +1124,6 @@
             },
 
             addDeed: function(categoryId) {
-                // Prevent rapid double clicking (simple debounce)
                 if (this.isAddingDeed) return;
                 this.isAddingDeed = true;
 
@@ -825,27 +1136,41 @@
                 const oldLevel = this.calculateGardenLevel();
                 this.state.deeds.push(newDeed);
                 
-                // Update streak if first deed of day
                 if(this.getTodayDeeds().length === 1 && this.state.streak === 0) {
                      this.state.streak = 1;
                 }
 
                 this.saveState();
-                this.closeModal('add-deed-modal');
                 
-                const newLevel = this.calculateGardenLevel();
-                
-                if (newLevel > oldLevel) {
-                    this.showToast(`Garden leveled up to Level ${newLevel}!`, '🌳');
-                } else {
-                    this.showToast('Your garden grew a little today.', '🌱');
-                }
+                // Animate Modal close
+                const modal = document.getElementById('add-deed-modal');
+                const content = document.getElementById('add-deed-content');
+                modal.classList.add('opacity-0');
+                if(window.innerWidth < 640) content.classList.add('translate-y-full');
+                else content.classList.add('scale-95');
 
-                // Small delay to allow modal close animation before allowing next click
-                setTimeout(() => { this.isAddingDeed = false; }, 500);
+                setTimeout(() => {
+                    modal.classList.add('hidden');
+                    
+                    const newLevel = this.calculateGardenLevel();
+                    if (newLevel > oldLevel) {
+                        this.showToast(`Garden leveled up to Level ${newLevel}!`, '🌳');
+                    } else {
+                        this.showToast('Your garden grew a little today.', '🌱');
+                    }
+                    this.isAddingDeed = false;
+                }, 400); // Matches CSS transition duration
             },
 
-            // --- GARDEN VISUALIZATION (SVG GENERATION) ---
+            toggleReminder: function(id) {
+                const reminder = this.state.reminders.find(r => r.id === id);
+                if (reminder) {
+                    reminder.active = !reminder.active;
+                    this.saveState();
+                }
+            },
+
+            // --- STREAMING_CHUNK:Organic Garden SVG Generation ---
             calculateGardenLevel: function() {
                 const count = this.state.deeds.length;
                 if (count === 0) return 0; // Seed
@@ -867,94 +1192,164 @@
                 const level = this.calculateGardenLevel();
                 const deeds = this.state.deeds;
                 
-                // Base dimensions
-                const width = isMini ? 200 : 400;
-                const height = isMini ? 120 : 250;
+                const width = isMini ? 250 : 600;
+                const height = isMini ? 150 : 350;
                 
-                let svgContent = `<svg viewBox="0 0 ${width} ${height}" class="w-full h-full overflow-visible" xmlns="http://www.w3.org/2000/svg">`;
+                let svg = `<svg viewBox="0 0 ${width} ${height}" class="w-full h-full overflow-visible" xmlns="http://www.w3.org/2000/svg">`;
                 
-                // Generate shapes based on level and deeds
                 const cx = width / 2;
                 const cy = height;
 
                 if (level === 0) {
-                    // Just a seed/small bump
-                    svgContent += `<circle cx="${cx}" cy="${cy - 5}" r="5" fill="#7A8B80" class="garden-element" opacity="0.5"/>`;
-                    if(!isMini) svgContent += `<text x="${cx}" y="${cy - 20}" text-anchor="middle" fill="#94A3B8" font-size="10" font-family="sans-serif">Waiting for rain...</text>`;
+                    // Empty state handled by HTML overlay, but draw ground marker just in case
                 } else {
-                    // Draw Main Stem
-                    const stemHeight = isMini ? (level * 20 + 20) : (level * 40 + 40);
-                    const stemWidth = isMini ? 3 : 6;
-                    
-                    // Curved stem using quadratic bezier
-                    svgContent += `<path d="M ${cx} ${cy} Q ${cx - 10} ${cy - stemHeight/2} ${cx} ${cy - stemHeight}" fill="none" stroke="#7A8B80" stroke-width="${stemWidth}" stroke-linecap="round" class="garden-element"/>`;
+                    // --- Define Filters & Gradients ---
+                    svg += `
+                        <defs>
+                            <filter id="glow-${containerId}" x="-50%" y="-50%" width="200%" height="200%">
+                                <feGaussianBlur stdDeviation="4" result="blur" />
+                                <feComposite in="SourceGraphic" in2="blur" operator="over" />
+                            </filter>
+                            <linearGradient id="stemGradient" x1="0" y1="1" x2="0" y2="0">
+                                <stop offset="0%" stop-color="#2C4035"/>
+                                <stop offset="100%" stop-color="#8AA090"/>
+                            </linearGradient>
+                        </defs>
+                    `;
 
-                    // Draw Leaves (simple paths)
+                    // --- Base Stem (Organic Bezier) ---
+                    const stemMaxHeight = isMini ? (level * 30 + 20) : (level * 60 + 50);
+                    const stemThickness = isMini ? 3 : 6;
+                    
+                    // Main curving path
+                    const cp1x = cx - (isMini ? 10 : 30);
+                    const cp1y = cy - stemMaxHeight * 0.3;
+                    const cp2x = cx + (isMini ? 15 : 40);
+                    const cp2y = cy - stemMaxHeight * 0.7;
+                    const endY = cy - stemMaxHeight;
+                    
+                    svg += `<path d="M ${cx} ${cy} C ${cp1x} ${cp1y}, ${cp2x} ${cp2y}, ${cx} ${endY}" 
+                                  fill="none" stroke="url(#stemGradient)" stroke-width="${stemThickness}" 
+                                  stroke-linecap="round" class="animate-grow origin-bottom" style="animation-duration: 1.5s;"/>`;
+
+                    // --- Branches & Leaves (Levels 1+) ---
                     if (level >= 1) {
-                        const leafSize = isMini ? 10 : 20;
-                        svgContent += `
-                            <path d="M ${cx} ${cy - stemHeight*0.4} Q ${cx + leafSize} ${cy - stemHeight*0.5} ${cx + leafSize*1.5} ${cy - stemHeight*0.4} Q ${cx + leafSize} ${cy - stemHeight*0.3} ${cx} ${cy - stemHeight*0.4}" fill="#2C4035" class="garden-element" style="animation-delay: 0.1s"/>
-                            <path d="M ${cx} ${cy - stemHeight*0.7} Q ${cx - leafSize} ${cy - stemHeight*0.8} ${cx - leafSize*1.5} ${cy - stemHeight*0.7} Q ${cx - leafSize} ${cy - stemHeight*0.6} ${cx} ${cy - stemHeight*0.7}" fill="#7A8B80" class="garden-element" style="animation-delay: 0.2s"/>
-                        `;
+                        const leafLen = isMini ? 15 : 30;
+                        const leafW = isMini ? 8 : 16;
+                        
+                        // Function to draw an elegant leaf
+                        const drawLeaf = (x, y, angle, delay, color) => {
+                            const rad = angle * Math.PI / 180;
+                            const tipX = x + Math.cos(rad) * leafLen;
+                            const tipY = y + Math.sin(rad) * leafLen;
+                            
+                            // Cubic bezier leaf
+                            const d = `M ${x} ${y} Q ${x + leafW*Math.cos(rad-Math.PI/4)} ${y + leafW*Math.sin(rad-Math.PI/4)} ${tipX} ${tipY} Q ${x + leafW*Math.cos(rad+Math.PI/4)} ${y + leafW*Math.sin(rad+Math.PI/4)} ${x} ${y}`;
+                            
+                            return `<path d="${d}" fill="${color}" opacity="0" class="animate-grow origin-bottom" style="animation-delay: ${delay}s; transform-box: fill-box; transform-origin: left center;" />`;
+                        };
+
+                        // Calculate points along the cubic bezier for branch attachment
+                        const getPointOnBezier = (t) => {
+                            const u = 1 - t;
+                            const tt = t * t;
+                            const uu = u * u;
+                            const uuu = uu * u;
+                            const ttt = tt * t;
+                            
+                            let p = {x: 0, y: 0};
+                            p.x = uuu * cx + 3 * uu * t * cp1x + 3 * u * tt * cp2x + ttt * cx;
+                            p.y = uuu * cy + 3 * uu * t * cp1y + 3 * u * tt * cp2y + ttt * endY;
+                            return p;
+                        };
+
+                        // Add leaves along stem
+                        const numLeaves = isMini ? level * 2 : level * 3;
+                        for(let i=1; i<=numLeaves; i++) {
+                            const t = i / (numLeaves + 1);
+                            const pt = getPointOnBezier(t);
+                            const angle = (i % 2 === 0) ? -30 - (t*20) : 210 + (t*20); // Alternate sides, angle upwards
+                            const color = (i % 3 === 0) ? '#D4AF37' : (i%2 === 0 ? '#2C4035' : '#8AA090'); // Mix colors
+                            svg += drawLeaf(pt.x, pt.y, angle, 0.5 + (t * 0.5), color);
+                        }
                     }
 
-                    // Draw Flowers based on deed categories
+                    // --- Flowers / Deeds (Levels 2+) ---
                     if (level >= 2) {
-                        // Max flowers to display so it doesn't get cluttered
-                        const maxDisplay = isMini ? 5 : 15;
+                        const maxDisplay = isMini ? 6 : 20;
                         const displayDeeds = deeds.slice(-maxDisplay);
                         
                         displayDeeds.forEach((deed, i) => {
                             const cat = this.config.deedCategories.find(c => c.id === deed.category);
                             if (cat) {
-                                // Calculate randomish position around the plant
-                                // Deterministic random based on index so it doesn't jump around on re-render
-                                const seed = i * 137.5; // Golden angle approx
-                                const r = (isMini ? 20 : 50) + (i % 3) * 10; // spread
-                                const theta = (seed % 360) * Math.PI / 180;
+                                // Distributed deterministically based on index using a spiral/arch pattern
+                                const ratio = i / maxDisplay;
+                                const spreadX = isMini ? 80 : 200;
+                                const spreadY = isMini ? 60 : 150;
                                 
-                                // Keep mostly in upper half
-                                let fx = cx + r * Math.cos(theta) * 0.8;
-                                let fy = (cy - stemHeight*0.6) - r * Math.abs(Math.sin(theta)); 
+                                // Create an arching canopy shape
+                                const archX = (ratio - 0.5) * 2; // -1 to 1
+                                const archY = 1 - Math.pow(archX, 2); // Parabola: 0 at edges, 1 at center
+                                
+                                // Add some pseudo-randomness based on index
+                                const randOffset = (i * 13.7) % 20 - 10;
+                                
+                                const fx = cx + archX * spreadX + randOffset;
+                                const fy = endY - archY * spreadY + Math.abs(randOffset) - (isMini?20:50);
+                                
+                                // Connect flower to main stem with thin branch
+                                const stemAttachT = 0.6 + (ratio * 0.4); // Attach to upper part of stem
+                                const attachPt = getPointOnBezier(stemAttachT);
+                                
+                                const delay = 1 + (i * 0.08);
 
-                                // Constrain bounds roughly
-                                fy = Math.max(20, Math.min(cy - 20, fy));
+                                // Branch connecting line
+                                svg += `<path d="M ${attachPt.x} ${attachPt.y} Q ${fx} ${attachPt.y} ${fx} ${fy}" 
+                                              fill="none" stroke="#8AA090" stroke-width="1" opacity="0" 
+                                              class="animate-fade-in" style="animation-delay: ${delay - 0.2}s"/>`;
 
+                                // Draw layered flower
                                 const fSize = isMini ? 4 : 8;
-                                const delay = 0.3 + (i * 0.05);
-
-                                // Add a connecting thin stem
-                                svgContent += `<path d="M ${cx} ${cy - stemHeight*0.5} Q ${fx} ${cy - stemHeight*0.5} ${fx} ${fy}" fill="none" stroke="#7A8B80" stroke-width="1" opacity="0.3" class="garden-element" style="animation-delay: ${delay - 0.1}s"/>`;
-
-                                // Add the flower (circle + glow)
-                                svgContent += `<circle cx="${fx}" cy="${fy}" r="${fSize}" fill="${cat.color}" class="garden-element" style="animation-delay: ${delay}s; filter: drop-shadow(0 0 4px ${cat.color}80);"/>`;
+                                
+                                // Core glow
+                                svg += `<circle cx="${fx}" cy="${fy}" r="${fSize * 1.5}" fill="${cat.color}" opacity="0" filter="url(#glow-${containerId})" class="animate-grow" style="animation-delay: ${delay}s; transform-origin: ${fx}px ${fy}px;" />`;
+                                // Main petal
+                                svg += `<circle cx="${fx}" cy="${fy}" r="${fSize}" fill="${cat.color}" opacity="0" class="animate-grow" style="animation-delay: ${delay + 0.1}s; transform-origin: ${fx}px ${fy}px;" />`;
+                                // Center
+                                svg += `<circle cx="${fx}" cy="${fy}" r="${fSize * 0.4}" fill="#ffffff" opacity="0" class="animate-grow" style="animation-delay: ${delay + 0.2}s; transform-origin: ${fx}px ${fy}px;" />`;
                             }
                         });
                     }
                     
-                    // Add some floating particles for max level
+                    // --- Floating Light Particles (Level 4+) ---
                     if (level >= 4 && !isMini) {
-                        for(let i=0; i<10; i++) {
-                            const px = cx + (Math.random() - 0.5) * width * 0.8;
-                            const py = (Math.random() * height * 0.8);
-                            svgContent += `<circle cx="${px}" cy="${py}" r="1" fill="#FFFFFF" opacity="0.4" class="animate-float" style="animation-delay: ${Math.random()*5}s"/>`;
+                        for(let i=0; i<15; i++) {
+                            const px = cx + (Math.random() - 0.5) * width;
+                            const py = cy - Math.random() * height;
+                            const size = Math.random() * 2 + 1;
+                            const delay = Math.random() * 5;
+                            const dur = Math.random() * 4 + 4;
+                            svg += `<circle cx="${px}" cy="${py}" r="${size}" fill="#D4AF37" opacity="0.6" filter="url(#glow-${containerId})" class="animate-float" style="animation-delay: ${delay}s; animation-duration: ${dur}s;"/>`;
                         }
                     }
                 }
 
-                svgContent += `</svg>`;
-                container.innerHTML = svgContent;
+                svg += `</svg>`;
+                container.innerHTML = svg;
             },
 
-            // --- MINDFUL PAUSE TIMER ---
+            // --- STREAMING_CHUNK:Mindful Pause Timer ---
             setPauseDuration: function(secs) {
                 this.pauseState.duration = secs;
                 document.getElementById('breathe-time').textContent = this.formatTime(secs);
                 
-                // Update UI selection
                 document.querySelectorAll('.duration-btn').forEach(b => {
-                    b.classList.remove('border-brand-gold', 'text-brand-gold');
-                    if(b.textContent.includes(secs/60)) b.classList.add('border-brand-gold', 'text-brand-gold');
+                    b.classList.remove('bg-brand-gold/10', 'text-brand-gold', 'border-brand-gold/30');
+                    b.classList.add('text-brand-muted');
+                    if(b.textContent.includes(secs/60)) {
+                        b.classList.add('bg-brand-gold/10', 'text-brand-gold', 'border-brand-gold/30');
+                        b.classList.remove('text-brand-muted');
+                    }
                 });
             },
 
@@ -968,14 +1363,23 @@
                 document.getElementById('btn-pause-end').classList.remove('hidden');
                 document.getElementById('pause-duration-selector').classList.add('opacity-50', 'pointer-events-none');
                 
-                // Start breathing animation class
-                document.getElementById('breathe-ring').classList.add('animate-breathe');
-                document.getElementById('breathe-bg').classList.add('animate-breathe');
+                // Start breathing animation classes
+                const r1 = document.getElementById('breathe-ring');
+                const r2 = document.getElementById('breathe-ring-2');
+                const bg = document.getElementById('breathe-bg');
+                
+                r1.classList.add('animate-breathe', 'border-brand-gold/50');
+                r1.classList.remove('border-brand-sage/40');
+                
+                r2.classList.add('animate-breathe');
+                r2.style.animationDelay = '0.5s';
+                r2.style.opacity = '1';
 
-                // Audio context simulation (just visual text updates)
+                bg.classList.add('animate-breathe');
+                
                 this.pauseState.phase = 0;
                 this.updateBreathingText();
-                this.timers.breatheText = setInterval(() => this.updateBreathingText(), 4000); // 4s phases for simplicity
+                this.timers.breatheText = setInterval(() => this.updateBreathingText(), 4000); 
 
                 this.timers.pause = setInterval(() => {
                     this.pauseState.timeLeft--;
@@ -989,10 +1393,16 @@
 
             updateBreathingText: function() {
                 const instr = document.getElementById('breathe-instruction');
-                if (this.pauseState.phase === 0) { instr.textContent = "Inhale"; instr.className = "text-lg tracking-widest uppercase transition-all duration-1000 text-brand-gold scale-110"; }
-                else if (this.pauseState.phase === 1) { instr.textContent = "Hold"; instr.className = "text-lg tracking-widest uppercase transition-all duration-1000 text-white"; }
-                else { instr.textContent = "Exhale"; instr.className = "text-lg tracking-widest uppercase transition-all duration-1000 text-brand-sage scale-90"; }
-                
+                if (this.pauseState.phase === 0) { 
+                    instr.textContent = "Inhale"; 
+                    instr.className = "text-sm tracking-[0.4em] uppercase transition-all duration-1000 text-brand-gold scale-110 font-medium"; 
+                } else if (this.pauseState.phase === 1) { 
+                    instr.textContent = "Hold"; 
+                    instr.className = "text-sm tracking-[0.4em] uppercase transition-all duration-1000 text-white font-medium"; 
+                } else { 
+                    instr.textContent = "Exhale"; 
+                    instr.className = "text-sm tracking-[0.4em] uppercase transition-all duration-1000 text-brand-sage scale-90 font-medium"; 
+                }
                 this.pauseState.phase = (this.pauseState.phase + 1) % 3;
             },
 
@@ -1005,12 +1415,21 @@
                 document.getElementById('btn-pause-end').classList.add('hidden');
                 document.getElementById('pause-duration-selector').classList.remove('opacity-50', 'pointer-events-none');
                 
-                document.getElementById('breathe-ring').classList.remove('animate-breathe');
-                document.getElementById('breathe-bg').classList.remove('animate-breathe');
+                const r1 = document.getElementById('breathe-ring');
+                const r2 = document.getElementById('breathe-ring-2');
+                const bg = document.getElementById('breathe-bg');
+                
+                r1.classList.remove('animate-breathe', 'border-brand-gold/50');
+                r1.classList.add('border-brand-sage/40');
+                
+                r2.classList.remove('animate-breathe');
+                r2.style.opacity = '0';
+                
+                bg.classList.remove('animate-breathe');
                 
                 document.getElementById('breathe-time').textContent = this.formatTime(this.pauseState.duration);
                 document.getElementById('breathe-instruction').textContent = "Ready";
-                document.getElementById('breathe-instruction').className = "text-lg tracking-widest text-brand-muted uppercase transition-all";
+                document.getElementById('breathe-instruction').className = "text-sm tracking-[0.3em] text-brand-muted uppercase font-medium transition-all";
 
                 if (completed) {
                     this.state.mindfulSessions++;
@@ -1019,15 +1438,23 @@
                 }
             },
 
-            // --- RECLAIM TIMER ---
+            // --- STREAMING_CHUNK:Reclaim Timer Logic ---
             startReclaimTimer: function() {
-                document.getElementById('reclaim-action').classList.add('hidden');
-                document.getElementById('reclaim-categories').parentElement.children[1].classList.add('hidden'); // Hide prompt text
+                const actionDiv = document.getElementById('reclaim-action');
+                actionDiv.classList.add('hidden');
                 document.getElementById('reclaim-categories').classList.add('hidden');
-                document.getElementById('reclaim-active').classList.remove('hidden');
                 
-                let timeLeft = 15 * 60; // 15 mins
+                const activeDiv = document.getElementById('reclaim-active');
+                activeDiv.classList.remove('hidden');
+                activeDiv.classList.add('animate-fade-in');
+                
+                let totalSecs = 15 * 60;
+                let timeLeft = totalSecs;
                 document.getElementById('reclaim-timer-display').textContent = this.formatTime(timeLeft);
+                
+                const circle = document.getElementById('reclaim-progress-circle');
+                const circLength = 301.59; // 2 * pi * 48
+                circle.style.strokeDashoffset = 0;
                 
                 if(this.timers.reclaim) clearInterval(this.timers.reclaim);
                 
@@ -1035,35 +1462,42 @@
                     timeLeft--;
                     document.getElementById('reclaim-timer-display').textContent = this.formatTime(timeLeft);
                     
+                    const progress = timeLeft / totalSecs;
+                    circle.style.strokeDashoffset = circLength * (1 - progress);
+                    
                     if (timeLeft <= 0) {
                         clearInterval(this.timers.reclaim);
                         this.state.reclaimedTime += 15;
                         this.saveState();
-                        this.showToast('15 minutes reclaimed.', '⏳');
-                        this.cancelReclaimTimer(); // Reset UI
+                        this.showToast('15 minutes beautifully reclaimed.', '⏳');
+                        this.cancelReclaimTimer();
                     }
                 }, 1000);
             },
 
             cancelReclaimTimer: function() {
                 clearInterval(this.timers.reclaim);
-                document.getElementById('reclaim-active').classList.add('hidden');
-                document.getElementById('reclaim-categories').classList.remove('hidden');
-                document.getElementById('reclaim-categories').parentElement.children[1].classList.remove('hidden'); // Show prompt text again
+                const activeDiv = document.getElementById('reclaim-active');
+                activeDiv.classList.add('hidden');
+                activeDiv.classList.remove('animate-fade-in');
                 
-                // reset selection
-                document.querySelectorAll('#reclaim-categories button').forEach(b => b.classList.remove('border-brand-gold'));
+                document.getElementById('reclaim-categories').classList.remove('hidden');
+                
+                // reset selection styling
+                document.querySelectorAll('#reclaim-categories button').forEach(b => {
+                    b.classList.remove('border-brand-gold', 'bg-brand-gold/5');
+                    b.classList.add('border-white/5', 'bg-brand-surface/50');
+                });
             },
 
-            // --- FORMS & DATA ENTRY ---
+            // --- STREAMING_CHUNK:Forms & Utilities ---
             saveReflection: function(e) {
                 e.preventDefault();
                 const inputs = e.target.querySelectorAll('textarea');
                 const entry = {
                     date: new Date().toISOString(),
                     q1: inputs[0].value,
-                    q2: inputs[1].value,
-                    q3: inputs[2].value
+                    q2: inputs[1].value
                 };
                 this.state.reflections.push(entry);
                 this.saveState();
@@ -1084,7 +1518,6 @@
                 }
             },
 
-            // --- UTILS & MODALS ---
             formatTime: function(totalSeconds) {
                 const m = Math.floor(totalSeconds / 60).toString().padStart(2, '0');
                 const s = (totalSeconds % 60).toString().padStart(2, '0');
@@ -1095,33 +1528,44 @@
                 const modal = document.getElementById(id);
                 const content = modal.children[0];
                 modal.classList.remove('hidden');
-                // Small delay to allow display:block to apply before animating opacity
-                setTimeout(() => {
+                
+                // Small delay to allow display:block to apply before animating
+                requestAnimationFrame(() => {
                     modal.classList.remove('opacity-0');
-                    content.classList.remove('scale-95');
-                }, 10);
+                    if(window.innerWidth < 640 && id === 'add-deed-modal') {
+                        content.classList.remove('translate-y-full');
+                    } else {
+                        content.classList.remove('scale-95');
+                    }
+                });
             },
 
             closeModal: function(id) {
                 const modal = document.getElementById(id);
                 const content = modal.children[0];
                 modal.classList.add('opacity-0');
-                content.classList.add('scale-95');
+                
+                if(window.innerWidth < 640 && id === 'add-deed-modal') {
+                    content.classList.add('translate-y-full');
+                } else {
+                    content.classList.add('scale-95');
+                }
                 
                 setTimeout(() => {
                     modal.classList.add('hidden');
-                }, 300); // match transition duration
+                }, 500); 
             },
 
             saveSetting: function(key, value) {
                 this.state[key] = value;
                 this.saveState();
                 if (key === 'name') this.updateUI();
+                this.showToast('Settings updated.', '⚙️');
             },
 
             confirmReset: function() {
                 this.closeModal('settings-modal');
-                setTimeout(() => this.openModal('reset-confirm-modal'), 350);
+                setTimeout(() => this.openModal('reset-confirm-modal'), 400);
             },
 
             executeReset: function() {
@@ -1132,21 +1576,21 @@
             showToast: function(message, icon = '') {
                 const container = document.getElementById('toast-container');
                 const toast = document.createElement('div');
-                toast.className = 'glass-panel px-4 py-3 text-sm flex items-center gap-3 shadow-glass animate-slide-up bg-brand-surface/90 border-brand-gold/30';
-                toast.innerHTML = `<span>${icon}</span> <span>${message}</span>`;
+                toast.className = 'glass-panel px-5 py-4 text-sm flex items-center gap-4 shadow-glass animate-slide-up border-brand-gold/20';
+                toast.innerHTML = `<span class="text-xl">${icon}</span> <span class="font-medium tracking-wide text-white">${message}</span>`;
                 
                 container.appendChild(toast);
                 
                 setTimeout(() => {
                     toast.style.opacity = '0';
-                    toast.style.transform = 'translateY(-10px)';
-                    toast.style.transition = 'all 0.4s ease';
-                    setTimeout(() => toast.remove(), 400);
-                }, 3000);
+                    toast.style.transform = 'translateY(-10px) scale(0.95)';
+                    toast.style.transition = 'all 0.5s cubic-bezier(0.16, 1, 0.3, 1)';
+                    setTimeout(() => toast.remove(), 500);
+                }, 3500);
             }
         };
 
-        // Initialize on load
+        // Initialize on DOM load
         window.addEventListener('DOMContentLoaded', () => app.init());
     </script>
 </body>
